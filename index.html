@@ -9,50 +9,46 @@
     <style>
         /* ── HFK Brand Color System ── */
         :root {
-            /* Main */
             --hfk-red: #970101;
             --hfk-burgundy: #441a15;
-            /* Point */
             --hfk-coral: #ff6154;
             --hfk-salmon: #ff9a92;
-            /* Sub Light */
             --hfk-sand: #ceb9a4;
             --hfk-light-sand: #ddcfbf;
             --hfk-cream: #e1dac9;
             --hfk-white: #f0eae2;
-            /* Sub Dark */
             --hfk-charcoal: #2d2523;
             --hfk-espresso: #391200;
-            /* Design System Text */
             --text-dark: #222;
             --text: #444;
             --text-light: #555;
             --text-muted: #888;
-            /* Design System Backgrounds */
             --bg-warm: #F5EBE0;
             --bg-accent: #F0EAE2;
-            /* Design System Borders */
             --border-dark: #222;
             --border: #ddd;
             --border-light: #e5e5e5;
             --border-subtle: #eee;
-            /* Functional */
             --success: #2d6a4f;
             --success-bg: #f0f7f4;
             --warning: #b36b00;
             --warning-bg: #fdf6ec;
             --danger: #970101;
             --danger-bg: #fdf2f2;
-            /* Layout */
             --radius: 12px;
             --radius-sm: 8px;
             --radius-xs: 6px;
             --shadow: 0 1px 3px rgba(45,37,35,0.06);
             --shadow-lg: 0 4px 16px rgba(45,37,35,0.1);
+            /* Track Colors */
+            --track-vertical: #970101;
+            --track-horizontal: #b36b00;
+            --track-enrichment: #2d6a4f;
+            --track-realignment: #6b21a8;
+            --track-newhorizons: #1a5276;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--hfk-white);
@@ -61,156 +57,45 @@
             -webkit-font-smoothing: antialiased;
             letter-spacing: -0.01em;
         }
-
         .container { max-width: 1120px; margin: 0 auto; padding: 32px 24px; }
 
         /* ── Header ── */
         .header { margin-bottom: 32px; }
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--hfk-burgundy);
-            letter-spacing: -0.02em;
-            line-height: 1.3;
-        }
-        .header-date {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-top: 6px;
-        }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+        .header h1 { font-size: 28px; font-weight: 700; color: var(--hfk-burgundy); letter-spacing: -0.02em; line-height: 1.3; }
+        .header-date { font-size: 14px; color: var(--text-light); margin-top: 6px; }
         .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
         /* ── Buttons ── */
-        .btn {
-            padding: 8px 16px;
-            border-radius: var(--radius-xs);
-            border: 1px solid var(--border);
-            background: #fff;
-            color: var(--text);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-            letter-spacing: -0.01em;
-        }
+        .btn { padding: 8px 16px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: #fff; color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit; }
         .btn:hover { background: var(--bg-warm); border-color: var(--hfk-sand); }
-        .btn-primary {
-            background: var(--hfk-red);
-            color: var(--hfk-white);
-            border-color: var(--hfk-red);
-        }
+        .btn-primary { background: var(--hfk-red); color: var(--hfk-white); border-color: var(--hfk-red); }
         .btn-primary:hover { background: var(--hfk-burgundy); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
 
         /* ── Tabs ── */
-        .tabs {
-            display: flex;
-            gap: 0;
-            border-bottom: 2px solid var(--border-dark);
-            margin-bottom: 32px;
-            overflow-x: auto;
-        }
-        .tab {
-            padding: 12px 20px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            white-space: nowrap;
-            font-family: inherit;
-            letter-spacing: -0.01em;
-            position: relative;
-        }
+        .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border-dark); margin-bottom: 32px; overflow-x: auto; }
+        .tab { padding: 12px 20px; border: none; background: transparent; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; font-family: inherit; position: relative; }
         .tab:hover { color: var(--text-dark); }
-        .tab.active {
-            color: var(--hfk-red);
-        }
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--hfk-red);
-        }
-
+        .tab.active { color: var(--hfk-red); }
+        .tab.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background: var(--hfk-red); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* ── Section Header (Design System 4.2) ── */
-        .section-header {
-            margin-bottom: 24px;
-        }
-        .section-number {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--hfk-red);
-            letter-spacing: 0.05em;
-        }
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin: 6px 0 4px;
-            line-height: 1.4;
-        }
-        .section-sub {
-            font-size: 15px;
-            color: var(--text-light);
-            letter-spacing: -0.01em;
-        }
-        .section-divider {
-            width: 100%;
-            height: 1px;
-            background: var(--border-dark);
-            margin-top: 16px;
-        }
+        /* ── Section Header ── */
+        .section-header { margin-bottom: 24px; }
+        .section-number { font-size: 14px; font-weight: 600; color: var(--hfk-red); letter-spacing: 0.05em; }
+        .section-title { font-size: 22px; font-weight: 700; color: var(--text-dark); margin: 6px 0 4px; line-height: 1.4; }
+        .section-sub { font-size: 15px; color: var(--text-light); }
+        .section-divider { width: 100%; height: 1px; background: var(--border-dark); margin-top: 16px; }
 
         /* ── KPI Cards ── */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-        .kpi-card {
-            background: #fff;
-            border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-light);
-        }
-        .kpi-label {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-        .kpi-value {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 8px 0 4px;
-            letter-spacing: -0.02em;
-        }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .kpi-card { background: #fff; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border-light); }
+        .kpi-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        .kpi-value { font-size: 32px; font-weight: 700; margin: 8px 0 4px; letter-spacing: -0.02em; }
         .kpi-target { font-size: 12px; color: var(--text-muted); }
-        .kpi-bar {
-            height: 4px;
-            background: var(--border-subtle);
-            border-radius: 2px;
-            margin-top: 12px;
-            overflow: hidden;
-        }
+        .kpi-bar { height: 4px; background: var(--border-subtle); border-radius: 2px; margin-top: 12px; overflow: hidden; }
         .kpi-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
         .kpi-danger .kpi-value { color: var(--hfk-red); }
         .kpi-danger .kpi-bar-fill { background: var(--hfk-red); }
@@ -220,117 +105,29 @@
         .kpi-ok .kpi-bar-fill { background: var(--success); }
 
         /* ── Stats Row ── */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-        .stat-card {
-            background: var(--bg-warm);
-            border-radius: var(--radius);
-            padding: 20px 16px;
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--hfk-red);
-            letter-spacing: -0.02em;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 4px;
-            font-weight: 500;
-        }
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 32px; }
+        .stat-card { background: var(--bg-warm); border-radius: var(--radius); padding: 20px 16px; text-align: center; }
+        .stat-number { font-size: 24px; font-weight: 700; color: var(--hfk-red); letter-spacing: -0.02em; }
+        .stat-label { font-size: 12px; color: var(--text-light); margin-top: 4px; font-weight: 500; }
 
         /* ── Track Groups ── */
         .track-group { margin-bottom: 32px; }
-        .track-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .track-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: var(--hfk-red);
-            color: #fff;
-            border-radius: 50%;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .track-badge.type-b { background: var(--hfk-burgundy); }
-        .track-badge.type-c { background: var(--hfk-sand); color: var(--hfk-charcoal); }
-        .track-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .track-desc {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .track-count {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-left: auto;
-        }
+        .track-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .track-badge { display: inline-flex; align-items: center; justify-content: center; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.02em; color: #fff; }
+        .track-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+        .track-hook { font-size: 13px; color: var(--text-muted); font-style: italic; }
+        .track-desc { font-size: 13px; color: var(--text-muted); }
 
-        /* ── Team Cards (NO border-left) ── */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 12px;
-        }
-        .team-card {
-            background: #fff;
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-light);
-            transition: all 0.15s;
-        }
+        /* ── Team Cards ── */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .team-card { background: #fff; border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); border: 1px solid var(--border-light); transition: all 0.15s; }
         .team-card:hover { box-shadow: var(--shadow-lg); }
-        .team-card.inactive {
-            background: var(--bg-accent);
-            opacity: 0.6;
-        }
-        .team-name-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        .team-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .team-members {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--hfk-red);
-        }
-        .team-meta {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
-        }
-        .badge {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
+        .team-card.inactive { background: var(--bg-accent); opacity: 0.6; }
+        .team-name-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .team-name { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+        .team-members { font-size: 13px; font-weight: 600; color: var(--hfk-red); }
+        .team-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
         .badge-soldout { background: var(--hfk-red); color: #fff; }
         .badge-sale { background: var(--success-bg); color: var(--success); }
         .badge-schedule { background: var(--bg-accent); color: var(--text-light); }
@@ -339,300 +136,84 @@
         .badge-draft { background: var(--border-subtle); color: var(--text-muted); }
         .badge-unassigned { background: var(--danger-bg); color: var(--danger); }
         .badge-partner { background: var(--bg-warm); color: var(--hfk-burgundy); }
-
-        .session-progress {
-            display: flex;
-            gap: 4px;
-            margin-top: 10px;
-        }
-        .session-dot {
-            width: 100%;
-            height: 5px;
-            border-radius: 3px;
-            background: var(--border-subtle);
-        }
+        .session-progress { display: flex; gap: 4px; margin-top: 10px; }
+        .session-dot { width: 100%; height: 5px; border-radius: 3px; background: var(--border-subtle); }
         .session-dot.done { background: var(--hfk-red); }
-        .session-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
+        .session-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
         /* ── Alerts ── */
-        .alert {
-            background: var(--warning-bg);
-            border-radius: var(--radius-sm);
-            padding: 14px 18px;
-            font-size: 14px;
-            line-height: 1.75;
-            color: var(--text);
-            margin-bottom: 12px;
-        }
+        .alert { background: var(--warning-bg); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 12px; }
         .alert strong { color: var(--warning); font-weight: 600; }
 
         /* ── Checklist ── */
         .checklist-section { margin-bottom: 32px; }
-        .checklist-category-header {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--hfk-red);
-            letter-spacing: 0.05em;
-            margin: 20px 0 8px;
-        }
-        .checklist-progress-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .progress-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--border-subtle);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--hfk-red);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-        .progress-text {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-        .checklist-card {
-            background: #fff;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-light);
-            overflow: hidden;
-        }
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border-subtle);
-            gap: 12px;
-            transition: background 0.1s;
-            cursor: pointer;
-            line-height: 1.6;
-        }
+        .checklist-category-header { font-size: 14px; font-weight: 600; color: var(--hfk-red); letter-spacing: 0.05em; margin: 20px 0 8px; }
+        .checklist-progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .progress-bar { flex: 1; height: 6px; background: var(--border-subtle); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--hfk-red); border-radius: 3px; transition: width 0.3s ease; }
+        .progress-text { font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+        .checklist-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-light); overflow: hidden; }
+        .checklist-item { display: flex; align-items: flex-start; padding: 14px 18px; border-bottom: 1px solid var(--border-subtle); gap: 12px; transition: background 0.1s; cursor: pointer; line-height: 1.6; }
         .checklist-item:last-child { border-bottom: none; }
         .checklist-item:hover { background: var(--bg-accent); }
         .checklist-item.checked { opacity: 0.45; }
         .checklist-item.checked .checklist-text { text-decoration: line-through; }
-        .checklist-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--hfk-sand);
-            border-radius: var(--radius-xs);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s;
-            cursor: pointer;
-            margin-top: 1px;
-        }
-        .checklist-checkbox.checked {
-            background: var(--hfk-red);
-            border-color: var(--hfk-red);
-        }
-        .checklist-checkbox.checked::after {
-            content: '';
-            width: 6px;
-            height: 10px;
-            border: solid #fff;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg) translate(-1px, -1px);
-        }
+        .checklist-checkbox { width: 20px; height: 20px; border: 2px solid var(--hfk-sand); border-radius: var(--radius-xs); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; cursor: pointer; margin-top: 1px; }
+        .checklist-checkbox.checked { background: var(--hfk-red); border-color: var(--hfk-red); }
+        .checklist-checkbox.checked::after { content: ''; width: 6px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
         .checklist-text { font-size: 14px; flex: 1; color: var(--text); }
-        .checklist-detail {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 2px;
-            line-height: 1.5;
-        }
-        .checklist-due {
-            font-size: 12px;
-            color: var(--hfk-coral);
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .checklist-skill {
-            font-size: 11px;
-            color: var(--hfk-burgundy);
-            background: var(--bg-warm);
-            padding: 2px 8px;
-            border-radius: 4px;
-            white-space: nowrap;
-            font-weight: 500;
-        }
-        .checklist-ref {
-            font-size: 11px;
-            color: var(--text-muted);
-            background: var(--border-subtle);
-            padding: 2px 8px;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
+        .checklist-detail { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+        .checklist-due { font-size: 12px; color: var(--hfk-coral); font-weight: 600; white-space: nowrap; }
+        .checklist-skill { font-size: 11px; color: var(--hfk-burgundy); background: var(--bg-warm); padding: 2px 8px; border-radius: 4px; white-space: nowrap; font-weight: 500; }
+        .checklist-ref { font-size: 11px; color: var(--text-muted); background: var(--border-subtle); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
 
         /* ── Ops Grid ── */
-        .ops-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-        .ops-card {
-            background: #fff;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-light);
-            overflow: hidden;
-        }
-        .ops-card-header {
-            padding: 14px 18px;
-            background: var(--bg-warm);
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--text-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .ops-card-header .mini-progress {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        .ops-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .ops-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-light); overflow: hidden; }
+        .ops-card-header { padding: 14px 18px; background: var(--bg-warm); font-weight: 700; font-size: 14px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; }
+        .ops-card-header .mini-progress { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
-        /* ── Timeline ── */
-        .timeline-container {
-            background: #fff;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-light);
-            overflow: hidden;
-        }
-        .timeline-month {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-        }
-        .timeline-month:last-child { border-bottom: none; }
-        .timeline-month-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .timeline-current-badge {
-            background: var(--hfk-red);
-            color: #fff;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        .timeline-items { display: flex; flex-direction: column; gap: 8px; }
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            border-radius: var(--radius-xs);
-            background: var(--bg-accent);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .timeline-date {
-            font-weight: 600;
-            color: var(--hfk-red);
-            min-width: 65px;
-            font-size: 13px;
-        }
-        .timeline-text { flex: 1; color: var(--text); }
-        .timeline-tag {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-        .tag-planning { background: var(--hfk-cream); color: var(--hfk-burgundy); }
-        .tag-content { background: #f3e8fa; color: #6b21a8; }
-        .tag-ops { background: var(--success-bg); color: var(--success); }
-        .tag-promo { background: var(--warning-bg); color: var(--warning); }
-        .tag-insight { background: var(--danger-bg); color: var(--hfk-red); }
+        /* ── Gantt Timeline ── */
+        .gantt-container { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-light); overflow-x: auto; }
+        .gantt-header-row { display: flex; position: sticky; top: 0; background: var(--bg-warm); z-index: 2; border-bottom: 2px solid var(--border-dark); min-width: fit-content; }
+        .gantt-header-cell { min-width: 110px; padding: 12px 8px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-dark); border-right: 1px solid var(--border-light); flex-shrink: 0; }
+        .gantt-header-cell.current { background: var(--hfk-red); color: #fff; }
+        .gantt-header-cell .week-label { font-size: 10px; font-weight: 500; color: var(--text-muted); margin-top: 2px; }
+        .gantt-header-cell.current .week-label { color: rgba(255,255,255,0.7); }
+        .gantt-row { display: flex; min-width: fit-content; border-bottom: 1px solid var(--border-subtle); }
+        .gantt-row:last-child { border-bottom: none; }
+        .gantt-row-label { min-width: 120px; padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--text-dark); background: var(--bg-accent); border-right: 2px solid var(--border-dark); position: sticky; left: 0; z-index: 1; display: flex; align-items: center; flex-shrink: 0; }
+        .gantt-cell { min-width: 110px; padding: 6px 4px; border-right: 1px solid var(--border-subtle); flex-shrink: 0; display: flex; flex-direction: column; gap: 3px; }
+        .gantt-cell.current { background: rgba(151,1,1,0.04); }
+        .gantt-pill { font-size: 10px; padding: 3px 6px; border-radius: 4px; font-weight: 600; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
+        .gantt-pill:hover { white-space: normal; z-index: 5; position: relative; }
+        .pill-ops { background: var(--success-bg); color: var(--success); }
+        .pill-planning { background: var(--hfk-cream); color: var(--hfk-burgundy); }
+        .pill-content { background: #f3e8fa; color: #6b21a8; }
+        .pill-promo { background: var(--warning-bg); color: var(--warning); }
+        .pill-insight { background: var(--danger-bg); color: var(--hfk-red); }
+        .pill-session { background: var(--bg-accent); color: var(--text-light); }
+        .pill-highlight { background: var(--hfk-red); color: #fff; }
 
         /* ── Sync bar ── */
-        .sync-bar {
-            background: #fff;
-            border-radius: var(--radius-sm);
-            padding: 10px 18px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-light);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 13px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
+        .sync-bar { background: #fff; border-radius: var(--radius-sm); padding: 10px 18px; box-shadow: var(--shadow); border: 1px solid var(--border-light); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; flex-wrap: wrap; gap: 8px; }
         .sync-status { display: flex; align-items: center; gap: 8px; }
-        .sync-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-        }
+        .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
         .sync-dot.pending { background: var(--warning); }
 
         /* ── Modal ── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(45,37,35,0.5);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(45,37,35,0.5); z-index: 100; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal {
-            background: #fff;
-            border-radius: var(--radius);
-            padding: 28px;
-            max-width: 480px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(45,37,35,0.2);
-        }
-        .modal h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 16px;
-        }
-        .modal p {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 16px;
-            line-height: 1.75;
-        }
-        .modal code {
-            background: var(--bg-accent);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 13px;
-        }
+        .modal { background: #fff; border-radius: var(--radius); padding: 28px; max-width: 480px; width: 90%; box-shadow: 0 20px 60px rgba(45,37,35,0.2); }
+        .modal h3 { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+        .modal p { font-size: 14px; color: var(--text-light); margin-bottom: 16px; line-height: 1.75; }
+        .modal code { background: var(--bg-accent); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
         .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+        .file-input { display: none; }
+
+        /* ── Insight inline ── */
+        .insight-inline { background: var(--danger-bg); border-radius: var(--radius-sm); padding: 12px 16px; margin-top: 12px; font-size: 13px; line-height: 1.7; color: var(--text); }
+        .insight-inline strong { color: var(--hfk-red); font-weight: 600; }
 
         /* ── Responsive ── */
         @media (max-width: 768px) {
@@ -642,31 +223,10 @@
             .team-grid { grid-template-columns: 1fr; }
             .ops-grid { grid-template-columns: 1fr; }
         }
-        .file-input { display: none; }
-
-        /* ── Insight Doc Card ── */
-        .doc-card {
-            background: var(--bg-warm);
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            margin-bottom: 12px;
-        }
-        .doc-card-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--hfk-burgundy);
-            margin-bottom: 6px;
-        }
-        .doc-card-body {
-            font-size: 13px;
-            color: var(--text-light);
-            line-height: 1.7;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="header-top">
                 <div>
@@ -676,31 +236,21 @@
                 <div class="header-actions">
                     <button class="btn btn-sm" onclick="resetWeeklyChecklist()">주간 초기화</button>
                     <button class="btn btn-sm" onclick="exportState()">내보내기</button>
-                    <label class="btn btn-sm">
-                        불러오기
-                        <input type="file" class="file-input" accept=".json" onchange="importState(event)">
-                    </label>
+                    <label class="btn btn-sm">불러오기<input type="file" class="file-input" accept=".json" onchange="importState(event)"></label>
                     <button class="btn btn-primary btn-sm" onclick="showSyncInfo()">동기화 안내</button>
                 </div>
             </div>
         </div>
 
-        <!-- Sync Bar -->
         <div class="sync-bar">
-            <div class="sync-status">
-                <div class="sync-dot" id="syncDot"></div>
-                <span id="syncText">localStorage에 저장됨</span>
-            </div>
-            <span style="color: var(--text-muted);" id="lastSyncTime"></span>
+            <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">localStorage에 저장됨</span></div>
+            <span style="color:var(--text-muted)" id="lastSyncTime"></span>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" data-tab="overview">개요</button>
-            <button class="tab" data-tab="current">현 시즌 운영</button>
-            <button class="tab" data-tab="next">다음 시즌 기획</button>
-            <button class="tab" data-tab="checklist">운영 체크리스트</button>
-            <button class="tab" data-tab="insights">인사이트 팔로업</button>
+            <button class="tab" data-tab="current">현시즌 운영</button>
+            <button class="tab" data-tab="next">다음시즌 기획</button>
             <button class="tab" data-tab="timeline">타임라인</button>
         </div>
 
@@ -735,44 +285,17 @@
         <div class="tab-content" id="tab-current">
             <div class="section-header">
                 <span class="section-number">01</span>
-                <h2 class="section-title">26봄 운영 팀</h2>
-                <p class="section-sub">실제 운영 중인 12팀 (모집결과 기준)</p>
+                <h2 class="section-title">26봄 성장 트랙별 팀 운영</h2>
+                <p class="section-sub">코카콜라 5방향 성장 프레임워크 기반 13팀</p>
                 <div class="section-divider"></div>
             </div>
             <div id="currentTeamsByTrack"></div>
 
             <div class="section-header" style="margin-top:40px">
                 <span class="section-number">02</span>
-                <h2 class="section-title">미진행 팀</h2>
-                <p class="section-sub">모집 미달로 운영되지 않는 팀 (멤버 이동 완료)</p>
+                <h2 class="section-title">운영 체크리스트</h2>
                 <div class="section-divider"></div>
             </div>
-            <div class="team-grid" id="inactiveTeamGrid"></div>
-        </div>
-
-        <!-- TAB: Next Season Planning -->
-        <div class="tab-content" id="tab-next">
-            <div id="nextSeasonAlerts"></div>
-
-            <div class="section-header">
-                <span class="section-number">01</span>
-                <h2 class="section-title">26여름 성장 트랙별 팀 구성</h2>
-                <p class="section-sub">빈 트랙을 채워가며 기획하세요. 팀 카드를 클릭하면 Obsidian에서 열립니다.</p>
-                <div class="section-divider"></div>
-            </div>
-            <div id="nextWeekdayGrid"></div>
-            <div id="nextWeekendGrid"></div>
-
-            <div class="section-header" style="margin-top:40px">
-                <span class="section-number">03</span>
-                <h2 class="section-title">기획 진행률</h2>
-                <div class="section-divider"></div>
-            </div>
-            <div id="planningProgressContainer"></div>
-        </div>
-
-        <!-- TAB: Ops Checklist -->
-        <div class="tab-content" id="tab-checklist">
             <div class="ops-grid">
                 <div class="ops-card">
                     <div class="ops-card-header">매일 루틴 <span class="mini-progress" id="dailyProgress"></span></div>
@@ -787,38 +310,38 @@
                     <div id="monthlyChecklist"></div>
                 </div>
             </div>
+        </div>
+
+        <!-- TAB: Next Season Planning (with integrated insights) -->
+        <div class="tab-content" id="tab-next">
+            <div id="nextSeasonAlerts"></div>
 
             <div class="section-header">
-                <span class="section-number">04</span>
-                <h2 class="section-title">시즌 기획 체크리스트</h2>
-                <p class="section-sub">26여름 런칭까지</p>
+                <span class="section-number">01</span>
+                <h2 class="section-title">26여름 성장 트랙별 팀 구성</h2>
+                <p class="section-sub">빈 트랙을 채워가며 기획하세요. 팀 카드를 클릭하면 Obsidian에서 열립니다.</p>
+                <div class="section-divider"></div>
+            </div>
+            <div id="nextTeamGrid"></div>
+
+            <div class="section-header" style="margin-top:40px">
+                <span class="section-number">02</span>
+                <h2 class="section-title">기획 체크리스트</h2>
+                <p class="section-sub">26여름 런칭까지: 기획 업무 + 연관 인사이트를 함께 확인</p>
                 <div class="section-divider"></div>
             </div>
             <div id="planningChecklistContainer"></div>
         </div>
 
-        <!-- TAB: Insights Follow-up -->
-        <div class="tab-content" id="tab-insights">
+        <!-- TAB: Timeline (Gantt) -->
+        <div class="tab-content" id="tab-timeline">
             <div class="section-header">
                 <span class="section-number">01</span>
-                <h2 class="section-title">전략 인사이트 팔로업</h2>
-                <p class="section-sub">분석에서 도출된 핵심 과제 추적</p>
+                <h2 class="section-title">26여름 12주 운영 캘린더</h2>
+                <p class="section-sub">준비 4주 + 운영 12주. 가로 스크롤로 전체 일정을 확인하세요.</p>
                 <div class="section-divider"></div>
             </div>
-            <div id="insightsChecklist"></div>
-
-            <div class="section-header" style="margin-top:40px">
-                <span class="section-number">02</span>
-                <h2 class="section-title">참고 문서</h2>
-                <p class="section-sub">인사이트 원문 및 분석 리포트</p>
-                <div class="section-divider"></div>
-            </div>
-            <div id="refDocs"></div>
-        </div>
-
-        <!-- TAB: Timeline -->
-        <div class="tab-content" id="tab-timeline">
-            <div class="timeline-container" id="timelineContainer"></div>
+            <div class="gantt-container" id="ganttContainer"></div>
         </div>
     </div>
 
@@ -826,24 +349,10 @@
     <div class="modal-overlay" id="syncModal">
         <div class="modal">
             <h3>동기화 안내</h3>
-            <p>
-                체크리스트 상태는 <strong>localStorage</strong>에 자동 저장됩니다.<br><br>
-                Apple Reminders / Slack to-do-log와 동기화:
+            <p>체크리스트 상태는 <strong>localStorage</strong>에 자동 저장됩니다.<br><br>
+                <strong>Claude Code 스킬</strong><br><code>/update-dashboard</code> 실행으로 자동 처리
             </p>
-            <p>
-                <strong>1. 전체 동기화</strong><br>
-                <code>python3 scripts/sync_dashboard.py --sync-all</code><br><br>
-                <strong>2. 개별 동기화</strong><br>
-                <code>--refresh</code> product notes에서 팀 데이터 갱신<br>
-                <code>--pull-reminders</code> Apple Reminders → 대시보드<br>
-                <code>--push-reminders</code> 대시보드 → Apple Reminders<br>
-                <code>--push-slack</code> Slack to-do-log에 포스팅<br><br>
-                <strong>3. Claude Code 스킬</strong><br>
-                <code>/update-dashboard</code> 실행으로 자동 처리
-            </p>
-            <div class="modal-actions">
-                <button class="btn btn-primary" onclick="closeSyncModal()">확인</button>
-            </div>
+            <div class="modal-actions"><button class="btn btn-primary" onclick="closeSyncModal()">확인</button></div>
         </div>
     </div>
 
@@ -907,49 +416,71 @@
                 {text:"<strong>A그룹 화요일 신설:</strong> 마케팅디깅(소정동) + 중간리더십(오아시스) — 6/9 시작"}
             ]
         },
-        kpi: {
-            newInflowRate: {current:33, target:40, unit:"%", label:"신규 유입률"},
-            conversionRate: {current:43, target:55, unit:"%", label:"1→2 전환율"},
-            yoyGrowth: {current:2.2, target:15, unit:"%", label:"전년 대비 성장률"},
-            contentChannels: {current:0, target:2, unit:"개", label:"콘텐츠 채널"}
-        },
+        // Coca-Cola 5방향 성장 트랙
         growthTracks: [
-            {id:"biz", num:"01", name:"경영 · 전략", hook:"조직의 방향을 잡고, 전략적 판단력을 키우고 싶다면"},
-            {id:"lead", num:"02", name:"리더십 · 소통", hook:"사람을 이끌고, 조직 안에서 영향력을 발휘하고 싶다면"},
-            {id:"mkt", num:"03", name:"마케팅 · 브랜딩", hook:"브랜드를 설계하고, 시장에서 차별화하고 싶다면"},
-            {id:"career", num:"04", name:"사업 · 커리어", hook:"새로운 도전을 설계하고, 나만의 길을 만들고 싶다면"},
-            {id:"ai", num:"05", name:"AI · 데이터", hook:"AI와 데이터를 실무에 바로 활용하고 싶다면"},
-            {id:"culture", num:"06", name:"교양 · 인사이트", hook:"다양한 관점으로 세상을 읽고, 시야를 넓히고 싶다면"}
+            {id:"vertical", name:"Vertical", sub:"책임 확장", hook:"더 큰 책임을 맡을 준비가 되어 있는가?", color:"var(--track-vertical)"},
+            {id:"horizontal", name:"Horizontal", sub:"새로운 시각", hook:"내 옆에는 어떤 세계가 있는가?", color:"var(--track-horizontal)"},
+            {id:"enrichment", name:"Enrichment", sub:"현재 역할 심화", hook:"지금 하는 일을 더 잘하려면?", color:"var(--track-enrichment)"},
+            {id:"realignment", name:"Realignment", sub:"커리어 전환", hook:"완전히 다른 방향은 어떤 모습인가?", color:"var(--track-realignment)"},
+            {id:"newhorizons", name:"New Horizons", sub:"외부 탐색", hook:"밖에서 어떤 성장 기회를 찾을 수 있는가?", color:"var(--track-newhorizons)"}
         ],
         teamTrackMap: {
-            "경영브릿지":"biz","경영에센셜":"biz","경영의전설":"biz","전략가의일":"biz","팀오호츠크":"biz","넘버앤센스":"biz",
-            "리더의서재":"lead","리더십첫줄":"lead","소통의기술":"lead","설득의구조":"lead","중간리더십":"lead",
-            "감각적기획":"mkt","CMO씽킹":"mkt","마케팅디깅":"mkt","올댓디지털":"mkt","스몰브랜드":"mkt","팔리는경험":"mkt",
-            "강점차별화":"career","커리어기록":"career","커리어캠프":"career","저스트두잇":"career","고급화전략":"career",
-            "AI부사수":"ai","AI핸즈온":"ai",
-            "영화로운일":"culture","직장인문학":"culture","고급진영어":"culture","도쿄의기획":"culture","시니어탐구":"culture"
+            // Vertical
+            "중간리더십":"vertical","리더십첫줄":"vertical","경영브릿지":"vertical",
+            // Horizontal
+            "넘버앤센스":"horizontal","CMO씽킹":"horizontal","올댓디지털":"horizontal","도쿄의기획":"horizontal","감각적기획":"horizontal",
+            // Enrichment
+            "AI부사수":"enrichment","AI핸즈온":"enrichment","설득의구조":"enrichment","고급진영어":"enrichment","강점차별화":"enrichment","팔리는경험":"enrichment","소통의기술":"enrichment",
+            // Realignment
+            "커리어캠프":"realignment","커리어기록":"realignment","저스트두잇":"realignment",
+            // New Horizons
+            "팀오호츠크":"newhorizons","시니어탐구":"newhorizons","경영의전설":"newhorizons","영화로운일":"newhorizons","직장인문학":"newhorizons","스몰브랜드":"newhorizons",
+            // 기타 (트랙 확인 필요)
+            "전략가의일":"newhorizons","고급화전략":"newhorizons","마케팅디깅":"horizontal","리더의서재":"vertical","생각의구조":"horizontal"
         },
+        // 기획 체크리스트 + 연관 인사이트 통합
         planningChecklist: [
+            // 파트너
             {id:"plan-01", category:"파트너", text:"파트너 리텐션 확인 (계속 / 종료)", checked:false},
             {id:"plan-02", category:"파트너", text:"신규 파트너 섭외 및 미팅", checked:false},
             {id:"plan-03", category:"파트너", text:"파트너별 일정 제안 발송", checked:true},
             {id:"plan-04", category:"파트너", text:"파트너 회신 수집 및 일정 확정", checked:false},
+            // 일정
             {id:"plan-05", category:"일정", text:"슬롯 배치표 작성 (주중/주말)", checked:true},
             {id:"plan-06", category:"일정", text:"공휴일/특이사항 체크", checked:true},
             {id:"plan-07", category:"일정", text:"Google Calendar 일정 등록", checked:true},
             {id:"plan-08", category:"일정", text:"주중 슬롯 부족 해결 (팔리는경험→토B, 중간리더십→화A)", checked:true},
             {id:"plan-09", category:"일정", text:"광복절 8/15 대체일 확정", checked:false},
+            // 팀 포트폴리오
+            {id:"plan-20", category:"팀 포트폴리오", text:"멀티뷰 매트릭스 기반 팀 설계 (단일뷰 결정 금지)", checked:false, insight:"고급화전략: 전체는 누수 but 신규 57% 담당. 단일뷰로 폐지하면 신규 통로 57% 손실"},
+            {id:"plan-21", category:"팀 포트폴리오", text:"AI 3단계 체계 완성: 입문 → 중급 → 심화", checked:false, insight:"AI 2팀이 전체 29% 차지. AI 외 19팀 평균 3.7명"},
+            {id:"plan-22", category:"팀 포트폴리오", text:"3시즌 이상 팀 리뉴얼 점검 (75% 하락 추세)", checked:false, insight:"강점차별화 13→15→7→5, 리더의서재 15→15→13→7→6. 매 시즌 1-2개 신규 주제 필수"},
+            // 상품
             {id:"plan-10", category:"상품", text:"상품 노트 콘텐츠 업데이트", checked:false},
             {id:"plan-11", category:"상품", text:"상품 이미지 촬영/제작", checked:false},
             {id:"plan-12", category:"상품", text:"상품 가격 책정", checked:false},
             {id:"plan-13", category:"상품", text:"Imweb 상품 동기화 (draft → synced)", checked:false},
-            {id:"plan-14", category:"홍보", text:"사전등록 오픈 (멤버 전용)", dueDate:"05-15", checked:false},
-            {id:"plan-15", category:"홍보", text:"시즌레터로 신규 시즌 안내", checked:false},
-            {id:"plan-16", category:"홍보", text:"1→2 전환 프로그램: 팀 추천 안내", checked:false},
-            {id:"plan-17", category:"홍보", text:"Slack 공지 (신규 시즌 오픈)", checked:false},
+            {id:"plan-30", category:"상품", text:"결제 전환율 개선: 상품 페이지/CTA 점검", checked:false, insight:"5,388명 방문 → 126명 결제 (2.3%). 방문 410% 증가했으나 결제 25% 감소"},
+            // 타겟/유입
+            {id:"plan-40", category:"타겟/유입", text:"핵심 타겟 연차 재정의: 4-7년차 → 4-10년차 확장 검토", checked:false, insight:"실제 유입 중앙값 8년 vs 타겟 설정 4-7년. 27.3%만 타겟 연차에 해당"},
+            {id:"plan-41", category:"타겟/유입", text:"신규 멤버 유입 채널 전략 수립", checked:false, insight:"지인추천 56% > 인스타 26% > 검색 11%. SEO 투자 ROI 낮음"},
+            {id:"plan-42", category:"타겟/유입", text:"4-7년차 전용 팀 신설 검토 (가격/난이도 차별화)", checked:false, insight:"현재 전 연차 통합 운영 → 저연차 전용 진입점 필요"},
+            // 전환/리텐션
+            {id:"plan-50", category:"전환/리텐션", text:"1→2 전환 골든타임: 시즌 종료 직후 개인화 안내", checked:false, insight:"돌아올 사람의 63.6%는 바로 다음 시즌 복귀. 2시즌 이내 77.3%"},
+            {id:"plan-51", category:"전환/리텐션", text:"중간 체크인 DM 발송 (파트너 통해)", dueDate:"04-30", checked:false, insight:"첫등록 멤버 56.5% 이탈 방지"},
+            {id:"plan-52", category:"전환/리텐션", text:"개인화 팀 추천 DM 발송", dueDate:"05-10", checked:false, insight:"AI부사수→AI핸즈온(심화), 전략가의일→경영브릿지(균형) 등"},
+            {id:"plan-53", category:"전환/리텐션", text:"사전등록 얼리버드 오픈 (여름시즌 20% 목표)", dueDate:"05-15", checked:false},
+            // 홍보/콘텐츠
+            {id:"plan-14", category:"홍보/콘텐츠", text:"사전등록 오픈 (멤버 전용)", dueDate:"05-15", checked:false},
+            {id:"plan-15", category:"홍보/콘텐츠", text:"시즌레터로 신규 시즌 안내", checked:false},
+            {id:"plan-16", category:"홍보/콘텐츠", text:"1→2 전환 프로그램: 팀 추천 안내", checked:false},
+            {id:"plan-17", category:"홍보/콘텐츠", text:"Slack 공지 (신규 시즌 오픈)", checked:false},
+            {id:"plan-60", category:"홍보/콘텐츠", text:"뉴스레터 발행 & 300명 구독 목표 (6월 말)", dueDate:"04-10", checked:false, insight:"첫 3호: TOP5 질문(4/10), 오래 남은 멤버 공통점(5/8), 설득 실패 순간(6/10)"},
+            {id:"plan-61", category:"홍보/콘텐츠", text:"인터뷰 시리즈 시작 (격주)", dueDate:"05-01", checked:false, insight:"섭외 우선: 첫등록+10회이상 충성+멤버→파트너 성장사례"},
+            // 슬랙
             {id:"plan-18", category:"슬랙", text:"신규 시즌 Slack 채널 생성 & 멤버 초대", checked:false},
-            {id:"plan-19", category:"콘텐츠", text:"뉴스레터 1호 발행", dueDate:"04-10", checked:false},
-            {id:"plan-20", category:"콘텐츠", text:"인터뷰 시리즈 1편", dueDate:"05-01", checked:false}
+            {id:"plan-70", category:"슬랙", text:"hbrforum idea-log 주간 리뷰 & 실행 가능 아이디어 추적", checked:false, insight:"매주 수요일 /run-wednesday에서 리뷰"},
+            {id:"plan-71", category:"슬랙", text:"meeting-log 액션 아이템 팔로업", checked:false, insight:"미팅에서 결정된 사항이 실제로 실행되었는지 주간 점검"}
         ],
         opsChecklist: {
             daily: [
@@ -977,170 +508,115 @@
                 {id:"ops-m06", text:"출석 현황 점검", skill:"/manage-attendance", checked:false}
             ]
         },
-        insightsChecklist: [
-            {id:"ins-01", category:"타겟/페르소나", text:"핵심 타겟 연차 재정의: 4-7년차 → 4-10년차 확장 검토", detail:"실제 유입 중앙값 8년 vs 타겟 설정 4-7년. 27.3%만 타겟 연차에 해당", ref:"26봄_멤버_인사이트.md", checked:false},
-            {id:"ins-02", category:"타겟/페르소나", text:"4-7년차 전용 팀 신설 검토 (가격/난이도 차별화)", detail:"현재 전 연차 통합 운영 → 저연차 전용 진입점 필요", ref:"Executive_Summary_26봄.md", checked:false},
-            {id:"ins-03", category:"타겟/페르소나", text:"신규 멤버 유입 채널 전략: 지인추천 56% > 인스타 26% > 검색 11%", detail:"SEO 투자 ROI 낮음. 지인추천 프로그램 강화가 우선", ref:"26봄_멤버_인사이트.md", checked:false},
-            {id:"ins-04", category:"팀 포트폴리오", text:"멀티뷰 매트릭스 기반 팀 설계 (단일뷰 결정 금지)", detail:"고급화전략: 전체는 누수 but 신규 57% 담당. 단일뷰로 폐지하면 신규 통로 57% 손실", ref:"AAR_봄시즌_모집분석.md", checked:false},
-            {id:"ins-05", category:"팀 포트폴리오", text:"AI 3단계 체계 완성: 입문 → 중급 → 심화", detail:"AI 2팀이 전체 29% 차지. AI 외 19팀 평균 3.7명 → 운영 불가 수준", ref:"Executive_Summary_26봄.md", checked:false},
-            {id:"ins-06", category:"팀 포트폴리오", text:"3시즌 이상 팀 리뉴얼 점검 (75% 하락 추세)", detail:"강점차별화 13→15→7→5, 리더의서재 15→15→13→7→6. 매 시즌 1-2개 신규 주제 필수", ref:"시즌별_상품성과_비교분석.md", checked:false},
-            {id:"ins-07", category:"전환/리텐션", text:"1→2 전환 골든타임: 시즌 종료 직후 개인화 안내", detail:"돌아올 사람의 63.6%는 바로 다음 시즌 복귀. 2시즌 이내 77.3%", ref:"26봄_멤버_인사이트.md", checked:false},
-            {id:"ins-08", category:"전환/리텐션", text:"중간 체크인 DM 발송 (파트너 통해)", detail:"4월 말 목표. 첫등록 멤버 56.5% 이탈 방지 핵심", dueDate:"04-30", ref:"HFK_전략실행계획_2026봄.md", checked:false},
-            {id:"ins-09", category:"전환/리텐션", text:"개인화 팀 추천 DM 발송", detail:"AI부사수→AI핸즈온(심화), 전략가의일→경영브릿지(균형) 등", dueDate:"05-10", ref:"HFK_전략실행계획_2026봄.md", checked:false},
-            {id:"ins-10", category:"전환/리텐션", text:"사전등록 얼리버드 오픈 (여름시즌 20% 목표)", dueDate:"05-15", ref:"HFK_전략실행계획_2026봄.md", checked:false},
-            {id:"ins-11", category:"콘텐츠 전략", text:"뉴스레터 발행 & 300명 구독 목표 (6월 말)", detail:"첫 3호: TOP5 질문(4/10), 오래 남은 멤버 공통점(5/8), 설득 실패 순간(6/10). 오픈율 35%+", dueDate:"04-10", ref:"HFK_전략실행계획_2026봄.md", checked:false},
-            {id:"ins-12", category:"콘텐츠 전략", text:"인터뷰 시리즈 시작 (격주, 편당 200 UV+)", detail:"섭외 우선: 첫등록+10회이상 충성+멤버→파트너 성장사례", dueDate:"05-01", ref:"HFK_전략실행계획_2026봄.md", checked:false},
-            {id:"ins-13", category:"구조적 과제", text:"수요-공급 불일치 해소: 25봄 25팀 → 26봄 12팀 실운영", detail:"팀당 12.6명→4.8명 급락. 팀 수 줄이고 팀당 밀도 높이기", ref:"Executive_Summary_26봄.md", checked:false},
-            {id:"ins-14", category:"구조적 과제", text:"결제 전환율 개선: 5,388명 방문 → 126명 결제 (2.3%)", detail:"방문 410% 증가했으나 결제 25% 감소. 상품 페이지/CTA 개선 필요", ref:"AAR_봄시즌_모집분석.md", checked:false},
-            {id:"ins-15", category:"사전 서베이", text:"시즌별 멤버 사전 서베이 결과 반영 확인", detail:"등록 동기, 기대 성장 포인트, 팀 선택 이유 분석 → 팀 운영 방향에 반영", ref:"별도 서베이 문서", checked:false},
-            {id:"ins-16", category:"Slack idea-log", text:"hbrforum idea-log 주간 리뷰 & 실행 가능 아이디어 추적", detail:"매주 수요일 /run-wednesday에서 리뷰. 실행 결정된 아이디어의 진행 상태 추적", ref:"Slack hbrforum #1-idea-log", checked:false},
-            {id:"ins-17", category:"Slack idea-log", text:"meeting-log 액션 아이템 팔로업", detail:"미팅에서 결정된 사항이 실제로 실행되었는지 주간 점검", ref:"Slack hbrforum #general", checked:false}
-        ],
-        trackingDocs: [
-            {title:"01. 타겟 / 페르소나", path:"note/트래킹/01_타겟_페르소나.md", desc:"핵심 타겟 연차 재정의, 저연차 전용팀, 유입 채널별 전략", category:"타겟/페르소나"},
-            {title:"02. 팀 포트폴리오", path:"note/트래킹/02_팀_포트폴리오.md", desc:"멀티뷰 매트릭스, AI 3단계, 3시즌 리뉴얼, TYPE A/B/C 설계", category:"팀 포트폴리오"},
-            {title:"03. 전환 / 리텐션", path:"note/트래킹/03_전환_리텐션.md", desc:"1→2 전환 프로그램 3단계, 골든타임, 사전등록 추적", category:"전환/리텐션"},
-            {title:"04. 콘텐츠 전략", path:"note/트래킹/04_콘텐츠_전략.md", desc:"뉴스레터 발행 추적, 인터뷰 시리즈, 구독자 성장", category:"콘텐츠 전략"},
-            {title:"05. 구조적 과제", path:"note/트래킹/05_구조적_과제.md", desc:"수요-공급, 결제 전환율, 재등록 편중, AI 의존도", category:"구조적 과제"},
-            {title:"06. Slack 아이디어/미팅 로그", path:"note/트래킹/06_슬랙_아이디어_로그.md", desc:"idea-log 실행 추적, meeting-log 액션 아이템 팔로업", category:"Slack idea-log"}
+        kpi: {
+            teams: {label:"운영 팀", current:13, target:15, unit:"팀"},
+            members: {label:"총 멤버", current:125, target:150, unit:"명"},
+            newMembers: {label:"신규 멤버", current:34, target:50, unit:"명"},
+            reRate: {label:"재등록율", current:72, target:65, unit:"%"}
+        },
+        issues: [
+            {text:"<strong>수요-공급:</strong> 25봄 25팀 → 26봄 13팀. 팀 수 줄이고 팀당 밀도 높이기"},
+            {text:"<strong>AI 편중:</strong> AI 2팀이 전체 29% 차지. AI 외 팀 평균 인원 관리 필요"}
         ],
         seasonCalendar: {
             name:"26여름", start:"2026-06-11", end:"2026-08-28",
             weeks: [
                 {id:"W-4", date:"5/11~17", label:"시즌전", items:[
-                    {text:"상품 노트 최종 업데이트", prep:"5/4", do:"5/14", sync:true},
-                    {text:"Imweb 상품 동기화", prep:"5/14", do:"5/15", sync:true},
-                    {text:"사전등록 오픈 (멤버 전용)", prep:"5/8", do:"5/15", sync:true, highlight:true}
+                    {text:"상품 노트 최종 업데이트", tag:"planning"},
+                    {text:"Imweb 상품 동기화", tag:"planning"},
+                    {text:"사전등록 오픈 (멤버 전용)", tag:"promo", highlight:true}
                 ]},
                 {id:"W-3", date:"5/18~24", label:"시즌전", items:[
-                    {text:"시즌레터: 여름시즌 안내", prep:"5/14", do:"5/18", sync:true},
-                    {text:"Google Calendar 일정 등록", prep:"확정 후", do:"5/20", sync:true}
+                    {text:"시즌레터: 여름시즌 안내", tag:"content"},
+                    {text:"Google Calendar 일정 등록", tag:"planning"}
                 ]},
                 {id:"W-2", date:"5/25~31", label:"시즌전", items:[
-                    {text:"사전등록 마감", prep:"-", do:"5/31", sync:true, highlight:true},
-                    {text:"모집 결과 집계 & 팀 오픈 확정", prep:"5/31", do:"6/1", sync:true}
+                    {text:"사전등록 마감", tag:"promo", highlight:true},
+                    {text:"모집 결과 집계 & 팀 오픈 확정", tag:"planning"}
                 ]},
                 {id:"W-1", date:"6/1~7", label:"시즌전", items:[
-                    {text:"파트너 대상 모집 인원 안내", prep:"6/1", do:"6/2", sync:true},
-                    {text:"Slack 채널 생성 & 멤버 초대", prep:"6/3", do:"6/5", sync:true},
-                    {text:"카톡 공지방 개설", prep:"6/5", do:"6/6", sync:true},
-                    {text:"HFK사람들 시트 제작", prep:"6/3", do:"6/5", sync:true},
-                    {text:"명찰 제작", prep:"6/3", do:"6/6", sync:true},
-                    {text:"뉴멤버 OT 사전 공지", prep:"6/5", do:"6/6", sync:true}
+                    {text:"파트너 모집 인원 안내", tag:"planning"},
+                    {text:"Slack 채널 생성 & 초대", tag:"ops"},
+                    {text:"HFK사람들 시트 제작", tag:"ops"},
+                    {text:"명찰 제작", tag:"ops"},
+                    {text:"뉴멤버 OT 사전 공지", tag:"ops"}
                 ]},
                 {id:"W1", date:"6/8~14", label:"1회차", items:[
-                    {text:"시즌레터 #1 (시즌 오픈)", prep:"6/4", do:"6/8 21:00", sync:true},
-                    {text:"뉴멤버 OT 진행", prep:"6/5", do:"6/8", sync:true, highlight:true},
-                    {text:"슬랙 초대 & 자기소개 미션 안내", prep:"6/5", do:"6/8", sync:true},
-                    {text:"그룹A 1회차 (6/11~14)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #1 (시즌 오픈)", tag:"content"},
+                    {text:"뉴멤버 OT", tag:"ops", highlight:true},
+                    {text:"그룹A 1회차", tag:"session"}
                 ]},
                 {id:"W2", date:"6/15~21", label:"1회차", items:[
-                    {text:"시즌레터 #2 (베네핏)", prep:"6/11", do:"6/15 21:00", sync:true},
-                    {text:"HFK사람들 시트 파트너 공유", prep:"6/14", do:"6/15", sync:true},
-                    {text:"그룹B 1회차 (6/18~21)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #2", tag:"content"},
+                    {text:"HFK사람들 시트 파트너 공유", tag:"ops"},
+                    {text:"그룹B 1회차", tag:"session"}
                 ]},
                 {id:"W3", date:"6/22~28", label:"2회차", items:[
-                    {text:"시즌레터 #3", prep:"6/18", do:"6/22 21:00", sync:true},
-                    {text:"팀별 포스팅 계획 수립", prep:"6/20", do:"6/22", sync:true},
-                    {text:"그룹A 2회차 (6/25~28)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #3", tag:"content"},
+                    {text:"팀별 포스팅 계획", tag:"content"},
+                    {text:"그룹A 2회차", tag:"session"}
                 ]},
                 {id:"W4", date:"6/29~7/5", label:"2회차", items:[
-                    {text:"시즌레터 #4", prep:"6/25", do:"6/29 21:00", sync:true},
-                    {text:"어드벤처 공지", prep:"6/25", do:"6/30", sync:true, highlight:true},
-                    {text:"그룹B 2회차 (7/2~5)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #4", tag:"content"},
+                    {text:"어드벤처 공지", tag:"promo", highlight:true},
+                    {text:"그룹B 2회차", tag:"session"}
                 ]},
                 {id:"W5", date:"7/6~12", label:"3회차", items:[
-                    {text:"시즌레터 #5", prep:"7/2", do:"7/6 21:00", sync:true},
-                    {text:"사전 서베이 제작 & 공지 (가을용)", prep:"7/2", do:"7/7", sync:true, highlight:true},
-                    {text:"파트너 공지 (서베이 참여)", prep:"7/6", do:"7/7", sync:true},
-                    {text:"그룹A 3회차 (7/9~12)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #5", tag:"content"},
+                    {text:"사전 서베이 제작 (가을용)", tag:"insight", highlight:true},
+                    {text:"그룹A 3회차", tag:"session"}
                 ]},
                 {id:"W6", date:"7/13~19", label:"3회차", items:[
-                    {text:"시즌레터 #6 (피드백/서베이 리마인드)", prep:"7/9", do:"7/13 21:00", sync:true},
-                    {text:"가을시즌 팀 스케줄링 시작", prep:"7/10", do:"7/14", sync:true, highlight:true},
-                    {text:"파트너 섭외 (신규/리텐션)", prep:"7/10", do:"7/14~", sync:true},
-                    {text:"멤버 리포트 제공", prep:"7/12", do:"7/15", sync:true},
-                    {text:"그룹B 3회차 (7/16~19)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #6", tag:"content"},
+                    {text:"가을시즌 스케줄링 시작", tag:"planning", highlight:true},
+                    {text:"파트너 섭외 (신규/리텐션)", tag:"planning"},
+                    {text:"멤버 리포트 제공", tag:"ops"},
+                    {text:"그룹B 3회차", tag:"session"}
                 ]},
                 {id:"W7", date:"7/20~26", label:"4회차", items:[
-                    {text:"시즌레터 #7", prep:"7/16", do:"7/20 21:00", sync:true},
-                    {text:"가을시즌 팀 기획 & 상세 페이지 제작", prep:"7/14", do:"7/21~", sync:true, highlight:true},
-                    {text:"재등록 대상 홍보 시작", prep:"7/18", do:"7/21", sync:true},
-                    {text:"프로모션 체크 & 웹사이트 어레인지", prep:"7/18", do:"7/21", sync:true},
-                    {text:"그룹A 4회차 (7/23~26)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #7", tag:"content"},
+                    {text:"가을시즌 팀 기획 & 상세 페이지", tag:"planning", highlight:true},
+                    {text:"재등록 대상 홍보 시작", tag:"promo"},
+                    {text:"그룹A 4회차", tag:"session"}
                 ]},
                 {id:"W8", date:"7/27~8/2", label:"4회차", items:[
-                    {text:"시즌레터 #8 (재등록 안내)", prep:"7/23", do:"7/27 21:00", sync:true},
-                    {text:"팀 추천 & 재등록 모집 시작", prep:"7/25", do:"7/28", sync:true, highlight:true},
-                    {text:"재등록 모집 문자 세팅", prep:"7/25", do:"7/28", sync:true},
-                    {text:"그룹B 4회차 (7/30~8/2)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #8 (재등록 안내)", tag:"content"},
+                    {text:"팀 추천 & 재등록 모집 시작", tag:"promo", highlight:true},
+                    {text:"그룹B 4회차", tag:"session"}
                 ]},
                 {id:"W9", date:"8/3~9", label:"5회차", items:[
-                    {text:"시즌레터 #9 (일반 모집 오픈)", prep:"7/30", do:"8/3 21:00", sync:true},
-                    {text:"일반등록 모집 시작", prep:"8/1", do:"8/4", sync:true, highlight:true},
-                    {text:"일반등록 대상 홍보 (인스타/뉴스레터)", prep:"8/1", do:"8/4~", sync:true},
-                    {text:"그룹A 5회차 (8/6~9)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #9 (일반 모집 오픈)", tag:"content"},
+                    {text:"일반등록 모집 시작", tag:"promo", highlight:true},
+                    {text:"그룹A 5회차", tag:"session"}
                 ]},
                 {id:"W10", date:"8/10~16", label:"5회차", items:[
-                    {text:"시즌레터 #10 (모집 리마인드)", prep:"8/6", do:"8/10 21:00", sync:true},
-                    {text:"모집 중간 현황 점검 & 추가 홍보", prep:"8/10", do:"8/11", sync:true},
-                    {text:"4L 피드백 종합 (시즌 리뷰)", prep:"8/8", do:"8/11", sync:true},
-                    {text:"그룹B 5회차 (8/13~16) ← 광복절 주의", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #10", tag:"content"},
+                    {text:"모집 중간 현황 점검", tag:"planning"},
+                    {text:"4L 피드백 종합", tag:"insight"},
+                    {text:"그룹B 5회차 (광복절 주의)", tag:"session"}
                 ]},
                 {id:"W11", date:"8/17~23", label:"6회차", items:[
-                    {text:"시즌레터 #11 (마감 D-7)", prep:"8/13", do:"8/17 21:00", sync:true},
-                    {text:"미달 팀 추가 홍보 / 개별 연락", prep:"8/17", do:"8/18~", sync:true},
-                    {text:"시즌 종료 이벤트 공지", prep:"8/15", do:"8/18", sync:true},
-                    {text:"그룹A 6회차 최종 (8/20~23)", prep:"-", do:"세션", sync:false}
+                    {text:"시즌레터 #11 (마감 D-7)", tag:"content"},
+                    {text:"미달 팀 추가 홍보", tag:"promo"},
+                    {text:"시즌 종료 이벤트 공지", tag:"ops"},
+                    {text:"그룹A 6회차 최종", tag:"session"}
                 ]},
                 {id:"W12", date:"8/24~30", label:"마감", items:[
-                    {text:"모집 마감", prep:"-", do:"8/24", sync:true, highlight:true},
-                    {text:"시즌레터 #12 (시즌 마무리)", prep:"8/20", do:"8/24 21:00", sync:true},
-                    {text:"팀 오픈 여부 확정 & 안내", prep:"8/24", do:"8/25", sync:true},
-                    {text:"최종 멤버 리포트", prep:"8/22", do:"8/25", sync:true},
-                    {text:"그룹B 6회차 최종 (8/27~30)", prep:"-", do:"세션", sync:false},
-                    {text:"시즌 AAR 작성", prep:"8/28", do:"8/30", sync:true}
+                    {text:"모집 마감", tag:"promo", highlight:true},
+                    {text:"시즌레터 #12 (마무리)", tag:"content"},
+                    {text:"팀 오픈 여부 확정", tag:"planning"},
+                    {text:"최종 멤버 리포트", tag:"ops"},
+                    {text:"그룹B 6회차 최종", tag:"session"},
+                    {text:"시즌 AAR 작성", tag:"insight"}
                 ]}
             ]
-        },
-        timeline: [
-            {month:"4월", current:true, items:[
-                {date:"4/10", text:"뉴스레터 1호 발행", tag:"content"},
-                {date:"4/20", text:"중간 체크인 DM (파트너 통해)", tag:"insight"},
-                {date:"매주 수", text:"수요일 루틴 (/run-wednesday)", tag:"ops"},
-                {date:"4월 중", text:"파트너 회신 수집 & 일정 확정", tag:"planning"},
-                {date:"4월 중", text:"슬롯 부족 해결 (팔리는경험, 중간리더십)", tag:"planning"},
-                {date:"4월 중", text:"인사이트 팔로업 점검 (멀티뷰 매트릭스 적용 여부)", tag:"insight"}
-            ]},
-            {month:"5월", current:false, items:[
-                {date:"5/1", text:"인터뷰 시리즈 1편 발행", tag:"content"},
-                {date:"5/8", text:"뉴스레터 2호 발송", tag:"content"},
-                {date:"5/10", text:"개인화 팀 추천 DM 발송", tag:"insight"},
-                {date:"5/15", text:"여름시즌 사전등록 오픈 (멤버 전용)", tag:"promo"},
-                {date:"5월 중", text:"상품 노트 업데이트 & Imweb 동기화", tag:"planning"},
-                {date:"5월 말", text:"Google Calendar 일정 등록", tag:"planning"},
-                {date:"5/31", text:"사전등록 마감 (목표: 20% 사전등록)", tag:"promo"}
-            ]},
-            {month:"6월", current:false, items:[
-                {date:"6월 초", text:"Slack 채널 생성 & 멤버 초대", tag:"ops"},
-                {date:"6/10", text:"뉴스레터 3호 (설득의구조 인사이트)", tag:"content"},
-                {date:"6/11~14", text:"여름시즌 그룹A 1회차", tag:"ops"},
-                {date:"6/18~21", text:"여름시즌 그룹B 1회차", tag:"ops"},
-                {date:"6월 말", text:"26봄 전환율 측정 & 결과 분석", tag:"insight"}
-            ]},
-            {month:"7~8월", current:false, items:[
-                {date:"격주", text:"세션 2~6회차 운영", tag:"ops"},
-                {date:"8/15", text:"광복절 — 그룹B 토요일 조정 필요", tag:"planning"},
-                {date:"8월 말", text:"여름시즌 종료 & 가을시즌 기획 시작", tag:"planning"},
-                {date:"8월 말", text:"시즌 AAR: KPI 달성 여부 + 인사이트 갱신", tag:"insight"}
-            ]}
-        ]
+        }
     };
 
     // =====================================================
     // STATE MANAGEMENT
     // =====================================================
-    const STORAGE_KEY = 'hfk_season_dashboard_v2';
+    const STORAGE_KEY = 'hfk_season_dashboard_v3';
 
     function loadState() {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -1148,7 +624,6 @@
             try {
                 const parsed = JSON.parse(saved);
                 const state = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                // Merge checklist states
                 const mergeChecked = (source, target) => {
                     if (!source) return;
                     source.forEach(s => {
@@ -1157,11 +632,9 @@
                     });
                 };
                 mergeChecked(parsed.planningChecklist, state.planningChecklist);
-                mergeChecked(parsed.insightsChecklist, state.insightsChecklist);
                 ['daily','weekly','monthly'].forEach(k => {
                     mergeChecked(parsed.opsChecklist?.[k], state.opsChecklist[k]);
                 });
-                // Merge session progress
                 if (parsed.activeTeams) {
                     parsed.activeTeams.forEach(s => {
                         const t = state.currentSeason.activeTeams.find(x => x.name === s.name);
@@ -1179,7 +652,6 @@
         const toSave = {
             lastUpdated: new Date().toISOString(),
             planningChecklist: data.planningChecklist.map(i => ({id:i.id, checked:i.checked})),
-            insightsChecklist: data.insightsChecklist.map(i => ({id:i.id, checked:i.checked})),
             opsChecklist: {
                 daily: data.opsChecklist.daily.map(i => ({id:i.id, checked:i.checked})),
                 weekly: data.opsChecklist.weekly.map(i => ({id:i.id, checked:i.checked})),
@@ -1201,27 +673,27 @@
         a.click();
     }
 
-    function importState(event) {
-        const file = event.target.files[0];
+    function importState(e) {
+        const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (ev) => {
             try {
-                const imported = JSON.parse(e.target.result);
-                if (imported.currentSeason && imported.planningChecklist) {
-                    data = imported;
-                    saveState();
-                    renderAll();
+                const imported = JSON.parse(ev.target.result);
+                if (imported.planningChecklist) {
+                    imported.planningChecklist.forEach(s => {
+                        const t = data.planningChecklist.find(i => i.id === s.id);
+                        if (t) t.checked = s.checked;
+                    });
                 }
-            } catch(err) { alert('JSON 파일을 읽을 수 없습니다.'); }
+                saveState();
+                renderAll();
+            } catch(err) { alert('파일 형식 오류'); }
         };
         reader.readAsText(file);
-        event.target.value = '';
     }
 
     function resetWeeklyChecklist() {
-        if (!confirm('매일/주간 운영 체크리스트를 초기화하시겠습니까?')) return;
-        data.opsChecklist.daily.forEach(i => i.checked = false);
         data.opsChecklist.weekly.forEach(i => i.checked = false);
         saveState();
         renderAll();
@@ -1232,23 +704,30 @@
     // =====================================================
     let data = loadState();
 
+    function getTeamTrack(teamName) {
+        return data.teamTrackMap[teamName] || 'etc';
+    }
+
+    function getObsidianLink(teamName, category) {
+        const cat = category || '26봄주중';
+        return `obsidian://open?vault=Seulki.log&file=product/${cat}/${teamName}`;
+    }
+
     function renderAll() {
         renderKPI();
         renderStats();
         renderIssues();
         renderNextActions();
         renderCurrentTeams();
+        renderOpsChecklists();
         renderNextTeams();
-        renderPlanningProgress();
-        renderChecklists();
-        renderInsights();
-        renderTimeline();
+        renderPlanningChecklist();
+        renderGantt();
         updateSyncBar();
     }
 
     function renderKPI() {
-        const grid = document.getElementById('kpiGrid');
-        grid.innerHTML = Object.entries(data.kpi).map(([k,v]) => {
+        document.getElementById('kpiGrid').innerHTML = Object.entries(data.kpi).map(([k,v]) => {
             const pct = Math.min(100, (v.current/v.target)*100);
             const level = pct >= 80 ? 'ok' : pct >= 50 ? 'warning' : 'danger';
             return `<div class="kpi-card kpi-${level}">
@@ -1263,97 +742,56 @@
     function renderStats() {
         const active = data.currentSeason.activeTeams;
         const totalMembers = active.reduce((s,t) => s+t.members, 0);
-        const soldout = active.filter(t => t.prodStatus==='soldout').length;
-        const avgProgress = Math.round(active.reduce((s,t) => s+(t.sessionsDone/t.sessionsTotal)*100, 0)/active.length);
-        const nextAll = [...data.nextSeason.weekdayTeams, ...data.nextSeason.weekendTeams];
-        const planDone = data.planningChecklist.filter(i => i.checked).length;
-        const insDone = data.insightsChecklist.filter(i => i.checked).length;
-
-        document.getElementById('statsRow').innerHTML = `
-            <div class="stat-card"><div class="stat-number">${active.length}</div><div class="stat-label">운영 팀</div></div>
-            <div class="stat-card"><div class="stat-number">${totalMembers}</div><div class="stat-label">등록 멤버</div></div>
-            <div class="stat-card"><div class="stat-number">${soldout}</div><div class="stat-label">매진</div></div>
-            <div class="stat-card"><div class="stat-number">${avgProgress}%</div><div class="stat-label">시즌 진행</div></div>
-            <div class="stat-card"><div class="stat-number">${nextAll.length}</div><div class="stat-label">여름 기획</div></div>
-            <div class="stat-card"><div class="stat-number">${planDone}/${data.planningChecklist.length}</div><div class="stat-label">기획 체크</div></div>
-            <div class="stat-card"><div class="stat-number">${insDone}/${data.insightsChecklist.length}</div><div class="stat-label">인사이트</div></div>
-        `;
+        const totalNew = active.reduce((s,t) => s+(t.newMembers||0), 0);
+        const totalRe = active.reduce((s,t) => s+(t.reMembers||0), 0);
+        const avgSession = active.length > 0 ? (active.reduce((s,t) => s+t.sessionsDone, 0)/active.length).toFixed(1) : 0;
+        document.getElementById('statsRow').innerHTML = [
+            {n: active.length, l:'운영 팀'},
+            {n: totalMembers, l:'총 멤버'},
+            {n: totalNew, l:'신규 멤버'},
+            {n: totalRe, l:'재등록 멤버'},
+            {n: avgSession, l:'평균 진행 회차'}
+        ].map(s => `<div class="stat-card"><div class="stat-number">${s.n}</div><div class="stat-label">${s.l}</div></div>`).join('');
     }
 
     function renderIssues() {
-        const c = document.getElementById('issuesContainer');
-        const issues = data.nextSeason.issues || [];
-        c.innerHTML = issues.length ? issues.map(i => `<div class="alert">${i.text}</div>`).join('') : '';
+        document.getElementById('issuesContainer').innerHTML =
+            (data.issues||[]).map(i => `<div class="alert">${i.text}</div>`).join('');
     }
 
     function renderNextActions() {
-        const planning = data.planningChecklist.filter(i => !i.checked).slice(0,3);
-        const insights = data.insightsChecklist.filter(i => !i.checked && i.dueDate).slice(0,3);
-        const ops = data.opsChecklist.weekly.filter(i => !i.checked).slice(0,2);
-        const items = [
-            ...planning.map(i => ({...i, type:'planning'})),
-            ...insights.map(i => ({...i, type:'insights'})),
-            ...ops.map(i => ({...i, type:'ops-weekly'}))
-        ];
-        document.getElementById('nextActions').innerHTML = items.map(i => `
-            <div class="checklist-item ${i.checked?'checked':''}" onclick="toggleItem('${i.type}','${i.id}')">
-                <div class="checklist-checkbox ${i.checked?'checked':''}"></div>
-                <div style="flex:1">
-                    <span class="checklist-text">${i.text}</span>
-                    ${i.detail ? `<div class="checklist-detail">${i.detail}</div>` : ''}
-                </div>
+        const unchecked = data.planningChecklist.filter(i => !i.checked).slice(0, 5);
+        document.getElementById('nextActions').innerHTML = unchecked.map(i =>
+            `<div class="checklist-item" onclick="toggleItem('planning','${i.id}')">
+                <div class="checklist-checkbox"></div>
+                <span class="checklist-text">${i.text}</span>
+                <span style="font-size:11px;color:var(--text-muted)">${i.category}</span>
                 ${i.dueDate ? `<span class="checklist-due">${i.dueDate}</span>` : ''}
-                ${i.skill ? `<span class="checklist-skill">${i.skill}</span>` : ''}
-            </div>
-        `).join('');
-    }
-
-    function getTeamTrack(teamName) {
-        return data.teamTrackMap[teamName] || 'etc';
-    }
-
-    function getObsidianLink(teamName, category) {
-        const cat = category || '26봄주중';
-        const encoded = encodeURIComponent(`product/${cat}/${teamName}.md`);
-        return `obsidian://open?vault=Seulki.log&file=product/${cat}/${teamName}`;
+            </div>`
+        ).join('') || '<div style="padding:18px;color:var(--text-muted);font-size:14px">모든 항목 완료!</div>';
     }
 
     function renderCurrentTeams() {
         const teams = data.currentSeason.activeTeams;
         const tracks = data.growthTracks;
-
         let html = '';
+
         tracks.forEach(tr => {
             const trackTeams = teams.filter(t => getTeamTrack(t.name) === tr.id);
+            if (trackTeams.length === 0) return; // 현시즌은 팀이 있는 트랙만 표시
             const memberSum = trackTeams.reduce((s,t) => s+t.members, 0);
             html += `<div class="track-group">
                 <div class="track-header">
-                    <span class="track-badge" style="background:${tr.color};color:#fff">${tr.num}</span>
-                    <span class="track-name">${tr.name}</span>
-                    <span class="track-desc">${trackTeams.length > 0 ? trackTeams.length + '팀 · ' + memberSum + '명' : '이번 시즌 없음'}</span>
+                    <span class="track-badge" style="background:${tr.color}">${tr.name}</span>
+                    <span class="track-name">${tr.sub}</span>
+                    <span class="track-desc">${trackTeams.length}팀 / ${memberSum}명</span>
                 </div>
-                ${trackTeams.length > 0 ? `<div class="team-grid">${trackTeams.map(t => renderActiveTeamCard(t)).join('')}</div>` :
-                `<div style="padding:12px 16px;font-size:13px;color:var(--text-muted);background:var(--bg-accent);border-radius:var(--radius-sm)">이번 시즌 해당 트랙에 운영 팀 없음</div>`}
+                <div style="font-size:13px;color:var(--text-muted);margin:-8px 0 12px 0;font-style:italic">${tr.hook}</div>
+                <div class="team-grid">${trackTeams.map(t => renderActiveTeamCard(t)).join('')}</div>
             </div>`;
         });
 
         document.getElementById('currentTeamsByTrack').innerHTML = html;
-
-        // Inactive (empty for current data from sheet)
-        const inactiveEl = document.getElementById('inactiveTeamGrid');
-        if (data.currentSeason.inactiveTeams.length === 0) {
-            inactiveEl.parentElement.style.display = 'none';
-        } else {
-            inactiveEl.innerHTML = data.currentSeason.inactiveTeams.map(t => `
-                <div class="team-card inactive">
-                    <div class="team-name-row">
-                        <span class="team-name">${t.name}</span>
-                        <span style="font-size:12px;color:var(--text-muted)">${t.members}명</span>
-                    </div>
-                    <div class="team-meta"><span class="badge badge-draft">${t.reason}</span></div>
-                </div>
-            `).join('');
-        }
     }
 
     function renderActiveTeamCard(team) {
@@ -1361,7 +799,6 @@
             `<div class="session-dot ${i<team.sessionsDone?'done':''}"></div>`
         ).join('');
         const link = getObsidianLink(team.name, team.category);
-        const newPct = team.members > 0 ? Math.round((team.newMembers||0)/team.members*100) : 0;
         return `<div class="team-card" onclick="window.location.href='${link}'" style="cursor:pointer" title="Obsidian에서 열기">
             <div class="team-name-row">
                 <span class="team-name">${team.name}</span>
@@ -1377,96 +814,10 @@
         </div>`;
     }
 
-    function renderNextTeams() {
-        document.getElementById('nextSeasonAlerts').innerHTML =
-            (data.nextSeason.issues||[]).map(i => `<div class="alert">${i.text}</div>`).join('');
-
-        // 성장 트랙별로 여름시즌 팀 렌더링 (빈 트랙도 표시)
-        const allNextTeams = [...data.nextSeason.weekdayTeams, ...data.nextSeason.weekendTeams];
-        const tracks = data.growthTracks;
-
-        let wdHtml = '';
-        let weHtml = '';
-
-        // 주중/주말 구분 대신 트랙별로 표시
-        tracks.forEach(tr => {
-            const trackTeams = allNextTeams.filter(t => getTeamTrack(t.name) === tr.id);
-            const isEmpty = trackTeams.length === 0;
-
-            const cards = trackTeams.map(team => {
-                const unassigned = team.schedule === '미정';
-                const link = getObsidianLink(team.name, team.schedule?.includes('토') || team.schedule?.includes('일') ? '26여름주말' : '26여름주중');
-                return `<div class="team-card" onclick="window.location.href='${link}'" style="cursor:pointer" title="Obsidian에서 열기">
-                    <div class="team-name-row"><span class="team-name">${team.name}</span></div>
-                    <div class="team-meta">
-                        <span class="badge badge-draft">${team.syncStatus}</span>
-                        <span class="badge badge-schedule">${team.schedule}</span>
-                        ${team.venue && team.venue !== '미정' ? `<span class="badge badge-venue">${team.venue}</span>` : ''}
-                        ${team.group && team.group !== '미정' ? `<span class="badge badge-group">그룹${team.group}</span>` : ''}
-                        ${unassigned ? '<span class="badge badge-unassigned">미배정</span>' : ''}
-                    </div>
-                </div>`;
-            }).join('');
-
-            wdHtml += `<div class="track-group">
-                <div class="track-header">
-                    <span class="track-badge" style="background:${tr.color};color:#fff">${tr.num}</span>
-                    <span class="track-name">${tr.name}</span>
-                    <span class="track-desc">${trackTeams.length}팀</span>
-                </div>
-                ${isEmpty ?
-                    `<div style="padding:16px;background:var(--warning-bg);border-radius:var(--radius-sm);border:1px dashed var(--hfk-sand);text-align:center;font-size:13px;color:var(--warning)">
-                        이 트랙에 배정된 팀 없음 — 신규 팀 기획 필요?
-                    </div>` :
-                    `<div class="team-grid">${cards}</div>`
-                }
-            </div>`;
-        });
-
-        // 트랙 매핑 안 되는 팀
-        const unmapped = allNextTeams.filter(t => !data.teamTrackMap[t.name]);
-        if (unmapped.length) {
-            wdHtml += `<div class="track-group">
-                <div class="track-header">
-                    <span class="track-badge" style="background:var(--text-muted);color:#fff">?</span>
-                    <span class="track-name">트랙 미지정</span>
-                    <span class="track-desc">${unmapped.length}팀 — 트랙 배정 필요</span>
-                </div>
-                <div class="team-grid">${unmapped.map(t => `<div class="team-card">
-                    <div class="team-name-row"><span class="team-name">${t.name}</span></div>
-                    <div class="team-meta"><span class="badge badge-unassigned">트랙 미지정</span><span class="badge badge-schedule">${t.schedule}</span></div>
-                </div>`).join('')}</div>
-            </div>`;
-        }
-
-        document.getElementById('nextWeekdayGrid').innerHTML = wdHtml;
-        document.getElementById('nextWeekendGrid').innerHTML = '';  // 트랙별로 통합했으므로 비움
-    }
-
-    function renderPlanningProgress() {
-        const cats = [...new Set(data.planningChecklist.map(i => i.category))];
-        let html = '';
-        cats.forEach(cat => {
-            const items = data.planningChecklist.filter(i => i.category === cat);
-            const done = items.filter(i => i.checked).length;
-            const pct = Math.round((done/items.length)*100);
-            html += `<div style="margin-bottom:16px">
-                <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-                    <span style="font-size:13px;font-weight:700;color:var(--hfk-burgundy)">${cat}</span>
-                    <span style="font-size:12px;color:var(--text-muted)">${done}/${items.length}</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-            </div>`;
-        });
-        document.getElementById('planningProgressContainer').innerHTML =
-            `<div style="background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border-light)">${html}</div>`;
-    }
-
-    function renderChecklists() {
+    function renderOpsChecklists() {
         renderOpsChecklist('daily','dailyChecklist','dailyProgress');
         renderOpsChecklist('weekly','weeklyChecklist','weeklyProgress');
         renderOpsChecklist('monthly','monthlyChecklist','monthlyProgress');
-        renderPlanningChecklist();
     }
 
     function renderOpsChecklist(key, cid, pid) {
@@ -1480,6 +831,60 @@
                 <span class="checklist-skill">${i.skill}</span>
             </div>
         `).join('');
+    }
+
+    function renderNextTeams() {
+        document.getElementById('nextSeasonAlerts').innerHTML =
+            (data.nextSeason.issues||[]).map(i => `<div class="alert">${i.text}</div>`).join('');
+
+        const allNextTeams = [...data.nextSeason.weekdayTeams, ...data.nextSeason.weekendTeams];
+        const tracks = data.growthTracks;
+        let html = '';
+
+        tracks.forEach(tr => {
+            const trackTeams = allNextTeams.filter(t => getTeamTrack(t.name) === tr.id);
+            const isEmpty = trackTeams.length === 0;
+            const cards = trackTeams.map(team => {
+                const link = getObsidianLink(team.name, team.schedule?.includes('토') || team.schedule?.includes('일') ? '26여름주말' : '26여름주중');
+                return `<div class="team-card" onclick="window.location.href='${link}'" style="cursor:pointer" title="Obsidian에서 열기">
+                    <div class="team-name-row"><span class="team-name">${team.name}</span></div>
+                    <div class="team-meta">
+                        <span class="badge badge-draft">${team.syncStatus}</span>
+                        <span class="badge badge-schedule">${team.schedule}</span>
+                        ${team.venue ? `<span class="badge badge-venue">${team.venue}</span>` : ''}
+                        ${team.group ? `<span class="badge badge-group">그룹${team.group}</span>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+
+            html += `<div class="track-group">
+                <div class="track-header">
+                    <span class="track-badge" style="background:${tr.color}">${tr.name}</span>
+                    <span class="track-name">${tr.sub}</span>
+                    <span class="track-desc">${trackTeams.length}팀</span>
+                </div>
+                ${isEmpty ?
+                    `<div style="padding:16px;background:var(--warning-bg);border-radius:var(--radius-sm);border:1px dashed var(--hfk-sand);text-align:center;font-size:13px;color:var(--warning)">이 트랙에 배정된 팀 없음</div>` :
+                    `<div class="team-grid">${cards}</div>`}
+            </div>`;
+        });
+
+        const unmapped = allNextTeams.filter(t => !data.teamTrackMap[t.name]);
+        if (unmapped.length) {
+            html += `<div class="track-group">
+                <div class="track-header">
+                    <span class="track-badge" style="background:var(--text-muted)">?</span>
+                    <span class="track-name">트랙 미지정</span>
+                    <span class="track-desc">${unmapped.length}팀</span>
+                </div>
+                <div class="team-grid">${unmapped.map(t => `<div class="team-card">
+                    <div class="team-name-row"><span class="team-name">${t.name}</span></div>
+                    <div class="team-meta"><span class="badge badge-unassigned">트랙 미지정</span><span class="badge badge-schedule">${t.schedule}</span></div>
+                </div>`).join('')}</div>
+            </div>`;
+        }
+
+        document.getElementById('nextTeamGrid').innerHTML = html;
     }
 
     function renderPlanningChecklist() {
@@ -1499,7 +904,10 @@
             html += items.map(i => `
                 <div class="checklist-item ${i.checked?'checked':''}" onclick="toggleItem('planning','${i.id}')">
                     <div class="checklist-checkbox ${i.checked?'checked':''}"></div>
-                    <span class="checklist-text">${i.text}</span>
+                    <div style="flex:1">
+                        <div class="checklist-text">${i.text}</div>
+                        ${i.insight ? `<div class="checklist-detail" style="color:var(--hfk-red);font-weight:500">📊 ${i.insight}</div>` : ''}
+                    </div>
                     ${i.dueDate ? `<span class="checklist-due">${i.dueDate}</span>` : ''}
                 </div>
             `).join('');
@@ -1508,86 +916,51 @@
         document.getElementById('planningChecklistContainer').innerHTML = html;
     }
 
-    function renderInsights() {
-        const cats = [...new Set(data.insightsChecklist.map(i => i.category))];
-        const done = data.insightsChecklist.filter(i => i.checked).length;
-        const total = data.insightsChecklist.length;
-        const pct = Math.round((done/total)*100);
-
-        let html = `<div class="checklist-progress-row">
-            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-            <span class="progress-text">${done}/${total} (${pct}%)</span>
-        </div>`;
-
-        cats.forEach(cat => {
-            const items = data.insightsChecklist.filter(i => i.category === cat);
-            // Find matching tracking doc
-            const trackDoc = data.trackingDocs.find(d => d.category === cat);
-            html += `<div class="checklist-category-header">${cat}${trackDoc ? ` <span style="font-size:11px;font-weight:400;color:var(--text-muted);letter-spacing:0">→ ${trackDoc.path}</span>` : ''}</div><div class="checklist-card">`;
-            html += items.map(i => `
-                <div class="checklist-item ${i.checked?'checked':''}" onclick="toggleItem('insights','${i.id}')">
-                    <div class="checklist-checkbox ${i.checked?'checked':''}"></div>
-                    <div style="flex:1">
-                        <div class="checklist-text">${i.text}</div>
-                        ${i.detail ? `<div class="checklist-detail">${i.detail}</div>` : ''}
-                    </div>
-                    ${i.dueDate ? `<span class="checklist-due">${i.dueDate}</span>` : ''}
-                    ${i.ref ? `<span class="checklist-ref">${i.ref}</span>` : ''}
-                </div>
-            `).join('');
-            html += '</div>';
-        });
-
-        document.getElementById('insightsChecklist').innerHTML = html;
-
-        // Tracking docs (not just references - active tracking documents)
-        document.getElementById('refDocs').innerHTML = data.trackingDocs.map(d => `
-            <div class="doc-card">
-                <div class="doc-card-title">${d.title}</div>
-                <div class="doc-card-body">${d.desc}<br><span style="font-size:12px;color:var(--hfk-red);font-weight:600">${d.path}</span></div>
-            </div>
-        `).join('');
-    }
-
-    function renderTimeline() {
+    function renderGantt() {
         const cal = data.seasonCalendar;
         if (!cal) return;
 
-        // Determine current week
         const now = new Date();
-        const seasonStart = new Date('2026-06-11');
-        const diffWeeks = Math.floor((now - seasonStart) / (7*24*60*60*1000));
+        const categories = ['planning','ops','content','promo','insight','session'];
+        const catLabels = {planning:'기획', ops:'운영', content:'콘텐츠', promo:'모집/홍보', insight:'인사이트', session:'세션'};
 
-        document.getElementById('timelineContainer').innerHTML = `
-            <div style="padding:20px 24px;border-bottom:1px solid var(--border);background:var(--bg-warm)">
-                <div style="font-size:16px;font-weight:700;color:var(--text-dark)">${cal.name} 운영 캘린더</div>
-                <div style="font-size:13px;color:var(--text-light);margin-top:4px">${cal.start} ~ ${cal.end} (12주 + 준비 4주)</div>
-            </div>
-        ` + cal.weeks.map((w, idx) => {
-            const isCurrent = (diffWeeks >= 0 && w.id === 'W' + (diffWeeks+1)) ||
-                              (diffWeeks < 0 && w.id === 'W' + diffWeeks);
-            return `
-            <div class="timeline-month" ${isCurrent ? 'style="background:var(--bg-accent)"' : ''}>
-                <div class="timeline-month-title">
-                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:24px;background:${w.id.startsWith('W-') ? 'var(--hfk-sand)' : 'var(--hfk-red)'};color:${w.id.startsWith('W-') ? 'var(--hfk-charcoal)' : '#fff'};border-radius:4px;font-size:12px;font-weight:600">${w.id}</span>
-                    ${w.date}
-                    <span style="font-size:12px;color:var(--text-muted);font-weight:400">${w.label}</span>
-                    ${isCurrent ? '<span class="timeline-current-badge">현재</span>' : ''}
-                </div>
-                <div class="timeline-items">
-                    ${w.items.map(i => `
-                        <div class="timeline-item" ${i.highlight ? 'style="background:var(--bg-warm);border:1px solid var(--hfk-sand)"' : ''}>
-                            <span style="min-width:90px">
-                                ${i.prep && i.prep !== '-' ? `<span style="font-size:11px;color:var(--text-muted)">prep ${i.prep}</span><br>` : ''}
-                                <span class="timeline-date">${i.do}</span>
-                            </span>
-                            <span class="timeline-text">${i.text}</span>
-                            ${i.sync ? '<span style="font-size:10px;color:var(--hfk-coral);font-weight:600">SYNC</span>' : ''}
-                        </div>
-                    `).join('')}
-                </div>
+        // Determine current week index
+        let currentWeekIdx = -1;
+        const seasonStart = new Date('2026-05-11');
+        const weekMs = 7*24*60*60*1000;
+        const diffWeeks = Math.floor((now - seasonStart) / weekMs);
+        if (diffWeeks >= 0 && diffWeeks < cal.weeks.length) currentWeekIdx = diffWeeks;
+
+        // Header row
+        let headerHtml = '<div class="gantt-header-cell" style="min-width:120px;background:var(--bg-accent);border-right:2px solid var(--border-dark)">카테고리</div>';
+        cal.weeks.forEach((w, idx) => {
+            const isCurrent = idx === currentWeekIdx;
+            headerHtml += `<div class="gantt-header-cell ${isCurrent?'current':''}">
+                <div>${w.id}</div>
+                <div class="week-label">${w.date}</div>
+                <div class="week-label">${w.label}</div>
             </div>`;
-        }).join('');
+        });
+
+        // Data rows per category
+        let rowsHtml = '';
+        categories.forEach(cat => {
+            rowsHtml += `<div class="gantt-row">
+                <div class="gantt-row-label">${catLabels[cat]}</div>`;
+            cal.weeks.forEach((w, idx) => {
+                const isCurrent = idx === currentWeekIdx;
+                const cellItems = w.items.filter(i => i.tag === cat);
+                rowsHtml += `<div class="gantt-cell ${isCurrent?'current':''}">
+                    ${cellItems.map(i =>
+                        `<div class="gantt-pill ${i.highlight ? 'pill-highlight' : 'pill-'+i.tag}" title="${i.text}">${i.text}</div>`
+                    ).join('')}
+                </div>`;
+            });
+            rowsHtml += '</div>';
+        });
+
+        document.getElementById('ganttContainer').innerHTML =
+            `<div class="gantt-header-row">${headerHtml}</div>${rowsHtml}`;
     }
 
     function updateSyncBar() {
@@ -1610,9 +983,6 @@
     function toggleItem(type, id) {
         if (type === 'planning') {
             const i = data.planningChecklist.find(x => x.id === id);
-            if (i) i.checked = !i.checked;
-        } else if (type === 'insights') {
-            const i = data.insightsChecklist.find(x => x.id === id);
             if (i) i.checked = !i.checked;
         } else if (type.startsWith('ops-')) {
             const key = type.replace('ops-','');
@@ -1637,10 +1007,10 @@
     });
 
     // Header date
-    const now = new Date();
+    const nowD = new Date();
     const days = ['일','월','화','수','목','금','토'];
     document.getElementById('headerDate').textContent =
-        `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 (${days[now.getDay()]}) 업데이트`;
+        `${nowD.getFullYear()}년 ${nowD.getMonth()+1}월 ${nowD.getDate()}일 (${days[nowD.getDay()]}) 업데이트`;
 
     renderAll();
     </script>
