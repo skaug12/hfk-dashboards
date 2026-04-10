@@ -174,16 +174,16 @@
         .ops-card-header .mini-progress { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
         /* ── Gantt Timeline ── */
-        .gantt-container { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-light); overflow-x: auto; }
-        .gantt-header-row { display: flex; position: sticky; top: 0; background: var(--bg-warm); z-index: 2; border-bottom: 2px solid var(--border-dark); min-width: fit-content; }
-        .gantt-header-cell { min-width: 110px; padding: 12px 8px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-dark); border-right: 1px solid var(--border-light); flex-shrink: 0; }
+        .gantt-wrapper { border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-light); overflow: hidden; }
+        .gantt-scroll { overflow-x: auto; }
+        .gantt-table { display: grid; grid-template-columns: 120px repeat(16, 120px); min-width: fit-content; }
+        .gantt-header-cell { padding: 12px 8px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-dark); background: var(--bg-warm); border-bottom: 2px solid var(--border-dark); border-right: 1px solid var(--border-light); }
+        .gantt-header-cell:first-child { position: sticky; left: 0; z-index: 3; background: var(--bg-accent); border-right: 2px solid var(--border-dark); }
         .gantt-header-cell.current { background: var(--hfk-red); color: #fff; }
         .gantt-header-cell .week-label { font-size: 10px; font-weight: 500; color: var(--text-muted); margin-top: 2px; }
         .gantt-header-cell.current .week-label { color: rgba(255,255,255,0.7); }
-        .gantt-row { display: flex; min-width: fit-content; border-bottom: 1px solid var(--border-subtle); }
-        .gantt-row:last-child { border-bottom: none; }
-        .gantt-row-label { min-width: 120px; padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--text-dark); background: var(--bg-accent); border-right: 2px solid var(--border-dark); position: sticky; left: 0; z-index: 1; display: flex; align-items: center; flex-shrink: 0; }
-        .gantt-cell { min-width: 110px; padding: 6px 4px; border-right: 1px solid var(--border-subtle); flex-shrink: 0; display: flex; flex-direction: column; gap: 3px; }
+        .gantt-row-label { padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--text-dark); background: var(--bg-accent); border-right: 2px solid var(--border-dark); border-bottom: 1px solid var(--border-subtle); position: sticky; left: 0; z-index: 2; display: flex; align-items: center; }
+        .gantt-cell { padding: 6px 4px; border-right: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 3px; }
         .gantt-cell.current { background: rgba(151,1,1,0.04); }
         .gantt-pill { font-size: 10px; padding: 3px 6px; border-radius: 4px; font-weight: 600; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
         .gantt-pill:hover { white-space: normal; z-index: 5; position: relative; }
@@ -341,7 +341,7 @@
                 <p class="section-sub">준비 4주 + 운영 12주. 가로 스크롤로 전체 일정을 확인하세요.</p>
                 <div class="section-divider"></div>
             </div>
-            <div class="gantt-container" id="ganttContainer"></div>
+            <div id="ganttContainer"></div>
         </div>
     </div>
 
@@ -923,44 +923,45 @@
         const now = new Date();
         const categories = ['planning','ops','content','promo','insight','session'];
         const catLabels = {planning:'기획', ops:'운영', content:'콘텐츠', promo:'모집/홍보', insight:'인사이트', session:'세션'};
+        const numWeeks = cal.weeks.length;
 
         // Determine current week index
         let currentWeekIdx = -1;
         const seasonStart = new Date('2026-05-11');
         const weekMs = 7*24*60*60*1000;
         const diffWeeks = Math.floor((now - seasonStart) / weekMs);
-        if (diffWeeks >= 0 && diffWeeks < cal.weeks.length) currentWeekIdx = diffWeeks;
+        if (diffWeeks >= 0 && diffWeeks < numWeeks) currentWeekIdx = diffWeeks;
 
-        // Header row
-        let headerHtml = '<div class="gantt-header-cell" style="min-width:120px;background:var(--bg-accent);border-right:2px solid var(--border-dark)">카테고리</div>';
+        // Update grid-template-columns dynamically
+        const colDef = `120px repeat(${numWeeks}, 120px)`;
+
+        // Header cells (first cell = corner label)
+        let cells = `<div class="gantt-header-cell" style="position:sticky;left:0;z-index:3;background:var(--bg-accent);border-right:2px solid var(--border-dark)">카테고리</div>`;
         cal.weeks.forEach((w, idx) => {
             const isCurrent = idx === currentWeekIdx;
-            headerHtml += `<div class="gantt-header-cell ${isCurrent?'current':''}">
+            cells += `<div class="gantt-header-cell ${isCurrent?'current':''}">
                 <div>${w.id}</div>
                 <div class="week-label">${w.date}</div>
                 <div class="week-label">${w.label}</div>
             </div>`;
         });
 
-        // Data rows per category
-        let rowsHtml = '';
+        // Data cells per category
         categories.forEach(cat => {
-            rowsHtml += `<div class="gantt-row">
-                <div class="gantt-row-label">${catLabels[cat]}</div>`;
+            cells += `<div class="gantt-row-label">${catLabels[cat]}</div>`;
             cal.weeks.forEach((w, idx) => {
                 const isCurrent = idx === currentWeekIdx;
                 const cellItems = w.items.filter(i => i.tag === cat);
-                rowsHtml += `<div class="gantt-cell ${isCurrent?'current':''}">
+                cells += `<div class="gantt-cell ${isCurrent?'current':''}">
                     ${cellItems.map(i =>
                         `<div class="gantt-pill ${i.highlight ? 'pill-highlight' : 'pill-'+i.tag}" title="${i.text}">${i.text}</div>`
                     ).join('')}
                 </div>`;
             });
-            rowsHtml += '</div>';
         });
 
         document.getElementById('ganttContainer').innerHTML =
-            `<div class="gantt-header-row">${headerHtml}</div>${rowsHtml}`;
+            `<div class="gantt-wrapper"><div class="gantt-scroll"><div class="gantt-table" style="grid-template-columns:${colDef}">${cells}</div></div></div>`;
     }
 
     function updateSyncBar() {
