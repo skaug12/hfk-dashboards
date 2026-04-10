@@ -211,9 +211,27 @@
         .guide-section ul li strong { color: var(--text-dark); }
         .guide-pill-sample { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 600; vertical-align: middle; }
 
-        /* ── Insight inline ── */
-        .insight-inline { background: var(--danger-bg); border-radius: var(--radius-sm); padding: 12px 16px; margin-top: 12px; font-size: 13px; line-height: 1.7; color: var(--text); }
-        .insight-inline strong { color: var(--hfk-red); font-weight: 600; }
+        /* ── Source Tags ── */
+        .source-tag { font-size: 10px; padding: 2px 7px; border-radius: 3px; font-weight: 600; display: inline-block; margin-right: 3px; }
+        .source-idea-log { background: #e8f5e9; color: #2e7d32; }
+        .source-meeting-log { background: #e3f2fd; color: #1565c0; }
+        .source-crew { background: #f3e8fa; color: #6b21a8; }
+        .source-서베이 { background: #fff3e0; color: #e65100; }
+        .source-AAR { background: var(--danger-bg); color: var(--hfk-red); }
+        .source-GA { background: var(--bg-accent); color: var(--text-light); }
+        .source-멤버피드백 { background: var(--hfk-cream); color: var(--hfk-burgundy); }
+
+        /* ── Season Reflection ── */
+        .reflection-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-light); padding: 24px; margin-bottom: 16px; }
+        .reflection-season { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; }
+        .reflection-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .reflection-bar-label { font-size: 12px; color: var(--text-muted); min-width: 50px; }
+        .reflection-bar { flex: 1; height: 20px; background: var(--border-subtle); border-radius: 4px; overflow: hidden; position: relative; }
+        .reflection-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11px; font-weight: 600; color: #fff; min-width: 30px; transition: width 0.5s ease; }
+        .reflection-bar-fill.discovered { background: var(--hfk-sand); color: var(--hfk-charcoal); }
+        .reflection-bar-fill.applied { background: var(--hfk-red); }
+        .reflection-stat { font-size: 13px; color: var(--text-light); margin-top: 8px; line-height: 1.7; }
+        .reflection-stat strong { color: var(--text-dark); }
 
         /* ── Responsive ── */
         @media (max-width: 768px) {
@@ -325,6 +343,14 @@
                 <div class="section-divider"></div>
             </div>
             <div id="planningChecklistContainer"></div>
+
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">시즌별 인사이트 반영률</h2>
+                <p class="section-sub">지난 시즌에서 발견된 인사이트가 다음 시즌에 얼마나 반영됐는지</p>
+                <div class="section-divider"></div>
+            </div>
+            <div id="seasonReflectionContainer"></div>
         </div>
 
         <!-- TAB: Timeline (Gantt) -->
@@ -541,35 +567,35 @@
             {id:"plan-08", category:"일정", text:"주중 슬롯 부족 해결 (팔리는경험→토B, 중간리더십→화A)", checked:true},
             {id:"plan-09", category:"일정", text:"광복절 8/15 대체일 확정", checked:false},
             // 팀 포트폴리오
-            {id:"plan-20", category:"팀 포트폴리오", text:"멀티뷰 매트릭스 기반 팀 설계 (단일뷰 결정 금지)", checked:false, insight:"고급화전략: 전체는 누수 but 신규 57% 담당. 단일뷰로 폐지하면 신규 통로 57% 손실"},
-            {id:"plan-21", category:"팀 포트폴리오", text:"AI 3단계 체계 완성: 입문 → 중급 → 심화", checked:false, insight:"AI 2팀이 전체 29% 차지. AI 외 19팀 평균 3.7명"},
-            {id:"plan-22", category:"팀 포트폴리오", text:"3시즌 이상 팀 리뉴얼 점검 (75% 하락 추세)", checked:false, insight:"강점차별화 13→15→7→5, 리더의서재 15→15→13→7→6. 매 시즌 1-2개 신규 주제 필수"},
+            {id:"plan-20", category:"팀 포트폴리오", text:"멀티뷰 매트릭스 기반 팀 설계 (단일뷰 결정 금지)", checked:false, insight:"고급화전략: 전체는 누수 but 신규 57% 담당. 단일뷰로 폐지하면 신규 통로 57% 손실", sources:["AAR"]},
+            {id:"plan-21", category:"팀 포트폴리오", text:"AI 3단계 체계 완성: 입문 → 중급 → 심화", checked:false, insight:"AI 2팀이 전체 29% 차지. AI 외 19팀 평균 3.7명", sources:["AAR","idea-log"]},
+            {id:"plan-22", category:"팀 포트폴리오", text:"3시즌 이상 팀 리뉴얼 점검 (75% 하락 추세)", checked:false, insight:"강점차별화 13→15→7→5, 리더의서재 15→15→13→7→6. 매 시즌 1-2개 신규 주제 필수", sources:["AAR"]},
             // 상품
             {id:"plan-10", category:"상품", text:"상품 노트 콘텐츠 업데이트", checked:false},
             {id:"plan-11", category:"상품", text:"상품 이미지 촬영/제작", checked:false},
             {id:"plan-12", category:"상품", text:"상품 가격 책정", checked:false},
             {id:"plan-13", category:"상품", text:"Imweb 상품 동기화 (draft → synced)", checked:false},
-            {id:"plan-30", category:"상품", text:"결제 전환율 개선: 상품 페이지/CTA 점검", checked:false, insight:"5,388명 방문 → 126명 결제 (2.3%). 방문 410% 증가했으나 결제 25% 감소"},
+            {id:"plan-30", category:"상품", text:"결제 전환율 개선: 상품 페이지/CTA 점검", checked:false, insight:"5,388명 방문 → 126명 결제 (2.3%). 방문 410% 증가했으나 결제 25% 감소", sources:["AAR","GA"]},
             // 타겟/유입
-            {id:"plan-40", category:"타겟/유입", text:"핵심 타겟 연차 재정의: 4-7년차 → 4-10년차 확장 검토", checked:false, insight:"실제 유입 중앙값 8년 vs 타겟 설정 4-7년. 27.3%만 타겟 연차에 해당"},
-            {id:"plan-41", category:"타겟/유입", text:"신규 멤버 유입 채널 전략 수립", checked:false, insight:"지인추천 56% > 인스타 26% > 검색 11%. SEO 투자 ROI 낮음"},
-            {id:"plan-42", category:"타겟/유입", text:"4-7년차 전용 팀 신설 검토 (가격/난이도 차별화)", checked:false, insight:"현재 전 연차 통합 운영 → 저연차 전용 진입점 필요"},
+            {id:"plan-40", category:"타겟/유입", text:"핵심 타겟 연차 재정의: 4-7년차 → 4-10년차 확장 검토", checked:false, insight:"실제 유입 중앙값 8년 vs 타겟 설정 4-7년. 27.3%만 타겟 연차에 해당", sources:["서베이","AAR"]},
+            {id:"plan-41", category:"타겟/유입", text:"신규 멤버 유입 채널 전략 수립", checked:false, insight:"지인추천 56% > 인스타 26% > 검색 11%. SEO 투자 ROI 낮음", sources:["서베이"]},
+            {id:"plan-42", category:"타겟/유입", text:"4-7년차 전용 팀 신설 검토 (가격/난이도 차별화)", checked:false, insight:"현재 전 연차 통합 운영 → 저연차 전용 진입점 필요", sources:["서베이","idea-log"]},
             // 전환/리텐션
-            {id:"plan-50", category:"전환/리텐션", text:"1→2 전환 골든타임: 시즌 종료 직후 개인화 안내", checked:false, insight:"돌아올 사람의 63.6%는 바로 다음 시즌 복귀. 2시즌 이내 77.3%"},
-            {id:"plan-51", category:"전환/리텐션", text:"중간 체크인 DM 발송 (파트너 통해)", dueDate:"04-30", checked:false, insight:"첫등록 멤버 56.5% 이탈 방지"},
-            {id:"plan-52", category:"전환/리텐션", text:"개인화 팀 추천 DM 발송", dueDate:"05-10", checked:false, insight:"AI부사수→AI핸즈온(심화), 전략가의일→경영브릿지(균형) 등"},
+            {id:"plan-50", category:"전환/리텐션", text:"1→2 전환 골든타임: 시즌 종료 직후 개인화 안내", checked:false, insight:"돌아올 사람의 63.6%는 바로 다음 시즌 복귀. 2시즌 이내 77.3%", sources:["AAR"]},
+            {id:"plan-51", category:"전환/리텐션", text:"중간 체크인 DM 발송 (파트너 통해)", dueDate:"04-30", checked:false, insight:"첫등록 멤버 56.5% 이탈 방지", sources:["AAR","meeting-log"]},
+            {id:"plan-52", category:"전환/리텐션", text:"개인화 팀 추천 DM 발송", dueDate:"05-10", checked:false, insight:"AI부사수→AI핸즈온(심화), 전략가의일→경영브릿지(균형) 등", sources:["idea-log"]},
             {id:"plan-53", category:"전환/리텐션", text:"사전등록 얼리버드 오픈 (여름시즌 20% 목표)", dueDate:"05-15", checked:false},
             // 홍보/콘텐츠
             {id:"plan-14", category:"홍보/콘텐츠", text:"사전등록 오픈 (멤버 전용)", dueDate:"05-15", checked:false},
             {id:"plan-15", category:"홍보/콘텐츠", text:"시즌레터로 신규 시즌 안내", checked:false},
             {id:"plan-16", category:"홍보/콘텐츠", text:"1→2 전환 프로그램: 팀 추천 안내", checked:false},
             {id:"plan-17", category:"홍보/콘텐츠", text:"Slack 공지 (신규 시즌 오픈)", checked:false},
-            {id:"plan-60", category:"홍보/콘텐츠", text:"뉴스레터 발행 & 300명 구독 목표 (6월 말)", dueDate:"04-10", checked:false, insight:"첫 3호: TOP5 질문(4/10), 오래 남은 멤버 공통점(5/8), 설득 실패 순간(6/10)"},
-            {id:"plan-61", category:"홍보/콘텐츠", text:"인터뷰 시리즈 시작 (격주)", dueDate:"05-01", checked:false, insight:"섭외 우선: 첫등록+10회이상 충성+멤버→파트너 성장사례"},
+            {id:"plan-60", category:"홍보/콘텐츠", text:"뉴스레터 발행 & 300명 구독 목표 (6월 말)", dueDate:"04-10", checked:false, insight:"첫 3호: TOP5 질문(4/10), 오래 남은 멤버 공통점(5/8), 설득 실패 순간(6/10)", sources:["meeting-log"]},
+            {id:"plan-61", category:"홍보/콘텐츠", text:"인터뷰 시리즈 시작 (격주)", dueDate:"05-01", checked:false, insight:"섭외 우선: 첫등록+10회이상 충성+멤버→파트너 성장사례", sources:["idea-log","meeting-log"]},
             // 슬랙
             {id:"plan-18", category:"슬랙", text:"신규 시즌 Slack 채널 생성 & 멤버 초대", checked:false},
-            {id:"plan-70", category:"슬랙", text:"hbrforum idea-log 주간 리뷰 & 실행 가능 아이디어 추적", checked:false, insight:"매주 수요일 /run-wednesday에서 리뷰"},
-            {id:"plan-71", category:"슬랙", text:"meeting-log 액션 아이템 팔로업", checked:false, insight:"미팅에서 결정된 사항이 실제로 실행되었는지 주간 점검"}
+            {id:"plan-70", category:"슬랙", text:"hbrforum idea-log 주간 리뷰 & 실행 가능 아이디어 추적", checked:false, insight:"매주 수요일 /run-wednesday에서 리뷰", sources:["idea-log"]},
+            {id:"plan-71", category:"슬랙", text:"meeting-log 액션 아이템 팔로업", checked:false, insight:"미팅에서 결정된 사항이 실제로 실행되었는지 주간 점검", sources:["meeting-log"]}
         ],
         opsChecklist: {
             daily: [
@@ -606,6 +632,43 @@
         issues: [
             {text:"<strong>수요-공급:</strong> 25봄 25팀 → 26봄 13팀. 팀 수 줄이고 팀당 밀도 높이기"},
             {text:"<strong>AI 편중:</strong> AI 2팀이 전체 29% 차지. AI 외 팀 평균 인원 관리 필요"}
+        ],
+        // 시즌별 인사이트 반영 회고
+        seasonReflection: [
+            {
+                season: "25여름 → 25겨울",
+                discovered: 5,
+                applied: 3,
+                highlights: [
+                    {text:"팀 수 축소 (25→20팀)", applied:true, source:"AAR"},
+                    {text:"재등록 할인 도입", applied:true, source:"meeting-log"},
+                    {text:"세션 피드백 양식 개선", applied:true, source:"서베이"},
+                    {text:"파트너 온보딩 매뉴얼", applied:false, source:"idea-log"},
+                    {text:"시니어 타겟 팀 신설", applied:false, source:"idea-log"}
+                ]
+            },
+            {
+                season: "25겨울 → 26봄",
+                discovered: 8,
+                applied: 5,
+                highlights: [
+                    {text:"성장 트랙 프레임워크 (코카콜라 5방향)", applied:true, source:"idea-log"},
+                    {text:"팀당 밀도 높이기 (25→13팀)", applied:true, source:"AAR"},
+                    {text:"HFK사람들 시트 API 연동", applied:true, source:"meeting-log"},
+                    {text:"시즌레터 자동화", applied:true, source:"idea-log"},
+                    {text:"핸드아웃 시스템 구축", applied:true, source:"meeting-log"},
+                    {text:"저연차 전용 진입점", applied:false, source:"서베이"},
+                    {text:"결제 전환율 CTA 개선", applied:false, source:"GA"},
+                    {text:"뉴스레터 발행", applied:false, source:"meeting-log"}
+                ]
+            },
+            {
+                season: "26봄 → 26여름",
+                discovered: 17,
+                applied: 0,
+                current: true,
+                highlights: []  // 기획 체크리스트에서 자동 계산
+            }
         ],
         seasonCalendar: {
             name:"26여름", start:"2026-06-11", end:"2026-08-28",
@@ -812,6 +875,7 @@
         renderOpsChecklists();
         renderNextTeams();
         renderPlanningChecklist();
+        renderSeasonReflection();
         renderGantt();
         updateSyncBar();
     }
@@ -977,8 +1041,17 @@
         document.getElementById('nextTeamGrid').innerHTML = html;
     }
 
+    function renderSourceTags(sources) {
+        if (!sources || !sources.length) return '';
+        return '<div style="margin-top:4px">' + sources.map(s =>
+            `<span class="source-tag source-${s}">${s}</span>`
+        ).join('') + '</div>';
+    }
+
     function renderPlanningChecklist() {
         const cats = [...new Set(data.planningChecklist.map(i => i.category))];
+        const insightItems = data.planningChecklist.filter(i => i.insight);
+        const insightDone = insightItems.filter(i => i.checked).length;
         const done = data.planningChecklist.filter(i => i.checked).length;
         const total = data.planningChecklist.length;
         const pct = Math.round((done/total)*100);
@@ -986,6 +1059,9 @@
         let html = `<div class="checklist-progress-row">
             <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
             <span class="progress-text">${done}/${total} (${pct}%)</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:24px">
+            인사이트 기반 항목 <strong style="color:var(--hfk-red)">${insightDone}/${insightItems.length}</strong>건 반영 완료
         </div>`;
 
         cats.forEach(cat => {
@@ -997,6 +1073,7 @@
                     <div style="flex:1">
                         <div class="checklist-text">${i.text}</div>
                         ${i.insight ? `<div class="checklist-detail" style="color:var(--hfk-red);font-weight:500">📊 ${i.insight}</div>` : ''}
+                        ${renderSourceTags(i.sources)}
                     </div>
                     ${i.dueDate ? `<span class="checklist-due">${i.dueDate}</span>` : ''}
                 </div>
@@ -1004,6 +1081,60 @@
             html += '</div>';
         });
         document.getElementById('planningChecklistContainer').innerHTML = html;
+    }
+
+    function renderSeasonReflection() {
+        const reflections = data.seasonReflection;
+        if (!reflections) return;
+
+        // 현재 시즌은 기획 체크리스트에서 자동 계산
+        const currentRef = reflections.find(r => r.current);
+        if (currentRef) {
+            const insightItems = data.planningChecklist.filter(i => i.insight);
+            currentRef.discovered = insightItems.length;
+            currentRef.applied = insightItems.filter(i => i.checked).length;
+        }
+
+        const maxItems = Math.max(...reflections.map(r => r.discovered));
+
+        let html = reflections.map(r => {
+            const pct = r.discovered > 0 ? Math.round((r.applied / r.discovered) * 100) : 0;
+            const barWidth = r.discovered > 0 ? Math.round((r.discovered / maxItems) * 100) : 0;
+            const appliedWidth = r.discovered > 0 ? Math.round((r.applied / maxItems) * 100) : 0;
+
+            let detailHtml = '';
+            if (r.highlights && r.highlights.length > 0) {
+                detailHtml = `<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px">` +
+                    r.highlights.map(h =>
+                        `<span style="font-size:11px;padding:4px 10px;border-radius:4px;${h.applied
+                            ? 'background:var(--success-bg);color:var(--success);text-decoration:none'
+                            : 'background:var(--border-subtle);color:var(--text-muted)'
+                        }">${h.applied ? '✓' : '○'} ${h.text} <span class="source-tag source-${h.source}" style="margin-left:2px">${h.source}</span></span>`
+                    ).join('') + '</div>';
+            } else if (r.current) {
+                detailHtml = '<div style="margin-top:8px;font-size:12px;color:var(--text-muted)">위 기획 체크리스트의 📊 항목에서 자동 집계됩니다</div>';
+            }
+
+            return `<div class="reflection-card">
+                <div class="reflection-season">${r.season} ${r.current ? '<span style="font-size:12px;color:var(--hfk-red);font-weight:600">진행중</span>' : ''}</div>
+                <div class="reflection-bar-row">
+                    <span class="reflection-bar-label">발견</span>
+                    <div class="reflection-bar">
+                        <div class="reflection-bar-fill discovered" style="width:${barWidth}%">${r.discovered}</div>
+                    </div>
+                </div>
+                <div class="reflection-bar-row">
+                    <span class="reflection-bar-label">반영</span>
+                    <div class="reflection-bar">
+                        <div class="reflection-bar-fill applied" style="width:${appliedWidth}%">${r.applied}</div>
+                    </div>
+                </div>
+                <div class="reflection-stat">반영률 <strong>${pct}%</strong> (${r.applied}/${r.discovered}건)</div>
+                ${detailHtml}
+            </div>`;
+        }).join('');
+
+        document.getElementById('seasonReflectionContainer').innerHTML = html;
     }
 
     function renderGantt() {
