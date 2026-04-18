@@ -1060,7 +1060,11 @@
                     <div style="background:var(--danger-bg);color:var(--danger);padding:8px 14px;border-radius:var(--radius-sm);font-size:13px">60미만 시급 <strong>${bands.low.length}</strong>팀</div>
                 </div>
             </div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">팀 클릭 → 개별 평가 상세 (GitHub)</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                <a href="obsidian://open?vault=Seulki.log&file=note%2F%ED%8A%B8%EB%9E%98%ED%82%B9%2F%EC%83%81%ED%92%88%EC%99%84%EC%84%B1%EB%8F%84%2F00_%EC%9D%B8%EB%8D%B1%EC%8A%A4" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--hfk-burgundy);color:#fff;border-radius:var(--radius-sm);text-decoration:none;font-size:13px;font-weight:500">📓 옵시디언에서 상품완성도 인덱스 열기</a>
+                <a href="${c.repoBase}00_%EC%9D%B8%EB%8D%B1%EC%8A%A4.md" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;font-size:13px;font-weight:500">🌐 GitHub에서 보기</a>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">개별 팀 클릭 → GitHub 상세 평가</div>
             <div>${rowHtml}</div>
         </div>`;
     }
