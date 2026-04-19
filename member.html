@@ -120,6 +120,42 @@ body {
 .round-title { font-weight: 600; color: var(--hfk-burgundy); font-size: 13px; margin: 0 0 6px; }
 .round-raw { font-size: 13px; color: var(--text); white-space: pre-wrap; line-height: 1.7; }
 
+/* Track flow chart (Sankey-lite) */
+.track-flow-card {
+  background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
+  padding: 20px 16px; margin-bottom: 24px;
+}
+.track-flow-title {
+  font-size: 13px; color: var(--text-muted); margin: 0 0 12px;
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.track-flow-scroll { overflow-x: auto; padding-bottom: 8px; }
+.track-flow-svg { display: block; min-width: 100%; }
+.track-legend {
+  display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 14px;
+  font-size: 12px; color: var(--text-muted);
+}
+.legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* Custom tooltip */
+.flow-tooltip {
+  position: fixed; pointer-events: none; z-index: 1000;
+  background: var(--hfk-charcoal); color: #fff;
+  padding: 8px 12px; border-radius: var(--radius-xs);
+  font-size: 12px; line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0; transition: opacity 0.12s;
+  max-width: 240px;
+}
+.flow-tooltip.visible { opacity: 1; }
+.flow-tooltip .tt-season { font-weight: 700; color: var(--hfk-salmon, #ff9a92); margin-bottom: 2px; }
+.flow-tooltip .tt-team { font-weight: 600; }
+.flow-tooltip .tt-meta { color: #ccc; font-size: 11px; margin-top: 4px; }
+
+.track-flow-svg circle.dot { cursor: pointer; transition: r 0.1s; }
+.track-flow-svg circle.dot:hover { r: 9; }
+
 /* Empty/error states */
 .empty {
   text-align: center; padding: 60px 20px; color: var(--text-muted);
@@ -187,11 +223,93 @@ function renderSearch(data) {
   render('');
 }
 
-function renderProfile(member) {
+const TRACK_COLORS = {
+  'Vertical':     '#441a15',  // burgundy
+  'Horizontal':   '#970101',  // red
+  'Enrichment':   '#ff6154',  // coral
+  'Realignment':  '#ceb9a4',  // sand
+  'New Horizons': '#2d2523',  // charcoal
+  '기타':          '#bbb',
+};
+
+function renderTrackFlow(member, tracks) {
+  // 최소 1시즌 이상 + 트랙 정보 있는 시즌 1개 이상이어야 의미
+  const lanes = [...tracks, '기타'];
+  const laneY = {};
+  const LANE_H = 36;
+  const PAD_TOP = 16;
+  const PAD_LEFT = 96;   // 트랙 라벨 자리
+  const COL_W = 56;
+  const PAD_BOTTOM = 28; // 시즌 라벨 자리
+  lanes.forEach((t, i) => { laneY[t] = PAD_TOP + i * LANE_H + LANE_H / 2; });
+
+  const cols = member.seasons.length;
+  const W = PAD_LEFT + cols * COL_W + 24;
+  const H = PAD_TOP + lanes.length * LANE_H + PAD_BOTTOM;
+
+  const dots = member.seasons.map((s, i) => {
+    const t = s.track || '기타';
+    return {
+      x: PAD_LEFT + i * COL_W + COL_W / 2,
+      y: laneY[t],
+      season: s.season,
+      team: s.team,
+      track: t,
+      type: s.type,
+    };
+  });
+
+  const lineSegs = [];
+  for (let i = 1; i < dots.length; i++) {
+    lineSegs.push(`<line x1="${dots[i-1].x}" y1="${dots[i-1].y}" x2="${dots[i].x}" y2="${dots[i].y}" stroke="#bbb" stroke-width="2" stroke-linecap="round" />`);
+  }
+
+  const laneBg = lanes.map((t, i) => {
+    const y = PAD_TOP + i * LANE_H + LANE_H / 2;
+    return `
+      <text x="${PAD_LEFT - 12}" y="${y + 4}" text-anchor="end" font-size="11" fill="${t === '기타' ? '#999' : TRACK_COLORS[t]}" font-weight="600">${t}</text>
+      <line x1="${PAD_LEFT}" y1="${y}" x2="${W - 8}" y2="${y}" stroke="#f0f0f0" stroke-width="1" />
+    `;
+  }).join('');
+
+  const dotMarkup = dots.map(d => `
+    <circle class="dot" cx="${d.x}" cy="${d.y}" r="7" fill="${TRACK_COLORS[d.track]}" stroke="#fff" stroke-width="2"
+      data-season="${escapeHtml(d.season)}"
+      data-team="${escapeHtml(d.team || '—')}"
+      data-track="${escapeHtml(d.track)}"
+      data-type="${escapeHtml(d.type || '')}"></circle>
+    <text x="${d.x}" y="${H - 12}" text-anchor="middle" font-size="10" fill="#666">${escapeHtml(d.season)}</text>
+  `).join('');
+
+  const legend = lanes.map(t => `
+    <span class="legend-item">
+      <span class="legend-dot" style="background:${TRACK_COLORS[t]}"></span>${escapeHtml(t)}
+    </span>
+  `).join('');
+
+  return `
+    <div class="track-flow-card">
+      <div class="track-flow-title">성장 트랙 궤적</div>
+      <div class="track-flow-scroll">
+        <svg class="track-flow-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+          ${laneBg}
+          ${lineSegs.join('')}
+          ${dotMarkup}
+        </svg>
+      </div>
+      <div class="track-legend">${legend}</div>
+    </div>
+  `;
+}
+
+function renderProfile(member, tracks) {
   const root = document.getElementById('app');
   root.className = 'profile-view';
 
   const sub = [member.company, member.function, member.years && (member.years + '년차')].filter(Boolean).join(' · ');
+  const trackFlowHtml = (member.seasons.length >= 2 && tracks && tracks.length)
+    ? renderTrackFlow(member, tracks)
+    : '';
 
   const seasonsHtml = member.seasons.map((s, idx) => {
     const isReturning = s.type === '재등록';
@@ -245,15 +363,69 @@ function renderProfile(member) {
         <div class="stat-item"><b>${escapeHtml(member.latest_season)}</b>가장 최근</div>
       </div>
     </div>
+    ${trackFlowHtml}
     <div class="timeline">${seasonsHtml}</div>
   `;
+  attachTooltip();
+}
+
+function attachTooltip() {
+  const dots = document.querySelectorAll('.track-flow-svg circle.dot');
+  if (!dots.length) return;
+
+  let tt = document.getElementById('flow-tt');
+  if (!tt) {
+    tt = document.createElement('div');
+    tt.id = 'flow-tt';
+    tt.className = 'flow-tooltip';
+    document.body.appendChild(tt);
+  }
+
+  function show(e) {
+    const c = e.currentTarget;
+    const season = c.dataset.season;
+    const team = c.dataset.team;
+    const track = c.dataset.track;
+    const type = c.dataset.type;
+    tt.innerHTML = `
+      <div class="tt-season">${season}</div>
+      <div class="tt-team">${team}</div>
+      <div class="tt-meta">${track}${type ? ' · ' + type : ''}</div>
+    `;
+    tt.classList.add('visible');
+    move(e);
+  }
+
+  function move(e) {
+    const x = e.clientX + 14;
+    const y = e.clientY + 14;
+    // 화면 우측/하단 넘침 방지
+    const rect = tt.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width - 10;
+    const maxY = window.innerHeight - rect.height - 10;
+    tt.style.left = Math.min(x, maxX) + 'px';
+    tt.style.top = Math.min(y, maxY) + 'px';
+  }
+
+  function hide() {
+    tt.classList.remove('visible');
+  }
+
+  dots.forEach(d => {
+    d.addEventListener('mouseenter', show);
+    d.addEventListener('mousemove', move);
+    d.addEventListener('mouseleave', hide);
+    // 모바일 터치
+    d.addEventListener('touchstart', e => { show({currentTarget: d, clientX: e.touches[0].clientX, clientY: e.touches[0].clientY}); });
+    d.addEventListener('touchend', () => setTimeout(hide, 1500));
+  });
 }
 
 fetch(DATA_URL)
   .then(r => r.json())
   .then(data => {
     if (targetId && data.members[targetId]) {
-      renderProfile(data.members[targetId]);
+      renderProfile(data.members[targetId], data.tracks || []);
     } else if (targetId) {
       document.getElementById('app').innerHTML = `
         <div class="empty">
