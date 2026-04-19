@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HFK 멤버 로드맵</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+:root {
+  --hfk-red: #970101;
+  --hfk-burgundy: #441a15;
+  --hfk-coral: #ff6154;
+  --hfk-sand: #ceb9a4;
+  --hfk-cream: #e1dac9;
+  --hfk-white: #f0eae2;
+  --hfk-charcoal: #2d2523;
+  --text-dark: #222;
+  --text: #444;
+  --text-light: #555;
+  --text-muted: #888;
+  --bg-warm: #F5EBE0;
+  --bg-accent: #F0EAE2;
+  --border: #ddd;
+  --border-light: #e5e5e5;
+  --border-subtle: #eee;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-warm);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+
+/* Header */
+.topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.topbar a { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+.topbar a:hover { color: var(--hfk-red); }
+
+/* Search view */
+.search-view h1 { font-size: 24px; color: var(--hfk-burgundy); margin: 0 0 6px; letter-spacing: -0.02em; }
+.search-view p { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; }
+.search-input {
+  width: 100%; padding: 12px 16px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;
+  background: #fff;
+}
+.search-input:focus { outline: none; border-color: var(--hfk-burgundy); }
+.search-results { margin-top: 16px; max-height: 60vh; overflow-y: auto; }
+.search-results .item {
+  padding: 12px 14px; border-radius: var(--radius-xs); cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.search-results .item:hover { background: var(--bg-accent); }
+.search-results .name { font-weight: 600; color: var(--text-dark); }
+.search-results .meta { font-size: 12px; color: var(--text-muted); }
+
+/* Profile header */
+.profile-head {
+  background: #fff; padding: 24px 20px; border-radius: var(--radius);
+  border: 1px solid var(--border-light); margin-bottom: 24px;
+}
+.profile-name { font-size: 26px; font-weight: 700; color: var(--hfk-burgundy); margin: 0 0 4px; letter-spacing: -0.02em; }
+.profile-sub { color: var(--text-light); font-size: 14px; margin: 0 0 16px; }
+.profile-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.stat-item { font-size: 13px; color: var(--text-muted); }
+.stat-item b { color: var(--hfk-burgundy); font-size: 18px; font-weight: 700; display: block; line-height: 1.2; margin-bottom: 2px; letter-spacing: -0.01em; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before {
+  content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px;
+  width: 2px; background: var(--hfk-sand);
+}
+.season-card {
+  position: relative; margin-bottom: 18px; background: #fff;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-light);
+  padding: 16px 18px;
+}
+.season-card::before {
+  content: ''; position: absolute; left: -26px; top: 22px;
+  width: 12px; height: 12px;
+  border-radius: 50%; background: var(--hfk-red);
+  box-sizing: border-box;
+}
+.season-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.season-label { font-weight: 700; color: var(--hfk-burgundy); font-size: 15px; }
+.season-team { color: var(--text-dark); font-weight: 600; font-size: 15px; }
+.season-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px;
+  font-weight: 600; vertical-align: middle; margin-left: 4px;
+}
+.tag-first { background: var(--bg-accent); color: var(--hfk-burgundy); }
+.tag-return { background: var(--hfk-red); color: #fff; }
+.season-motiv { font-size: 14px; color: var(--text); margin: 8px 0 0; padding: 10px 12px; background: var(--bg-accent); border-radius: var(--radius-xs); white-space: pre-wrap; }
+.season-motiv-empty { color: var(--text-muted); font-style: italic; }
+
+.fourl-toggle {
+  margin-top: 12px; padding: 8px 12px; background: transparent;
+  border: 1px solid var(--border); border-radius: var(--radius-xs);
+  cursor: pointer; font-family: inherit; font-size: 13px; color: var(--text);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.fourl-toggle:hover { background: var(--bg-accent); }
+.fourl-toggle .arrow { transition: transform 0.2s; }
+.fourl-toggle.open .arrow { transform: rotate(90deg); }
+.fourl-body { margin-top: 12px; display: none; }
+.fourl-body.open { display: block; }
+.round-card {
+  background: var(--hfk-white); border-radius: var(--radius-xs);
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.round-title { font-weight: 600; color: var(--hfk-burgundy); font-size: 13px; margin: 0 0 6px; }
+.round-raw { font-size: 13px; color: var(--text); white-space: pre-wrap; line-height: 1.7; }
+
+/* Empty/error states */
+.empty {
+  text-align: center; padding: 60px 20px; color: var(--text-muted);
+}
+.empty h2 { color: var(--hfk-burgundy); font-weight: 700; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 16px 14px 60px; }
+  .profile-name { font-size: 22px; }
+  .profile-stats { gap: 16px; }
+  .stat-item b { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a href="./index.html">← 시즌 운영 대시보드</a>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+const DATA_URL = './data/member_roadmap.json';
+const params = new URLSearchParams(window.location.search);
+const targetId = params.get('id');
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderSearch(data) {
+  const members = Object.values(data.members)
+    .filter(m => m.total_count >= 2)
+    .sort((a, b) => b.total_count - a.total_count);
+
+  const root = document.getElementById('app');
+  root.className = 'search-view';
+  root.innerHTML = `
+    <h1>HFK 멤버 로드맵</h1>
+    <p>이름으로 검색해 시즌별 활동 흐름을 확인하세요. 재등록 ${data.stats.returning}명, 4L 보유 ${data.stats.with_4l}명.</p>
+    <input class="search-input" id="search" placeholder="이름 검색 (예: 전소영)" autofocus>
+    <div class="search-results" id="results"></div>
+  `;
+
+  const input = document.getElementById('search');
+  const results = document.getElementById('results');
+
+  function render(q) {
+    const filtered = q
+      ? members.filter(m => m.name.includes(q) || (m.company || '').includes(q))
+      : members.slice(0, 50);
+    results.innerHTML = filtered.map(m => `
+      <div class="item" onclick="location.search='?id=${m.uuid}'">
+        <div>
+          <div class="name">${escapeHtml(m.name)}</div>
+          <div class="meta">${escapeHtml(m.company || '—')} · ${m.total_count}시즌 · ${escapeHtml(m.first_season)}~${escapeHtml(m.latest_season)}</div>
+        </div>
+        ${m.has_4l ? '<span class="meta">4L ✓</span>' : ''}
+      </div>
+    `).join('') || '<div class="empty"><p>검색 결과 없음</p></div>';
+  }
+
+  input.addEventListener('input', e => render(e.target.value.trim()));
+  render('');
+}
+
+function renderProfile(member) {
+  const root = document.getElementById('app');
+  root.className = 'profile-view';
+
+  const sub = [member.company, member.function, member.years && (member.years + '년차')].filter(Boolean).join(' · ');
+
+  const seasonsHtml = member.seasons.map((s, idx) => {
+    const isReturning = s.type === '재등록';
+    const cls = isReturning ? 'returning' : 'first';
+    const tagClass = isReturning ? 'tag-return' : 'tag-first';
+    const motiv = s.motivation
+      ? `<div class="season-motiv">${escapeHtml(s.motivation)}</div>`
+      : `<div class="season-motiv season-motiv-empty">등록 동기 미입력</div>`;
+
+    let fourlHtml = '';
+    if (s.review_4l && s.review_4l.rounds.length) {
+      const rounds = s.review_4l.rounds.map(r => `
+        <div class="round-card">
+          <div class="round-title">${escapeHtml(r.title || (r.number + '회차'))}</div>
+          <div class="round-raw">${escapeHtml(r.raw)}</div>
+        </div>
+      `).join('');
+      fourlHtml = `
+        <button class="fourl-toggle" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+          <span class="arrow">▶</span> 4L 회고 ${s.review_4l.rounds.length}건 보기
+        </button>
+        <div class="fourl-body">${rounds}</div>
+      `;
+    }
+
+    return `
+      <div class="season-card ${cls}">
+        <div class="season-head">
+          <div>
+            <span class="season-label">${escapeHtml(s.season)}</span>
+            <span class="season-tag ${tagClass}">${escapeHtml(s.type || '—')}</span>
+          </div>
+          <div class="season-team">${escapeHtml(s.team || '—')}</div>
+        </div>
+        ${motiv}
+        ${fourlHtml}
+      </div>
+    `;
+  }).join('');
+
+  root.innerHTML = `
+    <div class="topbar">
+      <a href="./member.html">← 멤버 목록</a>
+    </div>
+    <div class="profile-head">
+      <h1 class="profile-name">${escapeHtml(member.name)}</h1>
+      <p class="profile-sub">${escapeHtml(sub || '정보 없음')}</p>
+      <div class="profile-stats">
+        <div class="stat-item"><b>${member.total_count}</b>총 시즌</div>
+        <div class="stat-item"><b>${escapeHtml(member.first_season)}</b>첫 등록</div>
+        <div class="stat-item"><b>${escapeHtml(member.latest_season)}</b>가장 최근</div>
+      </div>
+    </div>
+    <div class="timeline">${seasonsHtml}</div>
+  `;
+}
+
+fetch(DATA_URL)
+  .then(r => r.json())
+  .then(data => {
+    if (targetId && data.members[targetId]) {
+      renderProfile(data.members[targetId]);
+    } else if (targetId) {
+      document.getElementById('app').innerHTML = `
+        <div class="empty">
+          <h2>멤버를 찾을 수 없습니다</h2>
+          <p>id=${escapeHtml(targetId)}</p>
+          <p><a href="./member.html">← 멤버 목록으로</a></p>
+        </div>`;
+    } else {
+      renderSearch(data);
+    }
+  })
+  .catch(e => {
+    document.getElementById('app').innerHTML = `<div class="empty"><h2>데이터 로드 실패</h2><p>${escapeHtml(e.message)}</p></div>`;
+  });
+</script>
+</body>
+</html>
