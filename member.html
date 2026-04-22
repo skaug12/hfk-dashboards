@@ -37,7 +37,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
-.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 96px; }
 
 /* Header */
 .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
@@ -64,15 +64,15 @@ body {
 
 /* Profile header */
 .profile-head {
-  background: #fff; padding: 24px 20px; border-radius: var(--radius);
-  border: 1px solid var(--border-light); margin-bottom: 24px;
+  background: #fff; padding: 32px 28px; border-radius: var(--radius);
+  border: 1px solid var(--border-light); margin-bottom: 36px;
 }
-.profile-name { font-size: 26px; font-weight: 700; color: var(--hfk-burgundy); margin: 0 0 4px; letter-spacing: -0.02em; }
-.profile-sub { color: var(--text-light); font-size: 14px; margin: 0 0 8px; }
-.profile-narrative { color: var(--text); font-size: 14px; margin: 0 0 16px; line-height: 1.6; }
-.profile-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.profile-name { font-size: 28px; font-weight: 700; color: var(--hfk-burgundy); margin: 0 0 6px; letter-spacing: -0.02em; }
+.profile-sub { color: var(--text-light); font-size: 14px; margin: 0 0 14px; }
+.profile-narrative { color: var(--text); font-size: 14px; margin: 0 0 24px; line-height: 1.7; }
+.profile-stats { display: flex; gap: 32px; flex-wrap: wrap; }
 .stat-item { font-size: 13px; color: var(--text-muted); }
-.stat-item b { color: var(--hfk-burgundy); font-size: 18px; font-weight: 700; display: block; line-height: 1.2; margin-bottom: 2px; letter-spacing: -0.01em; }
+.stat-item b { color: var(--hfk-burgundy); font-size: 18px; font-weight: 700; display: block; line-height: 1.2; margin-bottom: 3px; letter-spacing: -0.01em; }
 
 /* Timeline */
 .timeline { position: relative; padding-left: 32px; }
@@ -81,18 +81,18 @@ body {
   width: 2px; background: var(--hfk-sand);
 }
 .season-card {
-  position: relative; margin-bottom: 18px; background: #fff;
+  position: relative; margin-bottom: 24px; background: #fff;
   border-radius: var(--radius-sm);
   box-shadow: 0 0 0 1px var(--border-light);
-  padding: 16px 18px;
+  padding: 20px 22px;
 }
 .season-card::before {
   content: ''; position: absolute; left: -26px; top: 22px;
   width: 12px; height: 12px;
   border-radius: 50%; background: var(--hfk-red);
 }
-.season-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
-.season-main { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; min-width: 0; }
+.season-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.season-main { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; min-width: 0; }
 .season-label { font-weight: 600; color: var(--text-muted); font-size: 12px; letter-spacing: 0.03em; }
 .season-team { color: var(--hfk-burgundy); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
 .season-tag {
@@ -101,11 +101,11 @@ body {
 }
 .tag-first { background: var(--bg-accent); color: var(--hfk-burgundy); }
 .tag-return { background: var(--hfk-red); color: #fff; }
-.season-motiv { font-size: 14px; color: var(--text); margin: 8px 0 0; padding: 10px 12px; background: var(--bg-accent); border-radius: var(--radius-xs); white-space: pre-wrap; }
+.season-motiv { font-size: 14px; color: var(--text); margin: 10px 0 0; padding: 14px 16px; background: var(--bg-accent); border-radius: var(--radius-xs); white-space: pre-wrap; line-height: 1.6; }
 .season-motiv-empty { color: var(--text-muted); font-style: italic; }
 
 .fourl-toggle {
-  margin-top: 12px; padding: 8px 12px; background: transparent;
+  margin-top: 16px; padding: 8px 12px; background: transparent;
   border: 1px solid var(--border); border-radius: var(--radius-xs);
   cursor: pointer; font-family: inherit; font-size: 13px; color: var(--text);
   display: inline-flex; align-items: center; gap: 6px;
@@ -125,16 +125,16 @@ body {
 /* Track flow chart (Sankey-lite) */
 .track-flow-card {
   background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
-  padding: 20px 16px; margin-bottom: 24px;
+  padding: 28px 24px; margin-bottom: 36px;
 }
 .track-flow-title {
-  font-size: 13px; color: var(--text-muted); margin: 0 0 12px;
+  font-size: 13px; color: var(--text-muted); margin: 0 0 20px;
   font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
 }
 .track-flow-scroll { overflow-x: auto; padding-bottom: 8px; }
 .track-flow-svg { display: block; min-width: 100%; }
 .track-legend {
-  display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 14px;
+  display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 22px;
   font-size: 12px; color: var(--text-muted);
 }
 .legend-item { display: inline-flex; align-items: center; gap: 6px; }
@@ -161,8 +161,8 @@ body {
 /* 여정: 과거 시즌 → 다음 시즌 (26여름 추천) */
 .journey-bridge {
   position: relative;
-  margin: 4px 0 8px;
-  padding: 18px 0 14px 0;
+  margin: 12px 0 16px;
+  padding: 28px 0 22px 0;
 }
 .journey-bridge::before {
   /* 타임라인 수직선을 점선으로 잇는 영역 (수직선 자체는 .timeline::before로 이어짐) */
@@ -197,8 +197,8 @@ body {
 
 /* 마지막 과거 시즌 후 추천 직전: 여정 헤드라인 */
 .journey-headline {
-  margin: 0 0 16px; padding: 0;
-  color: var(--text-light); font-size: 14px; line-height: 1.6;
+  margin: 0 0 24px; padding: 0 0 0 32px;
+  color: var(--text-light); font-size: 14px; line-height: 1.7;
 }
 
 /* Empty/error states */
