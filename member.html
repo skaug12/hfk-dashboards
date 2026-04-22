@@ -182,6 +182,7 @@ body {
 /* 미래 시즌 카드 (추천) — season-card와 동일 축에 배치되면서 시각적으로 구분 */
 .season-card.future {
   background: var(--hfk-white);
+  padding-right: 72px;
 }
 .season-card.future::before {
   background: #fff;
@@ -249,53 +250,67 @@ const TRACK_COLORS = {
 };
 
 function renderTrackFlow(member, tracks) {
-  // 최소 1시즌 이상 + 트랙 정보 있는 시즌 1개 이상이어야 의미
+  // 6개 레인: 5 트랙 + 미등록 (이력에 없어도 구조 유지)
   const lanes = [...tracks, '미등록'];
   const laneY = {};
   const LANE_H = 36;
-  const PAD_TOP = 16;
-  const PAD_LEFT = 96;   // 트랙 라벨 자리
-  const COL_W = 56;
-  const PAD_BOTTOM = 28; // 시즌 라벨 자리
+  const PAD_TOP = 20;
+  const PAD_LEFT = 96;
+  const COL_W = 86;           // 팀명(5-6자) 담을 폭
+  const PAD_BOTTOM = 48;      // 2줄 라벨 (팀명 + 시즌)
   lanes.forEach((t, i) => { laneY[t] = PAD_TOP + i * LANE_H + LANE_H / 2; });
 
   const cols = member.seasons.length;
-  const W = PAD_LEFT + cols * COL_W + 24;
+  const W = PAD_LEFT + cols * COL_W + 32;
   const H = PAD_TOP + lanes.length * LANE_H + PAD_BOTTOM;
 
   const dots = member.seasons.map((s, i) => {
     const t = s.track || '미등록';
+    const teamLabel = (s.team_normalized || s.team || '—').slice(0, 6);
     return {
       x: PAD_LEFT + i * COL_W + COL_W / 2,
       y: laneY[t],
       season: s.season,
       team: s.team,
+      teamLabel: teamLabel,
       track: t,
       type: s.type,
+      isLatest: i === member.seasons.length - 1,
     };
   });
 
+  // 연결선: 시간 흐름 방향 강조 (점선 아님, 색은 sand → 최신은 coral)
   const lineSegs = [];
   for (let i = 1; i < dots.length; i++) {
-    lineSegs.push(`<line x1="${dots[i-1].x}" y1="${dots[i-1].y}" x2="${dots[i].x}" y2="${dots[i].y}" stroke="#bbb" stroke-width="2" stroke-linecap="round" />`);
+    const color = i === dots.length - 1 ? 'var(--hfk-coral)' : 'var(--hfk-sand)';
+    lineSegs.push(`<line x1="${dots[i-1].x}" y1="${dots[i-1].y}" x2="${dots[i].x}" y2="${dots[i].y}" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />`);
   }
 
   const laneBg = lanes.map((t, i) => {
     const y = PAD_TOP + i * LANE_H + LANE_H / 2;
+    const color = t === '미등록' ? '#bbb' : TRACK_COLORS[t];
     return `
-      <text x="${PAD_LEFT - 12}" y="${y + 4}" text-anchor="end" font-size="11" fill="${t === '미등록' ? '#999' : TRACK_COLORS[t]}" font-weight="600">${t}</text>
+      <text x="${PAD_LEFT - 12}" y="${y + 4}" text-anchor="end" font-size="11" fill="${color}" font-weight="600">${t}</text>
       <line x1="${PAD_LEFT}" y1="${y}" x2="${W - 8}" y2="${y}" stroke="#f0f0f0" stroke-width="1" />
     `;
   }).join('');
 
   const dotMarkup = dots.map(d => `
-    <circle class="dot" cx="${d.x}" cy="${d.y}" r="7" fill="${TRACK_COLORS[d.track]}" stroke="#fff" stroke-width="2"
+    <circle class="dot" cx="${d.x}" cy="${d.y}" r="${d.isLatest ? 9 : 7}" fill="${TRACK_COLORS[d.track]}" stroke="#fff" stroke-width="${d.isLatest ? 3 : 2}"
       data-season="${escapeHtml(d.season)}"
       data-team="${escapeHtml(d.team || '—')}"
       data-track="${escapeHtml(d.track)}"
       data-type="${escapeHtml(d.type || '')}"></circle>
-    <text x="${d.x}" y="${H - 12}" text-anchor="middle" font-size="10" fill="#666">${escapeHtml(d.season)}</text>
+    <text x="${d.x}" y="${H - 22}" text-anchor="middle" font-size="12" fill="#222" font-weight="700">${escapeHtml(d.teamLabel)}</text>
+    <text x="${d.x}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#888">${escapeHtml(d.season)}</text>
   `).join('');
+
+  // 오른쪽 끝 화살표 (다음으로 이어지는 느낌)
+  const lastDot = dots[dots.length - 1];
+  const arrowMarkup = `
+    <line x1="${lastDot.x + 14}" y1="${lastDot.y}" x2="${W - 18}" y2="${lastDot.y}" stroke="var(--hfk-coral)" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round" />
+    <polygon points="${W - 18},${lastDot.y - 4} ${W - 10},${lastDot.y} ${W - 18},${lastDot.y + 4}" fill="var(--hfk-coral)" />
+  `;
 
   const legend = lanes.map(t => `
     <span class="legend-item">
@@ -310,6 +325,7 @@ function renderTrackFlow(member, tracks) {
         <svg class="track-flow-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
           ${laneBg}
           ${lineSegs.join('')}
+          ${arrowMarkup}
           ${dotMarkup}
         </svg>
       </div>
