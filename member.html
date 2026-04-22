@@ -68,7 +68,8 @@ body {
   border: 1px solid var(--border-light); margin-bottom: 24px;
 }
 .profile-name { font-size: 26px; font-weight: 700; color: var(--hfk-burgundy); margin: 0 0 4px; letter-spacing: -0.02em; }
-.profile-sub { color: var(--text-light); font-size: 14px; margin: 0 0 16px; }
+.profile-sub { color: var(--text-light); font-size: 14px; margin: 0 0 8px; }
+.profile-narrative { color: var(--text); font-size: 14px; margin: 0 0 16px; line-height: 1.6; }
 .profile-stats { display: flex; gap: 24px; flex-wrap: wrap; }
 .stat-item { font-size: 13px; color: var(--text-muted); }
 .stat-item b { color: var(--hfk-burgundy); font-size: 18px; font-weight: 700; display: block; line-height: 1.2; margin-bottom: 2px; letter-spacing: -0.01em; }
@@ -156,37 +157,53 @@ body {
 .track-flow-svg circle.dot { cursor: pointer; transition: r 0.1s; }
 .track-flow-svg circle.dot:hover { r: 9; }
 
-/* 26여름 추천 */
-.rec-card {
-  background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
-  padding: 20px 16px; margin-bottom: 24px;
-}
-.rec-title {
-  font-size: 13px; color: var(--hfk-red); margin: 0 0 4px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-}
-.rec-subtitle { font-size: 13px; color: var(--text-muted); margin: 0 0 14px; }
-.rec-list { display: grid; gap: 10px; }
-.rec-item {
-  padding: 14px 16px; border-radius: var(--radius-sm);
-  background: var(--bg-accent); border-left: 0;
+/* 여정: 과거 시즌 → 다음 시즌 (26여름 추천) */
+.journey-bridge {
   position: relative;
+  margin: 4px 0 8px;
+  padding: 18px 0 14px 0;
+}
+.journey-bridge::before {
+  /* 타임라인 수직선을 점선으로 잇는 영역 (수직선 자체는 .timeline::before로 이어짐) */
+  content: '';
+  position: absolute; left: 11px; top: 0; bottom: 0;
+  width: 2px; background: var(--bg-warm);
+}
+.journey-bridge::after {
+  content: '';
+  position: absolute; left: 9px; top: 4px; bottom: 4px;
+  width: 0; border-left: 2px dotted var(--hfk-red);
+}
+.bridge-label {
+  padding-left: 32px; font-size: 12px; font-weight: 700;
+  color: var(--hfk-red); text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* 미래 시즌 카드 (추천) — season-card와 동일 축에 배치되면서 시각적으로 구분 */
+.season-card.future {
+  background: var(--hfk-white);
+}
+.season-card.future::before {
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--hfk-red);
 }
 .rec-rank {
   position: absolute; top: 14px; right: 16px;
-  font-size: 11px; font-weight: 700; color: var(--hfk-burgundy);
-  background: #fff; padding: 2px 8px; border-radius: 10px;
-  border: 1px solid var(--border-light);
+  font-size: 10px; font-weight: 700; color: var(--hfk-red);
+  letter-spacing: 0.1em;
 }
-.rec-team-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; padding-right: 40px; }
-.rec-team { font-weight: 700; color: var(--hfk-burgundy); font-size: 16px; }
 .rec-track-pill {
   display: inline-block; padding: 2px 8px; border-radius: 10px;
   font-size: 11px; font-weight: 600; color: #fff;
 }
-.rec-day { font-size: 12px; color: var(--text-muted); }
 .rec-headline { font-size: 13px; color: var(--text-light); margin-bottom: 8px; font-style: italic; }
-.rec-reason { font-size: 14px; color: var(--text); line-height: 1.6; margin: 0; }
+.rec-reason { font-size: 14px; color: var(--text); line-height: 1.7; margin: 6px 0 0; }
+
+/* 마지막 과거 시즌 후 추천 직전: 여정 헤드라인 */
+.journey-headline {
+  margin: 0 0 16px; padding: 0;
+  color: var(--text-light); font-size: 14px; line-height: 1.6;
+}
 
 /* Empty/error states */
 .empty {
@@ -301,31 +318,33 @@ function renderTrackFlow(member, tracks) {
   `;
 }
 
-function renderRecommendations(member) {
+function renderFutureCards(member) {
   const rec = member.recommendations_26여름;
   if (!rec || !rec.picks || !rec.picks.length) return '';
+  const bridge = `
+    <div class="journey-bridge">
+      <div class="bridge-label">↓ 다음 시즌 · 26여름</div>
+    </div>
+    <p class="journey-headline">지난 ${member.total_count}시즌의 흐름을 보고 고른 다음 3팀입니다. 최종 선택은 본인이 결정합니다.</p>
+  `;
   const items = rec.picks.map((p, i) => {
     const color = TRACK_COLORS[p.track] || '#999';
     return `
-      <div class="rec-item">
-        <span class="rec-rank">#${i + 1}</span>
-        <div class="rec-team-row">
-          <span class="rec-team">${escapeHtml(p.team)}</span>
-          <span class="rec-track-pill" style="background:${color}">${escapeHtml(p.track || '미지정')}</span>
-          <span class="rec-day">· ${escapeHtml(p.day_type || '—')}</span>
+      <div class="season-card future">
+        <span class="rec-rank">NEXT 0${i + 1}</span>
+        <div class="season-head">
+          <div>
+            <span class="season-label">26여름</span>
+            <span class="season-tag" style="background:${color}; color:#fff;">${escapeHtml(p.track || '미지정')}</span>
+          </div>
+          <div class="season-team">${escapeHtml(p.team)}</div>
         </div>
         ${p.headline ? `<div class="rec-headline">${escapeHtml(p.headline)}</div>` : ''}
         <p class="rec-reason">${escapeHtml(p.reason)}</p>
       </div>
     `;
   }).join('');
-  return `
-    <div class="rec-card">
-      <div class="rec-title">26여름 추천 팀</div>
-      <div class="rec-subtitle">시즌 이력과 등록 동기를 바탕으로 뽑은 3팀입니다. 최종 선택은 본인이 결정합니다.</div>
-      <div class="rec-list">${items}</div>
-    </div>
-  `;
+  return bridge + items;
 }
 
 function renderProfile(member, tracks) {
@@ -336,7 +355,7 @@ function renderProfile(member, tracks) {
   const trackFlowHtml = (member.seasons.length >= 2 && tracks && tracks.length)
     ? renderTrackFlow(member, tracks)
     : '';
-  const recHtml = renderRecommendations(member);
+  const futureHtml = renderFutureCards(member);
 
   const seasonsHtml = member.seasons.map((s, idx) => {
     const isReturning = s.type === '재등록';
@@ -377,10 +396,15 @@ function renderProfile(member, tracks) {
     `;
   }).join('');
 
+  const narrative = member.total_count >= 2
+    ? `${escapeHtml(member.first_season)}에 시작해 ${escapeHtml(member.latest_season)}까지, HFK에서 ${member.total_count}시즌을 지났습니다.`
+    : `${escapeHtml(member.latest_season)}에 HFK 첫 시즌을 시작했습니다.`;
+
   root.innerHTML = `
     <div class="profile-head">
       <h1 class="profile-name">${escapeHtml(member.name)}</h1>
       <p class="profile-sub">${escapeHtml(sub || '정보 없음')}</p>
+      <p class="profile-narrative">${narrative}</p>
       <div class="profile-stats">
         <div class="stat-item"><b>${member.total_count}</b>총 시즌</div>
         <div class="stat-item"><b>${escapeHtml(member.first_season)}</b>첫 등록</div>
@@ -388,8 +412,7 @@ function renderProfile(member, tracks) {
       </div>
     </div>
     ${trackFlowHtml}
-    <div class="timeline">${seasonsHtml}</div>
-    ${recHtml}
+    <div class="timeline">${seasonsHtml}${futureHtml}</div>
   `;
   attachTooltip();
 }
