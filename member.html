@@ -250,7 +250,7 @@ function renderTrackFlow(member, tracks) {
   const lanes = hasUnmapped ? [...tracks, '미등록'] : [...tracks];
   const laneY = {};
   const LANE_H = 36;
-  const PAD_TOP = 20;
+  const PAD_TOP = 28;         // 상단 연도 라벨 자리
   const PAD_LEFT = 96;
   const PAD_BOTTOM = 48;      // 2줄 라벨 (팀명 + 시즌)
   lanes.forEach((t, i) => { laneY[t] = PAD_TOP + i * LANE_H + LANE_H / 2; });
@@ -311,6 +311,25 @@ function renderTrackFlow(member, tracks) {
     `;
   }).join('');
 
+  // 연도 경계 점선 + 상단 라벨 (YY봄 = year*4+1 시점)
+  const firstYear = Math.floor(minT / 4);
+  const lastYear = Math.ceil(maxT / 4);
+  const yearGridTop = PAD_TOP - 4;
+  const yearGridBottom = H - PAD_BOTTOM + 6;
+  const yearMarkers = [];
+  for (let y = firstYear; y <= lastYear; y++) {
+    const yearIdx = y * 4 + 1;
+    const x = X_FIRST + (yearIdx - minT) * PX_PER_QUARTER;
+    if (x >= PAD_LEFT - 4 && x <= W - 16) {
+      yearMarkers.push(`
+        <line x1="${x}" y1="${yearGridTop}" x2="${x}" y2="${yearGridBottom}"
+          stroke="#dcd3c7" stroke-width="1" stroke-dasharray="2 4" />
+        <text x="${x}" y="${PAD_TOP - 12}" text-anchor="middle" font-size="10" fill="#999" font-weight="600">'${y}</text>
+      `);
+    }
+  }
+  const yearMarkup = yearMarkers.join('');
+
   const dotMarkup = dots.map(d => `
     <circle class="dot" cx="${d.x}" cy="${d.y}" r="${d.isLatest ? 9 : 7}" fill="${TRACK_COLORS[d.track]}" stroke="#fff" stroke-width="${d.isLatest ? 3 : 2}"
       data-season="${escapeHtml(d.season)}"
@@ -341,6 +360,7 @@ function renderTrackFlow(member, tracks) {
       <div class="track-flow-title">성장 트랙</div>
       <div class="track-flow-scroll">
         <svg class="track-flow-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+          ${yearMarkup}
           ${laneBg}
           ${lineSegs.join('')}
           ${arrowMarkup}
