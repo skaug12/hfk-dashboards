@@ -311,24 +311,31 @@ function renderTrackFlow(member, tracks) {
     `;
   }).join('');
 
-  // 연도 경계 점선 + 상단 라벨 (YY봄 = year*4+1 시점)
-  const firstYear = Math.floor(minT / 4);
-  const lastYear = Math.ceil(maxT / 4);
-  const yearGridTop = PAD_TOP - 4;
-  const yearGridBottom = H - PAD_BOTTOM + 6;
-  const yearMarkers = [];
-  for (let y = firstYear; y <= lastYear; y++) {
-    const yearIdx = y * 4 + 1;
-    const x = X_FIRST + (yearIdx - minT) * PX_PER_QUARTER;
-    if (x >= PAD_LEFT - 4 && x <= W - 16) {
-      yearMarkers.push(`
-        <line x1="${x}" y1="${yearGridTop}" x2="${x}" y2="${yearGridBottom}"
+  // 분기/연도 그리드
+  const gridTop = PAD_TOP - 4;
+  const gridBottom = H - PAD_BOTTOM + 6;
+  const firstQuarter = Math.ceil(minT - 0.01);
+  const lastQuarter = Math.floor(maxT + 0.01);
+  const gridMarkers = [];
+  for (let q = firstQuarter; q <= lastQuarter + 1; q++) {
+    const x = X_FIRST + (q - minT) * PX_PER_QUARTER;
+    if (x < PAD_LEFT - 4 || x > W - 16) continue;
+    const isYearStart = q % 4 === 1; // 봄
+    if (isYearStart) {
+      const year = Math.floor(q / 4);
+      gridMarkers.push(`
+        <line x1="${x}" y1="${gridTop}" x2="${x}" y2="${gridBottom}"
           stroke="#b5a48d" stroke-width="1" stroke-dasharray="3 4" opacity="0.7" />
-        <text x="${x}" y="${PAD_TOP - 12}" text-anchor="middle" font-size="11" fill="#777" font-weight="700">'${y}</text>
+        <text x="${x}" y="${PAD_TOP - 12}" text-anchor="middle" font-size="11" fill="#777" font-weight="700">'${year}</text>
+      `);
+    } else {
+      gridMarkers.push(`
+        <line x1="${x}" y1="${gridTop}" x2="${x}" y2="${gridBottom}"
+          stroke="#ddcfbf" stroke-width="1" stroke-dasharray="1 5" opacity="0.55" />
       `);
     }
   }
-  const yearMarkup = yearMarkers.join('');
+  const yearMarkup = gridMarkers.join('');
 
   const dotMarkup = dots.map(d => `
     <circle class="dot" cx="${d.x}" cy="${d.y}" r="${d.isLatest ? 9 : 7}" fill="${TRACK_COLORS[d.track]}" stroke="#fff" stroke-width="${d.isLatest ? 3 : 2}"
