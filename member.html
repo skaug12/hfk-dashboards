@@ -323,8 +323,8 @@ function renderTrackFlow(member, tracks) {
     if (x >= PAD_LEFT - 4 && x <= W - 16) {
       yearMarkers.push(`
         <line x1="${x}" y1="${yearGridTop}" x2="${x}" y2="${yearGridBottom}"
-          stroke="#dcd3c7" stroke-width="1" stroke-dasharray="2 4" />
-        <text x="${x}" y="${PAD_TOP - 12}" text-anchor="middle" font-size="10" fill="#999" font-weight="600">'${y}</text>
+          stroke="#b5a48d" stroke-width="1" stroke-dasharray="3 4" opacity="0.7" />
+        <text x="${x}" y="${PAD_TOP - 12}" text-anchor="middle" font-size="11" fill="#777" font-weight="700">'${y}</text>
       `);
     }
   }
