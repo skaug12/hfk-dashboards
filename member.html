@@ -81,14 +81,14 @@ body {
 }
 .season-card {
   position: relative; margin-bottom: 18px; background: #fff;
-  border-radius: var(--radius-sm); border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--border-light);
   padding: 16px 18px;
 }
 .season-card::before {
   content: ''; position: absolute; left: -26px; top: 22px;
   width: 12px; height: 12px;
   border-radius: 50%; background: var(--hfk-red);
-  box-sizing: border-box;
 }
 .season-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
 .season-label { font-weight: 700; color: var(--hfk-burgundy); font-size: 15px; }
@@ -261,12 +261,12 @@ const TRACK_COLORS = {
   'Enrichment':   '#ff6154',  // coral
   'Realignment':  '#ceb9a4',  // sand
   'New Horizons': '#2d2523',  // charcoal
-  '기타':          '#bbb',
+  '미등록':          '#bbb',
 };
 
 function renderTrackFlow(member, tracks) {
   // 최소 1시즌 이상 + 트랙 정보 있는 시즌 1개 이상이어야 의미
-  const lanes = [...tracks, '기타'];
+  const lanes = [...tracks, '미등록'];
   const laneY = {};
   const LANE_H = 36;
   const PAD_TOP = 16;
@@ -280,7 +280,7 @@ function renderTrackFlow(member, tracks) {
   const H = PAD_TOP + lanes.length * LANE_H + PAD_BOTTOM;
 
   const dots = member.seasons.map((s, i) => {
-    const t = s.track || '기타';
+    const t = s.track || '미등록';
     return {
       x: PAD_LEFT + i * COL_W + COL_W / 2,
       y: laneY[t],
@@ -299,7 +299,7 @@ function renderTrackFlow(member, tracks) {
   const laneBg = lanes.map((t, i) => {
     const y = PAD_TOP + i * LANE_H + LANE_H / 2;
     return `
-      <text x="${PAD_LEFT - 12}" y="${y + 4}" text-anchor="end" font-size="11" fill="${t === '기타' ? '#999' : TRACK_COLORS[t]}" font-weight="600">${t}</text>
+      <text x="${PAD_LEFT - 12}" y="${y + 4}" text-anchor="end" font-size="11" fill="${t === '미등록' ? '#999' : TRACK_COLORS[t]}" font-weight="600">${t}</text>
       <line x1="${PAD_LEFT}" y1="${y}" x2="${W - 8}" y2="${y}" stroke="#f0f0f0" stroke-width="1" />
     `;
   }).join('');
@@ -321,7 +321,7 @@ function renderTrackFlow(member, tracks) {
 
   return `
     <div class="track-flow-card">
-      <div class="track-flow-title">성장 트랙 궤적</div>
+      <div class="track-flow-title">성장 트랙</div>
       <div class="track-flow-scroll">
         <svg class="track-flow-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
           ${laneBg}
@@ -423,9 +423,9 @@ function renderProfile(member, tracks) {
         <div class="stat-item"><b>${escapeHtml(member.latest_season)}</b>가장 최근</div>
       </div>
     </div>
-    ${recHtml}
     ${trackFlowHtml}
     <div class="timeline">${seasonsHtml}</div>
+    ${recHtml}
   `;
   attachTooltip();
 }
