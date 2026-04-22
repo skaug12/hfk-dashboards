@@ -160,24 +160,11 @@ body {
 .track-flow-svg circle.dot { cursor: pointer; transition: r 0.1s; }
 .track-flow-svg circle.dot:hover { r: 9; }
 
-/* 여정: 과거 시즌 → 다음 시즌 (26여름 추천) — 점선 구간이 호흡을 만듦 */
+/* 여정: 과거 시즌 → 다음 시즌 (26여름 추천) */
 .journey-bridge {
   position: relative;
   margin: 16px 0 8px;
-  padding: 40px 0 40px 32px;   /* 안에 pill + intro 모두 포함 → 점선이 길게 이어짐 */
-}
-.journey-bridge::before {
-  /* 타임라인 sand 선 가리기 */
-  content: '';
-  position: absolute; left: 10px; top: 0; bottom: 0;
-  width: 4px; background: var(--bg-warm);
-}
-.journey-bridge::after {
-  /* 점선 전환 (충분히 긴 호흡) */
-  content: '';
-  position: absolute; left: 11px; top: 4px; bottom: 4px;
-  width: 0; border-left: 2px dotted var(--hfk-red);
-  transform: translateX(-50%);
+  padding: 40px 0 40px 32px;
 }
 .bridge-label {
   display: inline-block;
