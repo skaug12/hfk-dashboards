@@ -386,7 +386,7 @@ function renderFutureCards(member) {
     <div class="journey-bridge">
       <div class="bridge-label">↓ 다음 시즌 · 26여름</div>
     </div>
-    <p class="journey-headline">지난 ${member.total_count}시즌의 흐름을 보고 고른 다음 3팀입니다. 최종 선택은 본인이 결정합니다.</p>
+    <p class="journey-headline">${escapeHtml(member.name)}님의 성장은 중요합니다. 지난 ${member.total_count}시즌의 흐름을 보고 HFK가 추천하는 다음 3팀입니다.</p>
   `;
   const items = rec.picks.map((p, i) => {
     const color = TRACK_COLORS[p.track] || '#999';
@@ -457,7 +457,7 @@ function renderProfile(member, tracks) {
   }).join('');
 
   const narrative = member.total_count >= 2
-    ? `${escapeHtml(member.first_season)}에 시작해 ${escapeHtml(member.latest_season)}까지, HFK에서 ${member.total_count}시즌을 지났습니다.`
+    ? `${escapeHtml(member.first_season)}에 시작해 ${escapeHtml(member.latest_season)}까지, HFK에서 ${member.total_count}시즌을 보냈습니다.`
     : `${escapeHtml(member.latest_season)}에 HFK 첫 시즌을 시작했습니다.`;
 
   root.innerHTML = `
