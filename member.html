@@ -92,8 +92,9 @@ body {
   border-radius: 50%; background: var(--hfk-red);
 }
 .season-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
-.season-label { font-weight: 700; color: var(--hfk-burgundy); font-size: 15px; }
-.season-team { color: var(--text-dark); font-weight: 600; font-size: 15px; }
+.season-main { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; min-width: 0; }
+.season-label { font-weight: 600; color: var(--text-muted); font-size: 12px; letter-spacing: 0.03em; }
+.season-team { color: var(--hfk-burgundy); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
 .season-tag {
   display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px;
   font-weight: 600; vertical-align: middle; margin-left: 4px;
@@ -182,16 +183,10 @@ body {
 /* 미래 시즌 카드 (추천) — season-card와 동일 축에 배치되면서 시각적으로 구분 */
 .season-card.future {
   background: var(--hfk-white);
-  padding-right: 72px;
 }
 .season-card.future::before {
   background: #fff;
   box-shadow: 0 0 0 2px var(--hfk-red);
-}
-.rec-rank {
-  position: absolute; top: 14px; right: 16px;
-  font-size: 10px; font-weight: 700; color: var(--hfk-red);
-  letter-spacing: 0.1em;
 }
 .rec-track-pill {
   display: inline-block; padding: 2px 8px; border-radius: 10px;
@@ -250,8 +245,9 @@ const TRACK_COLORS = {
 };
 
 function renderTrackFlow(member, tracks) {
-  // 6개 레인: 5 트랙 + 미등록 (이력에 없어도 구조 유지)
-  const lanes = [...tracks, '미등록'];
+  // 미등록 트랙 시즌이 실제로 있을 때만 레인 표시
+  const hasUnmapped = member.seasons.some(s => !s.track);
+  const lanes = hasUnmapped ? [...tracks, '미등록'] : [...tracks];
   const laneY = {};
   const LANE_H = 36;
   const PAD_TOP = 20;
@@ -347,13 +343,12 @@ function renderFutureCards(member) {
     const color = TRACK_COLORS[p.track] || '#999';
     return `
       <div class="season-card future">
-        <span class="rec-rank">NEXT 0${i + 1}</span>
         <div class="season-head">
-          <div>
+          <div class="season-main">
             <span class="season-label">26여름</span>
-            <span class="season-tag" style="background:${color}; color:#fff;">${escapeHtml(p.track || '미지정')}</span>
+            <span class="season-team">${escapeHtml(p.team)}</span>
           </div>
-          <div class="season-team">${escapeHtml(p.team)}</div>
+          <span class="season-tag" style="background:${color}; color:#fff;">${escapeHtml(p.track || '미지정')}</span>
         </div>
         ${p.headline ? `<div class="rec-headline">${escapeHtml(p.headline)}</div>` : ''}
         <p class="rec-reason">${escapeHtml(p.reason)}</p>
@@ -400,11 +395,11 @@ function renderProfile(member, tracks) {
     return `
       <div class="season-card ${cls}">
         <div class="season-head">
-          <div>
+          <div class="season-main">
             <span class="season-label">${escapeHtml(s.season)}</span>
-            <span class="season-tag ${tagClass}">${escapeHtml(s.type || '—')}</span>
+            <span class="season-team">${escapeHtml(s.team || '—')}</span>
           </div>
-          <div class="season-team">${escapeHtml(s.team || '—')}</div>
+          <span class="season-tag ${tagClass}">${escapeHtml(s.type || '—')}</span>
         </div>
         ${motiv}
         ${fourlHtml}
