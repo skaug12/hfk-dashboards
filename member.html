@@ -160,22 +160,29 @@ body {
 .track-flow-svg circle.dot { cursor: pointer; transition: r 0.1s; }
 .track-flow-svg circle.dot:hover { r: 9; }
 
-/* 여정: 과거 시즌 → 다음 시즌 (26여름 추천) */
+/* 여정: 과거 → 다음 시즌 (ceremonial 전환) */
 .journey-bridge {
   position: relative;
-  margin: 16px 0 8px;
-  padding: 40px 0 40px 32px;
+  margin: 24px 0 16px;
+  padding: 48px 20px 44px;
+  text-align: center;
+}
+.journey-bridge::before {
+  /* 가운데 정렬된 이 영역에서 좌측 sand 타임라인선 마스킹 */
+  content: '';
+  position: absolute; left: 9px; top: 0; bottom: 0;
+  width: 6px; background: var(--bg-warm);
 }
 .bridge-label {
   display: inline-block;
   font-size: 11px; font-weight: 700;
-  color: var(--hfk-red); letter-spacing: 0.15em;
+  color: var(--hfk-red); letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 4px 12px;
+  padding: 5px 14px;
   background: var(--bg-warm);
   border: 1px solid var(--hfk-red);
   border-radius: 20px;
-  margin-bottom: 22px;
+  margin-bottom: 28px;
 }
 
 /* 미래 시즌 카드 (추천) — season-card와 동일 축에 배치되면서 시각적으로 구분 */
@@ -198,11 +205,12 @@ body {
   padding: 0;
 }
 .journey-intro-emph {
-  color: var(--hfk-burgundy); font-size: 17px; font-weight: 700;
-  margin: 0 0 10px; letter-spacing: -0.01em; line-height: 1.5;
+  color: var(--hfk-burgundy); font-size: 20px; font-weight: 700;
+  margin: 0 0 12px; letter-spacing: -0.02em; line-height: 1.5;
 }
 .journey-intro-body {
-  margin: 0; color: var(--text-light); font-size: 14px; line-height: 1.7;
+  margin: 0 auto; max-width: 420px;
+  color: var(--text-light); font-size: 14px; line-height: 1.8;
 }
 
 /* Empty/error states */
