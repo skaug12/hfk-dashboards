@@ -204,55 +204,22 @@ body {
 </head>
 <body>
 <div class="wrap">
-  <div class="topbar">
-    <a href="./index.html">← 시즌 운영 대시보드</a>
-  </div>
   <div id="app"></div>
 </div>
 
 <script>
-const DATA_URL = './data/member_roadmap.json';
+const INDEX_URL = './data/index.json';
 const params = new URLSearchParams(window.location.search);
-const targetId = params.get('id');
+const token = params.get('t');
+const TOKEN_RE = /^[0-9a-f]{16}$/;
 
 function escapeHtml(s) {
   return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-function renderSearch(data) {
-  const members = Object.values(data.members)
-    .filter(m => m.total_count >= 2)
-    .sort((a, b) => b.total_count - a.total_count);
-
+function renderInvalid(title, msg) {
   const root = document.getElementById('app');
-  root.className = 'search-view';
-  root.innerHTML = `
-    <h1>HFK 멤버 로드맵</h1>
-    <p>이름으로 검색해 시즌별 활동 흐름을 확인하세요. 재등록 ${data.stats.returning}명, 4L 보유 ${data.stats.with_4l}명.</p>
-    <input class="search-input" id="search" placeholder="이름 검색 (예: 전소영)" autofocus>
-    <div class="search-results" id="results"></div>
-  `;
-
-  const input = document.getElementById('search');
-  const results = document.getElementById('results');
-
-  function render(q) {
-    const filtered = q
-      ? members.filter(m => m.name.includes(q) || (m.company || '').includes(q))
-      : members.slice(0, 50);
-    results.innerHTML = filtered.map(m => `
-      <div class="item" onclick="location.search='?id=${m.uuid}'">
-        <div>
-          <div class="name">${escapeHtml(m.name)}</div>
-          <div class="meta">${escapeHtml(m.company || '—')} · ${m.total_count}시즌 · ${escapeHtml(m.first_season)}~${escapeHtml(m.latest_season)}</div>
-        </div>
-        ${m.has_4l ? '<span class="meta">4L ✓</span>' : ''}
-      </div>
-    `).join('') || '<div class="empty"><p>검색 결과 없음</p></div>';
-  }
-
-  input.addEventListener('input', e => render(e.target.value.trim()));
-  render('');
+  root.innerHTML = `<div class="empty"><h2>${escapeHtml(title)}</h2><p>${escapeHtml(msg)}</p></div>`;
 }
 
 const TRACK_COLORS = {
@@ -411,9 +378,6 @@ function renderProfile(member, tracks) {
   }).join('');
 
   root.innerHTML = `
-    <div class="topbar">
-      <a href="./member.html">← 멤버 목록</a>
-    </div>
     <div class="profile-head">
       <h1 class="profile-name">${escapeHtml(member.name)}</h1>
       <p class="profile-sub">${escapeHtml(sub || '정보 없음')}</p>
@@ -482,25 +446,21 @@ function attachTooltip() {
   });
 }
 
-fetch(DATA_URL)
-  .then(r => r.json())
-  .then(data => {
-    if (targetId && data.members[targetId]) {
-      renderProfile(data.members[targetId], data.tracks || []);
-    } else if (targetId) {
-      document.getElementById('app').innerHTML = `
-        <div class="empty">
-          <h2>멤버를 찾을 수 없습니다</h2>
-          <p>id=${escapeHtml(targetId)}</p>
-          <p><a href="./member.html">← 멤버 목록으로</a></p>
-        </div>`;
-    } else {
-      renderSearch(data);
-    }
-  })
-  .catch(e => {
-    document.getElementById('app').innerHTML = `<div class="empty"><h2>데이터 로드 실패</h2><p>${escapeHtml(e.message)}</p></div>`;
-  });
+if (!token) {
+  renderInvalid('접근 권한 필요', '본인에게 전달된 링크로만 접근 가능합니다.');
+} else if (!TOKEN_RE.test(token)) {
+  renderInvalid('유효하지 않은 링크', '토큰 형식이 올바르지 않습니다.');
+} else {
+  Promise.all([
+    fetch(INDEX_URL).then(r => r.json()),
+    fetch(`./data/m/${token}.json`).then(r => {
+      if (!r.ok) throw new Error('not found');
+      return r.json();
+    }),
+  ])
+    .then(([index, member]) => renderProfile(member, index.tracks || []))
+    .catch(() => renderInvalid('페이지를 찾을 수 없습니다', '링크가 잘못되었거나 만료되었을 수 있습니다.'));
+}
 </script>
 </body>
 </html>
