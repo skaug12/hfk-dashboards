@@ -142,42 +142,62 @@ body {
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
-/* 이번 시즌 활동 (26봄) */
-.current-card {
-  background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
-  padding: 28px 24px; margin-bottom: 36px;
+/* 이번 시즌 리포트 (기존 hfk-member-report 디자인 톤) */
+.report-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 28px;
 }
-.current-card-title {
-  font-size: 13px; color: var(--text-muted); margin: 0 0 6px;
-  font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+.report-info-item {
+  padding: 14px 16px; background: var(--hfk-white); border-radius: var(--radius-xs);
 }
-.current-team-row {
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
-  margin-bottom: 22px;
+.report-info-item .label {
+  font-size: 10px; color: var(--hfk-sand); font-weight: 600;
+  letter-spacing: 0.06em; margin-bottom: 4px;
 }
-.current-team-name { font-size: 22px; font-weight: 700; color: var(--hfk-burgundy); letter-spacing: -0.01em; }
-.current-team-meta { color: var(--text-light); font-size: 13px; }
-.current-block { margin-top: 18px; }
-.current-block-title { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
-.attendance-grid { display: flex; gap: 6px; flex-wrap: wrap; }
-.att-cell {
-  flex: 1 1 0; min-width: 48px; padding: 10px 6px;
-  text-align: center; border-radius: var(--radius-xs);
-  background: var(--bg-accent); position: relative;
+.report-info-item .value { font-size: 14px; font-weight: 600; color: var(--hfk-charcoal); }
+
+.report-section { margin-bottom: 24px; }
+.report-section-title {
+  font-size: 12px; font-weight: 700; color: var(--hfk-red);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--hfk-cream);
+  letter-spacing: 0.06em;
 }
-.att-cell.present { background: var(--hfk-burgundy); color: #fff; }
-.att-cell.absent { background: var(--bg-accent); color: var(--text-muted); opacity: 0.5; }
-.att-cell.future { background: #f5f5f5; color: var(--text-muted); }
-.att-icon { display: block; font-size: 14px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
-.att-date { font-size: 10px; line-height: 1.2; }
-.event-list { display: flex; flex-direction: column; gap: 6px; }
-.event-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-.event-row .ev-mark { width: 16px; text-align: center; font-weight: 700; }
-.event-row .ev-mark.attended { color: var(--hfk-red); }
-.event-row .ev-mark.skipped { color: var(--text-muted); }
-.event-row .ev-mark.future { color: #ccc; }
-.event-row .ev-name { color: var(--text); flex: 1; }
-.event-row .ev-date { color: var(--text-muted); font-size: 12px; }
+
+.attendance-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.attendance-table th {
+  background: var(--hfk-cream); padding: 10px 8px;
+  font-weight: 600; color: var(--hfk-burgundy); text-align: center;
+  border-bottom: 1px solid var(--hfk-light-sand); font-size: 11px;
+}
+.attendance-table th:first-child { text-align: left; }
+.attendance-table td {
+  padding: 12px 8px; text-align: center;
+  border-bottom: 1px solid var(--hfk-white);
+}
+.attendance-table td:first-child { text-align: left; font-weight: 500; }
+.att-icon { font-size: 16px; font-weight: 700; }
+.att-icon.yes { color: #2d8a4e; }
+.att-icon.no { color: var(--hfk-coral); }
+.att-icon.na { color: var(--hfk-light-sand); }
+
+.rate-bar-container { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.rate-label { font-size: 13px; color: var(--hfk-burgundy); min-width: 96px; opacity: 0.7; }
+.rate-bar { flex: 1; height: 12px; background: var(--hfk-white); border-radius: 6px; overflow: hidden; }
+.rate-bar-fill { height: 100%; border-radius: 6px; transition: width 0.3s; }
+.rate-bar-fill.high { background: #2d8a4e; }
+.rate-bar-fill.mid { background: var(--hfk-sand); }
+.rate-bar-fill.low { background: var(--hfk-coral); }
+.rate-value { font-size: 14px; font-weight: 700; min-width: 44px; text-align: right; color: var(--hfk-charcoal); }
+
+.insight-box {
+  background: var(--hfk-white); border-radius: var(--radius-xs);
+  padding: 14px 18px; margin-bottom: 10px;
+}
+.insight-box h4 { font-size: 12px; font-weight: 700; color: var(--hfk-red); margin: 0 0 6px; letter-spacing: 0.04em; }
+.insight-box p { font-size: 13px; line-height: 1.7; color: var(--hfk-burgundy); margin: 0; white-space: pre-wrap; }
 
 /* Track flow chart (Sankey-lite) */
 .track-flow-card {
@@ -310,59 +330,102 @@ const TRACK_COLORS = {
   '미등록':          '#bbb',
 };
 
-function renderCurrentSeason(member) {
+function renderCurrentSeason(member, springSeason) {
   const r = member.current_season_report;
   if (!r) return '';
-  const att = r.attendance || [];
   const dates = r.dates || [];
-  const present = att.filter(v => v === true).length;
-  const total = att.filter(v => v !== null && v !== undefined).length;
-
-  const cells = (dates.length ? dates : att).map((d, i) => {
-    const v = att[i];
-    let cls, mark;
-    if (v === true) { cls = 'present'; mark = '●'; }
-    else if (v === false) { cls = 'absent'; mark = '○'; }
-    else { cls = 'future'; mark = '·'; }
-    const date = dates[i] || '';
-    return `<div class="att-cell ${cls}"><span class="att-icon">${mark}</span><span class="att-date">${escapeHtml(date)}</span></div>`;
-  }).join('');
-
+  const att = r.attendance || [];
   const events = r.events || [];
   const eventsMeta = r.events_meta || [];
-  const eventCount = events.filter(v => v === true).length;
-  const eventTotal = events.filter(v => v !== null && v !== undefined).length;
-  const eventRows = eventsMeta.map((ev, i) => {
-    const v = events[i];
-    let cls, mark;
-    if (v === true) { cls = 'attended'; mark = '✓'; }
-    else if (v === false) { cls = 'skipped'; mark = '–'; }
-    else { cls = 'future'; mark = '·'; }
-    return `<div class="event-row"><span class="ev-mark ${cls}">${mark}</span><span class="ev-name">${escapeHtml(ev.name)}</span><span class="ev-date">${escapeHtml(ev.date || '')}</span></div>`;
-  }).join('');
+
+  function attCell(v) {
+    if (v === true) return '<td><span class="att-icon yes">✓</span></td>';
+    if (v === false) return '<td><span class="att-icon no">✗</span></td>';
+    return '<td><span class="att-icon na">·</span></td>';
+  }
+
+  const sRows = att.map(attCell).join('');
+  const eRows = events.map(attCell).join('');
+
+  const sPresent = att.filter(v => v === true).length;
+  const sTotal = att.filter(v => v !== null && v !== undefined).length;
+  const sRate = sTotal ? Math.round(sPresent / sTotal * 100) : null;
+
+  const ePresent = events.filter(v => v === true).length;
+  const eTotal = events.filter(v => v !== null && v !== undefined).length;
+  const eRate = eTotal ? Math.round(ePresent / eTotal * 100) : null;
+
+  const oTotal = sTotal + eTotal;
+  const oRate = oTotal ? Math.round((sPresent + ePresent) / oTotal * 100) : null;
+
+  function rc(rate) { if (rate == null) return 'mid'; if (rate >= 75) return 'high'; if (rate >= 50) return 'mid'; return 'low'; }
+  function rd(rate) { return rate == null ? '—' : `${rate}%`; }
 
   const partner = r.partner || {};
-  const partnerLine = partner.name ? `${escapeHtml(partner.name)}${partner.company ? ' · ' + escapeHtml(partner.company) : ''}` : '';
+  const partnerLine = partner.name + (partner.company ? ` (${partner.company})` : '');
+
+  // 등록 동기 + 4L (springSeason에서)
+  let motivBlock = '';
+  let fourlBlock = '';
+  if (springSeason) {
+    if (springSeason.motivation) {
+      motivBlock = `
+        <div class="report-section">
+          <div class="report-section-title">REGISTRATION MOTIVATION</div>
+          <div class="insight-box"><h4>등록 동기</h4><p>${escapeHtml(springSeason.motivation)}</p></div>
+        </div>`;
+    }
+    if (springSeason.review_4l && springSeason.review_4l.rounds.length) {
+      const rounds = springSeason.review_4l.rounds.map(rd => `
+        <div class="insight-box">
+          <h4>${escapeHtml(rd.title || (rd.number + '회차'))}</h4>
+          <p>${escapeHtml(rd.raw)}</p>
+        </div>
+      `).join('');
+      fourlBlock = `
+        <div class="report-section">
+          <div class="report-section-title">4L REVIEW</div>
+          ${rounds}
+        </div>`;
+    }
+  }
 
   return `
-    <div class="current-card">
-      <div class="current-card-title">이번 시즌 활동 · ${escapeHtml(r.season_label || '')}</div>
-      <div class="current-team-row">
-        <span class="current-team-name">${escapeHtml(r.team)}</span>
-        ${partnerLine ? `<span class="current-team-meta">${partnerLine}</span>` : ''}
-        ${r.schedule ? `<span class="current-team-meta">· ${escapeHtml(r.schedule)}</span>` : ''}
-      </div>
-      <div class="current-block">
-        <div class="current-block-title">출석 ${total ? `(${present}/${total})` : ''}</div>
-        <div class="attendance-grid">${cells}</div>
-      </div>
-      ${eventRows ? `
-        <div class="current-block">
-          <div class="current-block-title">이벤트 참여 ${eventTotal ? `(${eventCount}/${eventTotal})` : ''}</div>
-          <div class="event-list">${eventRows}</div>
-        </div>
-      ` : ''}
+    <div class="report-info-grid">
+      <div class="report-info-item"><div class="label">TEAM</div><div class="value">${escapeHtml(r.team)}</div></div>
+      <div class="report-info-item"><div class="label">PARTNER</div><div class="value">${escapeHtml(partnerLine)}</div></div>
+      <div class="report-info-item"><div class="label">SCHEDULE</div><div class="value">${escapeHtml(r.schedule || '—')}</div></div>
+      <div class="report-info-item"><div class="label">SEASON</div><div class="value">${escapeHtml(r.season_label || '')}</div></div>
     </div>
+    <div class="report-section">
+      <div class="report-section-title">TEAM SESSION ATTENDANCE</div>
+      <table class="attendance-table">
+        <thead><tr>
+          <th style="width:60px;">구분</th>
+          ${dates.map((d, i) => `<th>${i+1}회차<br><span style="font-weight:400;font-size:10px;color:var(--hfk-light-sand);">${escapeHtml(d)}</span></th>`).join('')}
+        </tr></thead>
+        <tbody><tr><td>출석</td>${sRows}</tr></tbody>
+      </table>
+    </div>
+    ${eventsMeta.length ? `
+      <div class="report-section">
+        <div class="report-section-title">EVENT ATTENDANCE</div>
+        <table class="attendance-table">
+          <thead><tr>
+            <th style="width:60px;">구분</th>
+            ${eventsMeta.map(ev => `<th>${escapeHtml(ev.name)}<br><span style="font-weight:400;font-size:10px;color:var(--hfk-light-sand);">${escapeHtml(ev.date || '')}</span></th>`).join('')}
+          </tr></thead>
+          <tbody><tr><td>참석</td>${eRows}</tr></tbody>
+        </table>
+      </div>` : ''}
+    <div class="report-section">
+      <div class="report-section-title">ATTENDANCE RATE</div>
+      <div class="rate-bar-container"><span class="rate-label">Team Session</span><div class="rate-bar"><div class="rate-bar-fill ${rc(sRate)}" style="width:${sRate??0}%"></div></div><span class="rate-value">${rd(sRate)}</span></div>
+      <div class="rate-bar-container"><span class="rate-label">Events</span><div class="rate-bar"><div class="rate-bar-fill ${rc(eRate)}" style="width:${eRate??0}%"></div></div><span class="rate-value">${rd(eRate)}</span></div>
+      <div class="rate-bar-container"><span class="rate-label" style="font-weight:600;">Overall</span><div class="rate-bar"><div class="rate-bar-fill ${rc(oRate)}" style="width:${oRate??0}%"></div></div><span class="rate-value">${rd(oRate)}</span></div>
+    </div>
+    ${motivBlock}
+    ${fourlBlock}
   `;
 }
 
@@ -537,13 +600,13 @@ function renderProfile(member, tracks) {
   root.className = 'profile-view';
 
   const sub = [member.company, member.function, member.years_now && (member.years_now + '년차')].filter(Boolean).join(' · ');
-  const currentHtml = renderCurrentSeason(member);
+  const SPRING_RE = /(?:2026년\s*0?[345]|26봄|2026\s*봄)/;
+  const springSeason = member.seasons.find(s => SPRING_RE.test(s.season_raw || s.season || ''));
+  const currentHtml = renderCurrentSeason(member, springSeason);
   const trackFlowHtml = (member.seasons.length >= 1 && tracks && tracks.length)
     ? renderTrackFlow(member, tracks)
     : '';
   const futureHtml = renderFutureCards(member);
-
-  const SPRING_RE = /(?:2026년\s*0?[345]|26봄|2026\s*봄)/;
 
   const narrative = member.total_count >= 2
     ? `${escapeHtml(member.first_season)}에 시작해 ${escapeHtml(member.latest_season)}까지, HFK에서 ${member.total_count}시즌을 보냈습니다.`
@@ -593,13 +656,14 @@ function renderProfile(member, tracks) {
   const pastSeasonsHtml = seasonHtmlList.filter(x => !x.isSpring).map(x => x.html).join('');
 
   // 탭 콘텐츠 결정
-  const hasReport = !!member.current_season_report || !!springSeasonHtml;
-  const hasRoadmap = pastSeasonsHtml || futureHtml;
+  const hasReport = !!member.current_season_report;
+  const hasRoadmap = pastSeasonsHtml || futureHtml || springSeasonHtml;
 
-  // 탭 1: 이번 시즌 리포트 (현재 시즌 활동 + 26봄 시즌 카드)
-  const reportTab = `${currentHtml}${springSeasonHtml ? '<div class="timeline">' + springSeasonHtml + '</div>' : ''}`;
-  // 탭 2: 성장 로드맵 (트랙 차트 + 지난 시즌 + 다음 시즌)
-  const roadmapTab = `${trackFlowHtml}<div class="timeline">${pastSeasonsHtml}${futureHtml}</div>`;
+  // 탭 1: 이번 시즌 리포트 (출석/이벤트/동기/4L)
+  const reportTab = currentHtml;
+  // 탭 2: 성장 로드맵 (트랙 차트 + 모든 시즌 timeline + 다음 시즌)
+  const allSeasonsHtml = seasonHtmlList.map(x => x.html).join('');
+  const roadmapTab = `${trackFlowHtml}<div class="timeline">${allSeasonsHtml}${futureHtml}</div>`;
 
   let tabsHtml;
   if (hasReport && hasRoadmap) {
