@@ -124,6 +124,43 @@ body {
 .round-title { font-weight: 600; color: var(--hfk-burgundy); font-size: 13px; margin: 0 0 6px; }
 .round-raw { font-size: 13px; color: var(--text); white-space: pre-wrap; line-height: 1.7; }
 
+/* 이번 시즌 활동 (26봄) */
+.current-card {
+  background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
+  padding: 28px 24px; margin-bottom: 36px;
+}
+.current-card-title {
+  font-size: 13px; color: var(--text-muted); margin: 0 0 6px;
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.current-team-row {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
+  margin-bottom: 22px;
+}
+.current-team-name { font-size: 22px; font-weight: 700; color: var(--hfk-burgundy); letter-spacing: -0.01em; }
+.current-team-meta { color: var(--text-light); font-size: 13px; }
+.current-block { margin-top: 18px; }
+.current-block-title { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+.attendance-grid { display: flex; gap: 6px; flex-wrap: wrap; }
+.att-cell {
+  flex: 1 1 0; min-width: 48px; padding: 10px 6px;
+  text-align: center; border-radius: var(--radius-xs);
+  background: var(--bg-accent); position: relative;
+}
+.att-cell.present { background: var(--hfk-burgundy); color: #fff; }
+.att-cell.absent { background: var(--bg-accent); color: var(--text-muted); opacity: 0.5; }
+.att-cell.future { background: #f5f5f5; color: var(--text-muted); }
+.att-icon { display: block; font-size: 14px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.att-date { font-size: 10px; line-height: 1.2; }
+.event-list { display: flex; flex-direction: column; gap: 6px; }
+.event-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.event-row .ev-mark { width: 16px; text-align: center; font-weight: 700; }
+.event-row .ev-mark.attended { color: var(--hfk-red); }
+.event-row .ev-mark.skipped { color: var(--text-muted); }
+.event-row .ev-mark.future { color: #ccc; }
+.event-row .ev-name { color: var(--text); flex: 1; }
+.event-row .ev-date { color: var(--text-muted); font-size: 12px; }
+
 /* Track flow chart (Sankey-lite) */
 .track-flow-card {
   background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
@@ -254,6 +291,62 @@ const TRACK_COLORS = {
   'New Horizons': '#2d2523',  // charcoal
   '미등록':          '#bbb',
 };
+
+function renderCurrentSeason(member) {
+  const r = member.current_season_report;
+  if (!r) return '';
+  const att = r.attendance || [];
+  const dates = r.dates || [];
+  const present = att.filter(v => v === true).length;
+  const total = att.filter(v => v !== null && v !== undefined).length;
+
+  const cells = (dates.length ? dates : att).map((d, i) => {
+    const v = att[i];
+    let cls, mark;
+    if (v === true) { cls = 'present'; mark = '●'; }
+    else if (v === false) { cls = 'absent'; mark = '○'; }
+    else { cls = 'future'; mark = '·'; }
+    const date = dates[i] || '';
+    return `<div class="att-cell ${cls}"><span class="att-icon">${mark}</span><span class="att-date">${escapeHtml(date)}</span></div>`;
+  }).join('');
+
+  const events = r.events || [];
+  const eventsMeta = r.events_meta || [];
+  const eventCount = events.filter(v => v === true).length;
+  const eventTotal = events.filter(v => v !== null && v !== undefined).length;
+  const eventRows = eventsMeta.map((ev, i) => {
+    const v = events[i];
+    let cls, mark;
+    if (v === true) { cls = 'attended'; mark = '✓'; }
+    else if (v === false) { cls = 'skipped'; mark = '–'; }
+    else { cls = 'future'; mark = '·'; }
+    return `<div class="event-row"><span class="ev-mark ${cls}">${mark}</span><span class="ev-name">${escapeHtml(ev.name)}</span><span class="ev-date">${escapeHtml(ev.date || '')}</span></div>`;
+  }).join('');
+
+  const partner = r.partner || {};
+  const partnerLine = partner.name ? `${escapeHtml(partner.name)}${partner.company ? ' · ' + escapeHtml(partner.company) : ''}` : '';
+
+  return `
+    <div class="current-card">
+      <div class="current-card-title">이번 시즌 활동 · ${escapeHtml(r.season_label || '')}</div>
+      <div class="current-team-row">
+        <span class="current-team-name">${escapeHtml(r.team)}</span>
+        ${partnerLine ? `<span class="current-team-meta">${partnerLine}</span>` : ''}
+        ${r.schedule ? `<span class="current-team-meta">· ${escapeHtml(r.schedule)}</span>` : ''}
+      </div>
+      <div class="current-block">
+        <div class="current-block-title">출석 ${total ? `(${present}/${total})` : ''}</div>
+        <div class="attendance-grid">${cells}</div>
+      </div>
+      ${eventRows ? `
+        <div class="current-block">
+          <div class="current-block-title">이벤트 참여 ${eventTotal ? `(${eventCount}/${eventTotal})` : ''}</div>
+          <div class="event-list">${eventRows}</div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
 
 function renderTrackFlow(member, tracks) {
   // 미등록 트랙 시즌이 실제로 있을 때만 레인 표시
@@ -426,6 +519,7 @@ function renderProfile(member, tracks) {
   root.className = 'profile-view';
 
   const sub = [member.company, member.function, member.years_now && (member.years_now + '년차')].filter(Boolean).join(' · ');
+  const currentHtml = renderCurrentSeason(member);
   const trackFlowHtml = (member.seasons.length >= 2 && tracks && tracks.length)
     ? renderTrackFlow(member, tracks)
     : '';
@@ -485,6 +579,7 @@ function renderProfile(member, tracks) {
         <div class="stat-item"><b>${escapeHtml(member.latest_season)}</b>가장 최근</div>
       </div>
     </div>
+    ${currentHtml}
     ${trackFlowHtml}
     <div class="timeline">${seasonsHtml}${futureHtml}</div>
   `;
