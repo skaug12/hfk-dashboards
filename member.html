@@ -709,22 +709,19 @@ function renderProfile(member, tracks) {
         ${fourlHtml}
       </div>
     `;
-    const isSpring = SPRING_RE.test(s.season_raw || s.season || '');
-    return { html, isSpring };
+    return { html };
   });
 
-  const springSeasonHtml = seasonHtmlList.filter(x => x.isSpring).map(x => x.html).join('');
-  const pastSeasonsHtml = seasonHtmlList.filter(x => !x.isSpring).map(x => x.html).join('');
+  const allSeasonsTimelineHtml = seasonHtmlList.map(x => x.html).join('');
 
   // 탭 콘텐츠 결정
   const hasReport = !!reportHtml;
-  const hasRoadmap = pastSeasonsHtml || futureHtml || springSeasonHtml;
+  const hasRoadmap = allSeasonsTimelineHtml || futureHtml;
 
   // 탭 1: 이번 시즌 리포트 (시즌 pill + 출석/이벤트/동기/4L)
   const reportTab = reportHtml;
   // 탭 2: 성장 로드맵 (트랙 차트 + 모든 시즌 timeline + 다음 시즌)
-  const allSeasonsHtml = seasonHtmlList.map(x => x.html).join('');
-  const roadmapTab = `${trackFlowHtml}<div class="timeline">${allSeasonsHtml}${futureHtml}</div>`;
+  const roadmapTab = `${trackFlowHtml}<div class="timeline">${allSeasonsTimelineHtml}${futureHtml}</div>`;
 
   let tabsHtml;
   if (hasReport && hasRoadmap) {
