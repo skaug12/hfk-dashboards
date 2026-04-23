@@ -124,6 +124,24 @@ body {
 .round-title { font-weight: 600; color: var(--hfk-burgundy); font-size: 13px; margin: 0 0 6px; }
 .round-raw { font-size: 13px; color: var(--text); white-space: pre-wrap; line-height: 1.7; }
 
+/* Tab navigation */
+.tab-nav {
+  display: flex; gap: 4px; margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-light);
+}
+.tab-btn {
+  padding: 14px 22px; background: transparent; border: 0;
+  font-family: inherit; font-size: 15px; font-weight: 700;
+  color: var(--text-muted); cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--hfk-burgundy); border-bottom-color: var(--hfk-red); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
 /* 이번 시즌 활동 (26봄) */
 .current-card {
   background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius);
@@ -520,19 +538,25 @@ function renderProfile(member, tracks) {
 
   const sub = [member.company, member.function, member.years_now && (member.years_now + '년차')].filter(Boolean).join(' · ');
   const currentHtml = renderCurrentSeason(member);
-  const trackFlowHtml = (member.seasons.length >= 2 && tracks && tracks.length)
+  const trackFlowHtml = (member.seasons.length >= 1 && tracks && tracks.length)
     ? renderTrackFlow(member, tracks)
     : '';
   const futureHtml = renderFutureCards(member);
 
-  const seasonsHtml = member.seasons.map((s, idx) => {
+  const SPRING_RE = /(?:2026년\s*0?[345]|26봄|2026\s*봄)/;
+
+  const narrative = member.total_count >= 2
+    ? `${escapeHtml(member.first_season)}에 시작해 ${escapeHtml(member.latest_season)}까지, HFK에서 ${member.total_count}시즌을 보냈습니다.`
+    : `${escapeHtml(member.latest_season)}에 HFK 첫 시즌을 시작했습니다.`;
+
+  // 시즌 카드 HTML 분리: 26봄 카드 (이번 시즌 탭용) vs 그 외 (로드맵 탭용)
+  const seasonHtmlList = member.seasons.map((s) => {
     const isReturning = s.type === '재등록';
     const cls = isReturning ? 'returning' : 'first';
     const tagClass = isReturning ? 'tag-return' : 'tag-first';
     const motiv = s.motivation
       ? `<div class="season-motiv">${escapeHtml(s.motivation)}</div>`
       : `<div class="season-motiv season-motiv-empty">등록 동기 미입력</div>`;
-
     let fourlHtml = '';
     if (s.review_4l && s.review_4l.rounds.length) {
       const rounds = s.review_4l.rounds.map(r => `
@@ -548,8 +572,7 @@ function renderProfile(member, tracks) {
         <div class="fourl-body">${rounds}</div>
       `;
     }
-
-    return `
+    const html = `
       <div class="season-card ${cls}">
         <div class="season-head">
           <div class="season-main">
@@ -562,11 +585,37 @@ function renderProfile(member, tracks) {
         ${fourlHtml}
       </div>
     `;
-  }).join('');
+    const isSpring = SPRING_RE.test(s.season_raw || s.season || '');
+    return { html, isSpring };
+  });
 
-  const narrative = member.total_count >= 2
-    ? `${escapeHtml(member.first_season)}에 시작해 ${escapeHtml(member.latest_season)}까지, HFK에서 ${member.total_count}시즌을 보냈습니다.`
-    : `${escapeHtml(member.latest_season)}에 HFK 첫 시즌을 시작했습니다.`;
+  const springSeasonHtml = seasonHtmlList.filter(x => x.isSpring).map(x => x.html).join('');
+  const pastSeasonsHtml = seasonHtmlList.filter(x => !x.isSpring).map(x => x.html).join('');
+
+  // 탭 콘텐츠 결정
+  const hasReport = !!member.current_season_report || !!springSeasonHtml;
+  const hasRoadmap = pastSeasonsHtml || futureHtml;
+
+  // 탭 1: 이번 시즌 리포트 (현재 시즌 활동 + 26봄 시즌 카드)
+  const reportTab = `${currentHtml}${springSeasonHtml ? '<div class="timeline">' + springSeasonHtml + '</div>' : ''}`;
+  // 탭 2: 성장 로드맵 (트랙 차트 + 지난 시즌 + 다음 시즌)
+  const roadmapTab = `${trackFlowHtml}<div class="timeline">${pastSeasonsHtml}${futureHtml}</div>`;
+
+  let tabsHtml;
+  if (hasReport && hasRoadmap) {
+    tabsHtml = `
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="report">이번 시즌</button>
+        <button class="tab-btn" data-tab="roadmap">성장 로드맵</button>
+      </div>
+      <div class="tab-content active" id="tab-report">${reportTab}</div>
+      <div class="tab-content" id="tab-roadmap">${roadmapTab}</div>
+    `;
+  } else if (hasReport) {
+    tabsHtml = reportTab;
+  } else {
+    tabsHtml = roadmapTab;
+  }
 
   root.innerHTML = `
     <div class="profile-head">
@@ -579,11 +628,21 @@ function renderProfile(member, tracks) {
         <div class="stat-item"><b>${escapeHtml(member.latest_season)}</b>가장 최근</div>
       </div>
     </div>
-    ${currentHtml}
-    ${trackFlowHtml}
-    <div class="timeline">${seasonsHtml}${futureHtml}</div>
+    ${tabsHtml}
   `;
+  attachTabs();
   attachTooltip();
+}
+
+function attachTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
 }
 
 function attachTooltip() {
