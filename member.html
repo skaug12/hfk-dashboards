@@ -124,6 +124,20 @@ body {
 .round-title { font-weight: 600; color: var(--hfk-burgundy); font-size: 13px; margin: 0 0 6px; }
 .round-raw { font-size: 13px; color: var(--text); white-space: pre-wrap; line-height: 1.7; }
 
+/* Season pill (이번 시즌 탭 안에서 시즌 전환) */
+.season-pill-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.season-pill {
+  padding: 6px 14px; background: var(--bg-accent); border: 1px solid var(--border-light);
+  border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600;
+  color: var(--text-light); font-family: inherit;
+  transition: all 0.15s;
+}
+.season-pill:hover { background: var(--hfk-cream); }
+.season-pill.active { background: var(--hfk-burgundy); color: #fff; border-color: var(--hfk-burgundy); }
+
 /* Tab navigation */
 .tab-nav {
   display: flex; gap: 4px; margin-bottom: 32px;
@@ -330,9 +344,15 @@ const TRACK_COLORS = {
   '미등록':          '#bbb',
 };
 
-function renderCurrentSeason(member, springSeason) {
-  const r = member.current_season_report;
-  if (!r) return '';
+// 시즌 키 정렬용 (26봄 < 26여름 < 26가을 < 26겨울)
+const SEASON_ORDER_Q = { '봄': 1, '여름': 2, '가을': 3, '겨울': 4 };
+function seasonKeyOrder(k) {
+  const m = (k || '').match(/^(\d{2})(봄|여름|가을|겨울)/);
+  return m ? parseInt(m[1]) * 4 + (SEASON_ORDER_Q[m[2]] || 9) : 0;
+}
+
+function renderSeasonReport(r, seasonKey, member) {
+  // r = { team, partner, schedule, dates, attendance, events, events_meta, season_label, insights? }
   const dates = r.dates || [];
   const att = r.attendance || [];
   const events = r.events || [];
@@ -383,19 +403,22 @@ function renderCurrentSeason(member, springSeason) {
     }
   }
 
-  // 등록 동기 + 4L (springSeason에서)
+  // seasonKey로 member.seasons에서 해당 시즌 동기/4L 찾기
+  const SEASON_SHORT_RE = (key) => new RegExp(`(?:20${key.slice(0,2)}.{0,15}?${key.slice(2)}|^${key})`);
+  const memberSeason = (member.seasons || []).find(s => SEASON_SHORT_RE(seasonKey).test(s.season_raw || s.season || ''));
+
   let motivBlock = '';
   let fourlBlock = '';
-  if (springSeason) {
-    if (springSeason.motivation) {
+  if (memberSeason) {
+    if (memberSeason.motivation) {
       motivBlock = `
         <div class="report-section">
           <div class="report-section-title">REGISTRATION MOTIVATION</div>
-          <div class="insight-box"><h4>등록 동기</h4><p>${escapeHtml(springSeason.motivation)}</p></div>
+          <div class="insight-box"><h4>등록 동기</h4><p>${escapeHtml(memberSeason.motivation)}</p></div>
         </div>`;
     }
-    if (springSeason.review_4l && springSeason.review_4l.rounds.length) {
-      const rounds = springSeason.review_4l.rounds.map(rd => `
+    if (memberSeason.review_4l && memberSeason.review_4l.rounds.length) {
+      const rounds = memberSeason.review_4l.rounds.map(rd => `
         <div class="insight-box">
           <h4>${escapeHtml(rd.title || (rd.number + '회차'))}</h4>
           <p>${escapeHtml(rd.raw)}</p>
@@ -620,9 +643,27 @@ function renderProfile(member, tracks) {
   root.className = 'profile-view';
 
   const sub = [member.company, member.function, member.years_now && (member.years_now + '년차')].filter(Boolean).join(' · ');
-  const SPRING_RE = /(?:2026년\s*0?[345]|26봄|2026\s*봄)/;
-  const springSeason = member.seasons.find(s => SPRING_RE.test(s.season_raw || s.season || ''));
-  const currentHtml = renderCurrentSeason(member, springSeason);
+
+  // multi-season report: 여러 시즌 데이터 있으면 pill로 전환
+  const seasonReports = member.season_reports || (member.current_season_report ? {auto: member.current_season_report} : {});
+  const seasonKeys = Object.keys(seasonReports).sort((a, b) => seasonKeyOrder(a) - seasonKeyOrder(b));
+  const latestSeasonKey = seasonKeys.length ? seasonKeys[seasonKeys.length - 1] : null;
+
+  let reportHtml = '';
+  if (latestSeasonKey) {
+    const pillRow = seasonKeys.length > 1 ? `
+      <div class="season-pill-row">
+        ${seasonKeys.map(k => `<button class="season-pill ${k === latestSeasonKey ? 'active' : ''}" data-season="${escapeHtml(k)}">${escapeHtml(k)}</button>`).join('')}
+      </div>
+    ` : '';
+    const reportSections = seasonKeys.map(k => `
+      <div class="season-report-content" data-season="${escapeHtml(k)}" style="${k === latestSeasonKey ? '' : 'display:none;'}">
+        ${renderSeasonReport(seasonReports[k], k, member)}
+      </div>
+    `).join('');
+    reportHtml = pillRow + reportSections;
+  }
+
   const trackFlowHtml = (member.seasons.length >= 1 && tracks && tracks.length)
     ? renderTrackFlow(member, tracks)
     : '';
@@ -676,11 +717,11 @@ function renderProfile(member, tracks) {
   const pastSeasonsHtml = seasonHtmlList.filter(x => !x.isSpring).map(x => x.html).join('');
 
   // 탭 콘텐츠 결정
-  const hasReport = !!member.current_season_report;
+  const hasReport = !!reportHtml;
   const hasRoadmap = pastSeasonsHtml || futureHtml || springSeasonHtml;
 
-  // 탭 1: 이번 시즌 리포트 (출석/이벤트/동기/4L)
-  const reportTab = currentHtml;
+  // 탭 1: 이번 시즌 리포트 (시즌 pill + 출석/이벤트/동기/4L)
+  const reportTab = reportHtml;
   // 탭 2: 성장 로드맵 (트랙 차트 + 모든 시즌 timeline + 다음 시즌)
   const allSeasonsHtml = seasonHtmlList.map(x => x.html).join('');
   const roadmapTab = `${trackFlowHtml}<div class="timeline">${allSeasonsHtml}${futureHtml}</div>`;
@@ -725,6 +766,17 @@ function attachTabs() {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+  // 시즌 pill (이번 시즌 탭 안)
+  document.querySelectorAll('.season-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      const k = p.dataset.season;
+      document.querySelectorAll('.season-pill').forEach(b => b.classList.remove('active'));
+      p.classList.add('active');
+      document.querySelectorAll('.season-report-content').forEach(c => {
+        c.style.display = c.dataset.season === k ? '' : 'none';
+      });
     });
   });
 }
