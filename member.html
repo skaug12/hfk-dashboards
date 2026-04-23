@@ -364,6 +364,25 @@ function renderCurrentSeason(member, springSeason) {
   const partner = r.partner || {};
   const partnerLine = partner.name + (partner.company ? ` (${partner.company})` : '');
 
+  // GROWTH INSIGHTS (AI 생성, current_season_report.insights에 있음)
+  let insightsBlock = '';
+  if (r.insights) {
+    const ins = r.insights;
+    const items = [
+      { title: '관찰 포인트', text: ins.observation },
+      { title: '참여 현황', text: ins.participation },
+      { title: '4L 리뷰', text: ins.fourL },
+      { title: '다음 시즌 제안', text: ins.suggestion },
+    ].filter(x => x.text);
+    if (items.length) {
+      insightsBlock = `
+        <div class="report-section">
+          <div class="report-section-title">GROWTH INSIGHTS</div>
+          ${items.map(i => `<div class="insight-box"><h4>${escapeHtml(i.title)}</h4><p>${escapeHtml(i.text)}</p></div>`).join('')}
+        </div>`;
+    }
+  }
+
   // 등록 동기 + 4L (springSeason에서)
   let motivBlock = '';
   let fourlBlock = '';
@@ -424,6 +443,7 @@ function renderCurrentSeason(member, springSeason) {
       <div class="rate-bar-container"><span class="rate-label">Events</span><div class="rate-bar"><div class="rate-bar-fill ${rc(eRate)}" style="width:${eRate??0}%"></div></div><span class="rate-value">${rd(eRate)}</span></div>
       <div class="rate-bar-container"><span class="rate-label" style="font-weight:600;">Overall</span><div class="rate-bar"><div class="rate-bar-fill ${rc(oRate)}" style="width:${oRate??0}%"></div></div><span class="rate-value">${rd(oRate)}</span></div>
     </div>
+    ${insightsBlock}
     ${motivBlock}
     ${fourlBlock}
   `;
