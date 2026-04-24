@@ -287,6 +287,12 @@ body {
 }
 .rec-headline { font-size: 13px; color: var(--text-light); margin-bottom: 8px; font-style: italic; }
 .rec-reason { font-size: 14px; color: var(--text); line-height: 1.7; margin: 6px 0 0; }
+.rec-cta {
+  display: inline-block; margin-top: 14px;
+  font-size: 13px; font-weight: 600; color: var(--hfk-red);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.rec-cta:hover { color: var(--hfk-burgundy); }
 
 /* 마지막 과거 시즌 후 추천 직전: 여정 헤드라인 */
 .journey-intro {
@@ -632,6 +638,7 @@ function renderFutureCards(member) {
         </div>
         ${p.headline ? `<div class="rec-headline">${escapeHtml(p.headline)}</div>` : ''}
         <p class="rec-reason">${escapeHtml(p.reason)}</p>
+        ${p.product_url ? `<a class="rec-cta" href="${escapeHtml(p.product_url)}" target="_blank" rel="noopener">팀 소개 보기 →</a>` : ''}
       </div>
     `;
   }).join('');
