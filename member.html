@@ -474,31 +474,35 @@ function renderSeasonReport(r, seasonKey, member) {
     </div>
     ${motivBlock}
     ${insightsBlock}
-    ${renderHfkSeasonReport(member.season_report, memberSeason)}
+    ${renderHfkSeasonReport(member.season_report, memberSeason, member)}
   `;
 }
 
-function renderHfkSeasonReport(sr, memberSeason) {
-  if (!sr) return '';
+function renderHfkSeasonReport(sr, memberSeason, member) {
+  if (!sr && !member) return '';
   // 4L 요약은 GROWTH INSIGHTS로 이동. From HFK는 비슷한 멤버들의 흐름 → 다음 시즌 제안 순.
-  const sp = sr.similarPeers && (sr.similarPeers.summary_stats || sr.similarPeers.summary_narrative)
+  const sp = sr && sr.similarPeers && (sr.similarPeers.summary_stats || sr.similarPeers.summary_narrative)
     ? `<div class="insight-box"><h4>비슷한 멤버들의 흐름</h4>
         ${sr.similarPeers.summary_stats ? `<p>${escapeHtml(sr.similarPeers.summary_stats)}</p>` : ''}
         ${sr.similarPeers.summary_narrative ? `<p style="margin-top:8px;">${escapeHtml(sr.similarPeers.summary_narrative)}</p>` : ''}
       </div>`
     : '';
-  const ns = sr.nextSeason
+
+  // 다음 시즌 제안: recommendations_26여름.picks 사용 (성장 로드맵과 동일 데이터)
+  const picks = (member && member.recommendations_26여름 && member.recommendations_26여름.picks) || [];
+  const ns = picks.length
     ? `<div class="insight-box"><h4>다음 시즌 제안</h4>
-        <p>${escapeHtml(sr.nextSeason)}</p>
-        ${(sr.nextTeams || []).map(t => {
-          const url = teamProductUrl(t.name);
+        ${picks.map(t => {
+          const url = t.product_url;
           const teamLabel = url
-            ? `<a href="${url}" target="_blank" style="color:var(--hfk-burgundy);text-decoration:underline;font-weight:700;">${escapeHtml(t.name)}</a>`
-            : `<strong>${escapeHtml(t.name)}</strong>`;
-          return `<p style="margin-top:10px;">${teamLabel} <span style="font-size:11px;color:var(--hfk-red);margin-left:4px;">${escapeHtml(t.track)}</span><br>${escapeHtml(t.desc)}</p>`;
+            ? `<a href="${url}" target="_blank" style="color:var(--hfk-burgundy);text-decoration:underline;font-weight:700;">${escapeHtml(t.team)}</a>`
+            : `<strong>${escapeHtml(t.team)}</strong>`;
+          const trackText = t.track ? `${t.track} 트랙` : '';
+          return `<p style="margin-top:10px;">${teamLabel}${trackText ? `<span style="font-size:11px;color:var(--hfk-red);margin-left:6px;">${escapeHtml(trackText)}</span>` : ''}<br>${escapeHtml(t.reason || '')}</p>`;
         }).join('')}
       </div>`
     : '';
+
   if (!sp && !ns) return '';
   return `<div class="report-section">
     <div class="report-section-title">From HFK</div>
