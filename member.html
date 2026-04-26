@@ -414,6 +414,9 @@ function renderSeasonReport(r, seasonKey, member) {
         </details>`
       : '';
     const blocks = [];
+    if (memberSeason && memberSeason.motivation) {
+      blocks.push(`<div class="insight-box"><h4>등록 동기</h4><p>${escapeHtml(memberSeason.motivation)}</p></div>`);
+    }
     if (ins.participation) {
       blocks.push(`<div class="insight-box"><h4>참여 현황</h4><p>${escapeHtml(ins.participation)}</p></div>`);
     }
@@ -433,19 +436,9 @@ function renderSeasonReport(r, seasonKey, member) {
     }
   }
 
+  // 등록 동기는 GROWTH INSIGHTS 안으로 이동, 별도 섹션 제거
   let motivBlock = '';
   let fourlBlock = '';
-  if (memberSeason) {
-    if (memberSeason.motivation) {
-      motivBlock = `
-        <div class="report-section">
-          <div class="report-section-title">REGISTRATION MOTIVATION</div>
-          <div class="insight-box"><h4>등록 동기</h4><p>${escapeHtml(memberSeason.motivation)}</p></div>
-        </div>`;
-    }
-    // 회차별 raw 4L은 별도 섹션 X. From HFK 4L 요약 안의 토글로 표시 (renderHfkSeasonReport에 전달)
-    fourlBlock = '';
-  }
 
   return `
     <div class="report-info-grid">
