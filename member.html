@@ -162,7 +162,7 @@ body {
   margin-bottom: 28px;
 }
 .report-info-item {
-  padding: 16px 18px; background: var(--hfk-white); border-radius: var(--radius-xs);
+  padding: 16px 18px; background: #faf6ef; border-radius: var(--radius-xs);
 }
 .report-info-item .label {
   font-size: 10px; color: var(--hfk-red); font-weight: 700;
@@ -395,7 +395,7 @@ function renderSeasonReport(r, seasonKey, member) {
   if (r.insights) {
     const ins = r.insights;
     const items = [
-      { title: '관찰 포인트', text: ins.observation },
+      { title: '체크포인트', text: ins.observation },
       { title: '참여 현황', text: ins.participation },
       { title: '4L 리뷰', text: ins.fourL },
       { title: '다음 시즌 제안', text: ins.suggestion },
@@ -441,8 +441,6 @@ function renderSeasonReport(r, seasonKey, member) {
   return `
     <div class="report-info-grid">
       <div class="report-info-item"><div class="label">TEAM</div><div class="value">${escapeHtml(r.team)}</div></div>
-      <div class="report-info-item"><div class="label">PARTNER</div><div class="value">${escapeHtml(partnerLine)}</div></div>
-      <div class="report-info-item"><div class="label">SCHEDULE</div><div class="value">${escapeHtml(r.schedule || '—')}</div></div>
       <div class="report-info-item"><div class="label">SEASON</div><div class="value">${escapeHtml(r.season_label || '')}</div></div>
     </div>
     <div class="report-section">
@@ -481,9 +479,6 @@ function renderSeasonReport(r, seasonKey, member) {
 
 function renderHfkSeasonReport(sr) {
   if (!sr) return '';
-  const cp = sr.checkpoint
-    ? `<div class="insight-box"><h4>시즌 체크포인트</h4><p>${escapeHtml(sr.checkpoint)}</p></div>`
-    : '';
   const fl = sr.fourL
     ? `<div class="insight-box"><h4>4L 요약</h4><p>${escapeHtml(sr.fourL)}</p></div>`
     : '';
@@ -501,10 +496,10 @@ function renderHfkSeasonReport(sr) {
         ${sr.similarPeers.summary_narrative ? `<p style="margin-top:8px;">${escapeHtml(sr.similarPeers.summary_narrative)}</p>` : ''}
       </div>`
     : '';
-  if (!cp && !fl && !ns && !sp) return '';
+  if (!fl && !ns && !sp) return '';
   return `<div class="report-section">
-    <div class="report-section-title">HFK 운영진의 정리</div>
-    ${cp}${fl}${ns}${sp}
+    <div class="report-section-title">From HFK</div>
+    ${fl}${ns}${sp}
   </div>`;
 }
 
