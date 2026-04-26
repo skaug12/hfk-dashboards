@@ -475,7 +475,37 @@ function renderSeasonReport(r, seasonKey, member) {
     ${motivBlock}
     ${insightsBlock}
     ${fourlBlock}
+    ${renderHfkSeasonReport(member.season_report)}
   `;
+}
+
+function renderHfkSeasonReport(sr) {
+  if (!sr) return '';
+  const cp = sr.checkpoint
+    ? `<div class="insight-box"><h4>시즌 체크포인트</h4><p>${escapeHtml(sr.checkpoint)}</p></div>`
+    : '';
+  const fl = sr.fourL
+    ? `<div class="insight-box"><h4>4L 요약</h4><p>${escapeHtml(sr.fourL)}</p></div>`
+    : '';
+  const ns = sr.nextSeason
+    ? `<div class="insight-box"><h4>다음 시즌 제안</h4>
+        <p>${escapeHtml(sr.nextSeason)}</p>
+        ${(sr.nextTeams || []).map(t => `
+          <p style="margin-top:10px;"><strong>${escapeHtml(t.name)}</strong> <span style="font-size:11px;color:var(--hfk-red);margin-left:4px;">${escapeHtml(t.track)}</span><br>${escapeHtml(t.desc)}</p>
+        `).join('')}
+      </div>`
+    : '';
+  const sp = sr.similarPeers && (sr.similarPeers.summary_stats || sr.similarPeers.summary_narrative)
+    ? `<div class="insight-box"><h4>비슷한 멤버들의 흐름</h4>
+        ${sr.similarPeers.summary_stats ? `<p>${escapeHtml(sr.similarPeers.summary_stats)}</p>` : ''}
+        ${sr.similarPeers.summary_narrative ? `<p style="margin-top:8px;">${escapeHtml(sr.similarPeers.summary_narrative)}</p>` : ''}
+      </div>`
+    : '';
+  if (!cp && !fl && !ns && !sp) return '';
+  return `<div class="report-section">
+    <div class="report-section-title">HFK 운영진의 정리</div>
+    ${cp}${fl}${ns}${sp}
+  </div>`;
 }
 
 function renderTrackFlow(member, tracks) {
