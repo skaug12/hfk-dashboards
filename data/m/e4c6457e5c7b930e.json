@@ -1,0 +1,94 @@
+{
+  "name": "강국주",
+  "company": "위즈팜",
+  "function": "",
+  "years_at_reg": "",
+  "years_now": "",
+  "first_season": "26봄",
+  "latest_season": "26봄",
+  "total_count": 1,
+  "has_4l": false,
+  "seasons": [
+    {
+      "season": "26봄",
+      "season_raw": "2026년 03-05월 봄시즌",
+      "team": "저스트두잇",
+      "team_normalized": "저스트두잇",
+      "track": "",
+      "type": "재등록",
+      "motivation": "",
+      "channel": "",
+      "review_4l": null,
+      "company": "위즈팜",
+      "function": "",
+      "years_at_reg": ""
+    }
+  ],
+  "token": "e4c6457e5c7b930e",
+  "season_reports": {
+    "26봄": {
+      "team": "저스트두잇",
+      "partner": {
+        "name": "",
+        "company": ""
+      },
+      "schedule": "",
+      "dates": [
+        "3/17",
+        "3/31",
+        "4/14",
+        "4/28",
+        "5/12",
+        "5/26"
+      ],
+      "attendance": [
+        true,
+        false,
+        true,
+        null,
+        null,
+        null
+      ],
+      "events": [
+        null,
+        null,
+        null
+      ],
+      "season_label": "2026 봄시즌",
+      "season_key": "26봄",
+      "events_meta": [
+        {
+          "name": "스페셜토크",
+          "date": "3/18"
+        },
+        {
+          "name": "저자 북토크",
+          "date": "3/21"
+        },
+        {
+          "name": "PEST 브리핑",
+          "date": "3/25"
+        },
+        {
+          "name": "AAR 밋업",
+          "date": "4/22"
+        },
+        {
+          "name": "HBR 포럼",
+          "date": "5/20"
+        }
+      ],
+      "insights": null
+    }
+  },
+  "season_report": {
+    "team": "저스트두잇",
+    "reg": "재등록",
+    "company": "위즈팜",
+    "checkpoint": "",
+    "fourL": null,
+    "nextSeason": "",
+    "nextTeams": [],
+    "similarPeers": {}
+  }
+}
